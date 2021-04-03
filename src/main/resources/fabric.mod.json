@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "armor-stand-editor",
+  "version": "${version}",
+
+  "name": "Armor Stand Editor",
+  "description": "Server side armor stand editor",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://pb4.eu",
+    "sources": "https://github.com/Patbox/ArmorStandEditor"
+  },
+
+  "license": "LGPLv3",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "eu.pb4.armorstandeditor.ArmorStandEditorMod"
+    ]
+  },
+  "mixins": [
+    "armorstandeditor.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x",
+    "sgui": ">=0.1.1"
+  }
+}

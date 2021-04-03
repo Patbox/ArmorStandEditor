@@ -1,0 +1,46 @@
+{
+  "armorstandeditor.gui.editor_title": "Armor Stand Editor",
+
+  "armorstandeditor.gui.name.x": "Modify X axis",
+  "armorstandeditor.gui.name.y": "Modify Y axis",
+  "armorstandeditor.gui.name.z": "Modify Z axis",
+
+  "armorstandeditor.gui.name.small": "Small change size",
+  "armorstandeditor.gui.name.medium": "Medium change size",
+  "armorstandeditor.gui.name.big": "Big change size",
+
+  "armorstandeditor.gui.name.move": "Move",
+  "armorstandeditor.gui.name.rotate": "Rotate",
+
+  "armorstandeditor.gui.name.head": "Rotate head",
+  "armorstandeditor.gui.name.body": "Rotate body",
+  "armorstandeditor.gui.name.left_arm": "Rotate left arm",
+  "armorstandeditor.gui.name.right_arm": "Rotate right arm",
+  "armorstandeditor.gui.name.left_leg": "Rotate left leg",
+  "armorstandeditor.gui.name.right_leg": "Rotate right leg",
+  "armorstandeditor.gui.name.inventory": "Open inventory",
+  "armorstandeditor.gui.name.rename": "Rename",
+  "armorstandeditor.gui.name.reset_pose": "Reset pose",
+
+  "armorstandeditor.gui.name.size": "Toggle size",
+  "armorstandeditor.gui.name.gravity": "Toggle gravity",
+  "armorstandeditor.gui.name.visibility": "Toggle visibility",
+  "armorstandeditor.gui.name.arms": "Toggle arms",
+  "armorstandeditor.gui.name.base": "Toggle base plate",
+
+  "armorstandeditor.gui.name.copy": "Copy",
+  "armorstandeditor.gui.name.paste": "Paste",
+
+  "armorstandeditor.gui.inventory_title": "Armor Stand Inventory",
+
+  "armorstandeditor.gui.rename_title": "Rename Armor Stand",
+
+  "armorstandeditor.gui.clearname": "Clear name",
+
+  "armorstandeditor.gui.setname": "Change name to: %s",
+
+  "armorstandeditor.message.copied": "Armor stand copied! Changed to Paste mode",
+  "armorstandeditor.message.pasted": "Changed armor stand to use stored values",
+
+  "armorstandeditor.command.give": "Given Armor Stand Editor tool to %s"
+}

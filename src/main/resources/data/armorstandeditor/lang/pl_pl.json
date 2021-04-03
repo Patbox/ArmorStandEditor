@@ -1,0 +1,46 @@
+{
+  "armorstandeditor.gui.editor_title": "Edytor stojaków na zbroję",
+
+  "armorstandeditor.gui.name.x": "Modyfikuj oś X",
+  "armorstandeditor.gui.name.y": "Modyfikuj oś Y",
+  "armorstandeditor.gui.name.z": "Modyfikuj oś Z",
+
+  "armorstandeditor.gui.name.small": "Mała zmiana",
+  "armorstandeditor.gui.name.medium": "Średnia zmiana",
+  "armorstandeditor.gui.name.big": "Duża zmiana",
+
+  "armorstandeditor.gui.name.move": "Przemieść",
+  "armorstandeditor.gui.name.rotate": "Obróć",
+
+  "armorstandeditor.gui.name.head": "Obracaj główą",
+  "armorstandeditor.gui.name.body": "Obracaj ciałem",
+  "armorstandeditor.gui.name.left_arm": "Obracaj lewą ręką",
+  "armorstandeditor.gui.name.right_arm": "Obracaj prawą ręką",
+  "armorstandeditor.gui.name.left_leg": "Obracaj lewą nogą",
+  "armorstandeditor.gui.name.right_leg": "Obracaj prawą nogą",
+  "armorstandeditor.gui.name.inventory": "Otwórz ekwipunek",
+  "armorstandeditor.gui.name.rename": "Zmień nazwę",
+  "armorstandeditor.gui.name.reset_pose": "Zresetuj pozę",
+
+  "armorstandeditor.gui.name.size": "Zmień rozmiar",
+  "armorstandeditor.gui.name.gravity": "Przełącz grawitację",
+  "armorstandeditor.gui.name.visibility": "Przełącz widoczność",
+  "armorstandeditor.gui.name.arms": "Przełącz ramiona",
+  "armorstandeditor.gui.name.base": "Przełącz podstawę",
+
+  "armorstandeditor.gui.name.copy": "Skopiuj",
+  "armorstandeditor.gui.name.paste": "Wklej",
+
+  "armorstandeditor.gui.inventory_title": "Ekwipunek stojaka na zbroję",
+
+  "armorstandeditor.gui.rename_title": "Nazwij stojak na zbroję",
+
+  "armorstandeditor.gui.clearname": "Usuń nazwę",
+
+  "armorstandeditor.gui.setname": "Zmień nazwę na: %s",
+
+  "armorstandeditor.message.copied": "Skopioawno! Przełączono na tryb wklejania",
+  "armorstandeditor.message.pasted": "Wklejono ustawienia stojaka na zbroję",
+
+  "armorstandeditor.command.give": "Dano narzędzie edycji stojąków na zbroję graczowi %s"
+}
