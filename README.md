@@ -16,4 +16,4 @@ used on survival (and alike) servers.
 }
 ```
 Additionally, command /armorstandeditor uses `armorstandeditor.commands.<subcommand or main>`.
-Format of editors permissions looks like `armorstandeditor.edit.<type>`, [look at this file](https://github.com/Patbox/armorstandeditor/blob/src/main/java/eu/pb4/armorstandeditor/EditorActions.java)
+Format of editors permissions looks like `armorstandeditor.edit.<type>`, [look at this file](https://github.com/Patbox/ArmorStandEditor/blob/master/src/main/java/eu/pb4/armorstandeditor/EditorActions.java)
