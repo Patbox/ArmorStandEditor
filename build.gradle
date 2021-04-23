@@ -19,6 +19,8 @@ repositories {
 	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	maven { url 'https://jitpack.io' }
 	maven { url = "https://maven.nucleoid.xyz/" }
+
+	mavenLocal()
 }
 
 dependencies {
@@ -31,11 +33,13 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
-	modImplementation include("com.github.Patbox:sgui:0.1.1")
+	modImplementation include("com.github.Patbox:sgui:0.3.0")
+
 	modImplementation include("fr.catcore:server-translations-api:1.4.1")
 
 
-	modImplementation "com.github.SuperCoder7979:databreaker:0.2.6"
+	modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
+	modImplementation "com.github.NucleoidMC:DisguiseLib:1.0.1"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.

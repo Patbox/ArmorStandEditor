@@ -38,6 +38,7 @@
   "armorstandeditor.gui.clearname": "Clear name",
 
   "armorstandeditor.gui.setname": "Change name to: %s",
+  "armorstandeditor.gui.close": "Close",
 
   "armorstandeditor.message.copied": "Armor stand copied! Changed to Paste mode",
   "armorstandeditor.message.pasted": "Changed armor stand to use stored values",

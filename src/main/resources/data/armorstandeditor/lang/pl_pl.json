@@ -38,6 +38,8 @@
   "armorstandeditor.gui.clearname": "Usuń nazwę",
 
   "armorstandeditor.gui.setname": "Zmień nazwę na: %s",
+  "armorstandeditor.gui.close": "Zamknij",
+
 
   "armorstandeditor.message.copied": "Skopioawno! Przełączono na tryb wklejania",
   "armorstandeditor.message.pasted": "Wklejono ustawienia stojaka na zbroję",
