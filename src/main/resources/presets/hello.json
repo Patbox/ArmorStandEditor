@@ -1,0 +1,40 @@
+{
+  "id": "$hello",
+  "name": "Hello!",
+  "author": "Patbox",
+  "noGravity": false,
+  "hidePlate": true,
+  "small": false,
+  "showArms": true,
+  "invisible": false,
+  "headRotation": [
+    0.0,
+    333.0,
+    0.0
+  ],
+  "bodyRotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "leftArmRotation": [
+    -6.0,
+    3.0,
+    351.0
+  ],
+  "rightArmRotation": [
+    200.4,
+    2.4,
+    -10.200001
+  ],
+  "leftLegRotation": [
+    22.199999,
+    0.0,
+    -3.0000062
+  ],
+  "rightLegRotation": [
+    -16.8,
+    0.0,
+    3.0
+  ]
+}

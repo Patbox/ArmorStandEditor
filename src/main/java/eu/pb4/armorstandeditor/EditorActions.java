@@ -18,6 +18,7 @@ public enum EditorActions {
     MODIFY_BODY("edit.body"),
 
     RESET_POSE("edit.reset_pose"),
+    FLIP_POSE("edit.flip_pose"),
 
     COPY("edit.copy"),
     PASTE("edit.paste"),

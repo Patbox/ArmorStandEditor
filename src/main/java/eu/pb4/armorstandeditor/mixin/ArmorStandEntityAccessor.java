@@ -28,4 +28,10 @@ public interface ArmorStandEntityAccessor {
 
     @Accessor
     EulerAngle getRightLegRotation();
+
+    @Accessor
+    int getDisabledSlots();
+
+    @Accessor("disabledSlots")
+    void setDisabledSlots(int slots);
 }

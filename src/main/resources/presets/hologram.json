@@ -1,0 +1,40 @@
+{
+  "id": "$hologram",
+  "name": "Hologram",
+  "author": "Patbox",
+  "noGravity": false,
+  "hidePlate": false,
+  "small": true,
+  "showArms": false,
+  "invisible": true,
+  "headRotation": [
+    2.095251,
+    4.9013376,
+    0.0
+  ],
+  "bodyRotation": [
+    0.0,
+    -0.92157316,
+    0.0
+  ],
+  "leftArmRotation": [
+    -10.0,
+    0.0,
+    -10.0
+  ],
+  "rightArmRotation": [
+    -15.0,
+    0.0,
+    10.0
+  ],
+  "leftLegRotation": [
+    -1.0,
+    0.0,
+    -1.0
+  ],
+  "rightLegRotation": [
+    1.0,
+    0.0,
+    1.0
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "$walking",
+  "name": "Walking",
+  "author": "Patbox",
+  "noGravity": false,
+  "hidePlate": true,
+  "small": false,
+  "showArms": true,
+  "invisible": false,
+  "headRotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "bodyRotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "leftArmRotation": [
+    60.0,
+    0.0,
+    0.0
+  ],
+  "rightArmRotation": [
+    -60.0,
+    0.0,
+    0.0
+  ],
+  "leftLegRotation": [
+    -60.0,
+    0.0,
+    0.0
+  ],
+  "rightLegRotation": [
+    60.0,
+    0.0,
+    0.0
+  ]
+}

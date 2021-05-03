@@ -1,4 +1,4 @@
-package eu.pb4.armorstandeditor.other;
+package eu.pb4.armorstandeditor.helpers;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -39,7 +39,7 @@ public class ArmorStandInventory implements Inventory {
                 );
     }
 
-    public EquipmentSlot getEquipmentSlot(int index) {
+    public static EquipmentSlot getEquipmentSlot(int index) {
         EquipmentSlot slot;
         switch (index) {
             case 0:
@@ -69,7 +69,7 @@ public class ArmorStandInventory implements Inventory {
 
     @Override
     public ItemStack getStack(int slot) {
-        return entity.getEquippedStack(this.getEquipmentSlot(slot));
+        return entity.getEquippedStack(getEquipmentSlot(slot));
     }
 
     @Override

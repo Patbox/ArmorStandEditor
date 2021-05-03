@@ -3,35 +3,22 @@ package eu.pb4.armorstandeditor;
 import eu.pb4.armorstandeditor.config.Config;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
-import eu.pb4.armorstandeditor.other.ArmorStandInventory;
-import eu.pb4.armorstandeditor.other.SPEInterface;
-import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
-import eu.pb4.sgui.api.gui.AnvilInputGui;
-import eu.pb4.sgui.api.ClickType;
-import eu.pb4.sgui.api.elements.GuiElement;
-import eu.pb4.sgui.api.gui.SimpleGui;
+import eu.pb4.armorstandeditor.helpers.ArmorStandData;
+import eu.pb4.armorstandeditor.helpers.SPEInterface;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -47,6 +34,7 @@ public class Events {
             AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
+
                 if (entity instanceof EntityDisguise
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
@@ -57,10 +45,11 @@ public class Events {
 
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND && Permissions.check(player, "armorstandeditor.useDisguised", 2)) {
                         Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), 1, entity);
+                        return ActionResult.SUCCESS;
                     } else if (entity instanceof ArmorStandEntity) {
                         Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
+                        return ActionResult.SUCCESS;
                     }
-                    return ActionResult.SUCCESS;
                 }
 
                 return ActionResult.PASS;
@@ -79,11 +68,11 @@ public class Events {
 
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND) {
                         Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), -1, entity);
+                        return ActionResult.SUCCESS;
                     } else if (entity instanceof ArmorStandEntity) {
                         Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
+                        return ActionResult.SUCCESS;
                     }
-
-                    return ActionResult.SUCCESS;
                 }
 
                 return ActionResult.PASS;
@@ -97,7 +86,9 @@ public class Events {
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+
                     Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
+
                     return ActionResult.SUCCESS;
                 }
 
@@ -121,7 +112,6 @@ public class Events {
         }
 
 
-
         UseItemCallback.EVENT.register((PlayerEntity player, World world, Hand hand) -> {
             Config config = ConfigManager.getConfig();
             ItemStack itemStack = player.getMainHandStack();
@@ -129,11 +119,28 @@ public class Events {
                     && itemStack.getItem() == config.armorStandTool
                     && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                     && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
-                Events.openGui((ServerPlayerEntity) player);
+                EditorGuis.openGui((ServerPlayerEntity) player);
                 return TypedActionResult.success(player.getMainHandStack());
             }
 
             return TypedActionResult.pass(player.getMainHandStack());
+        });
+
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            Config config = ConfigManager.getConfig();
+            ItemStack itemStack = player.getMainHandStack();
+
+            if (entity instanceof ItemFrameEntity
+                    && player instanceof ServerPlayerEntity
+                    && Permissions.check(player, "armorstandeditor.useItemFrame", config.configData.toggleAllPermissionOnByDefault)
+                    && itemStack.getItem() == config.armorStandTool
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+
+                EditorGuis.openItemFrameEditor((ServerPlayerEntity) player, (ItemFrameEntity) entity);
+                return ActionResult.SUCCESS;
+            }
+
+            return ActionResult.PASS;
         });
     }
 
@@ -209,228 +216,61 @@ public class Events {
                 armorStand.setLeftLegRotation(new EulerAngle(0,0,0));
                 armorStand.setRightLegRotation(new EulerAngle(0,0,0));
                 break;
+            case FLIP_POSE:
+                ArmorStandData data = new ArmorStandData(armorStand);
+                armorStand.setHeadRotation(new EulerAngle(data.headRotation.getPitch(),360 - data.headRotation.getYaw(),360 - data.headRotation.getRoll()));
+                armorStand.setBodyRotation(new EulerAngle(data.bodyRotation.getPitch(),360 - data.bodyRotation.getYaw(),360 - data.bodyRotation.getRoll()));
+                armorStand.setRightArmRotation(new EulerAngle(data.leftArmRotation.getPitch(),360 - data.leftArmRotation.getYaw(),360 - data.leftArmRotation.getRoll()));
+                armorStand.setLeftArmRotation(new EulerAngle(data.rightArmRotation.getPitch(),360 - data.rightArmRotation.getYaw(),360 - data.rightArmRotation.getRoll()));
+                armorStand.setRightLegRotation(new EulerAngle(data.leftLegRotation.getPitch(),360 - data.leftLegRotation.getYaw(),360 - data.leftLegRotation.getRoll()));
+                armorStand.setLeftLegRotation(new EulerAngle(data.rightLegRotation.getPitch(),360 - data.rightLegRotation.getYaw(),360 - data.rightLegRotation.getRoll()));
+
+                break;
             case COPY:
-                ArmorStandEntity temp = new ArmorStandEntity(armorStand.world, 0, 0, 0);
-                temp.copyFrom(armorStand);
-                spei.setArmorStandEditorRefData(temp);
+                spei.setArmorStandEditorData(new ArmorStandData(armorStand));
                 spei.setArmorStandEditorAction(EditorActions.PASTE);
                 player.sendMessage(new TranslatableText("armorstandeditor.message.copied"), true);
                 break;
             case PASTE:
-                if (spei.getArmorStandEditorRefData() != null) {
-                    ArmorStandEntity base = spei.getArmorStandEditorRefData();
-                    ArmorStandEntityAccessor base2 = (ArmorStandEntityAccessor) base;
-                    armorStand.setYaw(base.yaw);
-                    armorStand.updatePositionAndAngles(posX, posY, posZ, base.yaw, 0);
-                    armorStand.setNoGravity(base.hasNoGravity());
-                    asea.callSetHideBasePlate(base.shouldHideBasePlate());
-                    asea.callSetSmall(base.isSmall());
-                    asea.callSetShowArms(base.shouldShowArms());
-                    armorStand.setInvisible(base.isInvisible());
-                    armorStand.setHeadRotation(base.getHeadRotation());
-                    armorStand.setBodyRotation(base.getBodyRotation());
-                    armorStand.setLeftArmRotation(base2.getLeftArmRotation());
-                    armorStand.setRightArmRotation(base2.getRightArmRotation());
-                    armorStand.setLeftLegRotation(base2.getLeftLegRotation());
-                    armorStand.setRightLegRotation(base2.getRightLegRotation());
+                if (spei.getArmorStandEditorData() != null) {
+                    ArmorStandData base = spei.getArmorStandEditorData();
+                    base.apply(armorStand, player.isCreative());
 
-                    Entity nameTarget = realEntity != null ? realEntity : armorStand;
-
-                    nameTarget.setCustomNameVisible(base.isCustomNameVisible());
-                    nameTarget.setCustomName(base.getCustomName());
-
-                    if (player.isCreative()) {
-                        LivingEntity armorTarget;
-                        if (realEntity != null && realEntity instanceof LivingEntity) {
-                            armorTarget = (LivingEntity) realEntity;
-                        } else {
-                            armorTarget = armorStand;
+                    if (realEntity != null) {
+                        realEntity.setCustomNameVisible(base.customNameVisible);
+                        if (base.customName != null) {
+                            realEntity.setCustomName(base.customName);
                         }
 
-                        armorTarget.equipStack(EquipmentSlot.HEAD, base.getEquippedStack(EquipmentSlot.HEAD));
-                        armorTarget.equipStack(EquipmentSlot.CHEST, base.getEquippedStack(EquipmentSlot.CHEST));
-                        armorTarget.equipStack(EquipmentSlot.LEGS, base.getEquippedStack(EquipmentSlot.LEGS));
-                        armorTarget.equipStack(EquipmentSlot.FEET, base.getEquippedStack(EquipmentSlot.FEET));
-                        armorTarget.equipStack(EquipmentSlot.MAINHAND, base.getEquippedStack(EquipmentSlot.MAINHAND));
-                        armorTarget.equipStack(EquipmentSlot.OFFHAND, base.getEquippedStack(EquipmentSlot.OFFHAND));
+                        if (player.isCreative() && realEntity instanceof LivingEntity) {
+                            realEntity.equipStack(EquipmentSlot.HEAD, base.headItem);
+                            realEntity.equipStack(EquipmentSlot.CHEST, base.chestItem);
+                            realEntity.equipStack(EquipmentSlot.LEGS, base.legsItem);
+                            realEntity.equipStack(EquipmentSlot.FEET, base.feetItem);
+                            realEntity.equipStack(EquipmentSlot.MAINHAND, base.mainHandItem);
+                            realEntity.equipStack(EquipmentSlot.OFFHAND, base.offhandItem);
+                        }
                     }
-                    player.sendMessage(new TranslatableText("armorstandeditor.message.pasted"), true);
-                } else {
 
+                    player.sendMessage(new TranslatableText("armorstandeditor.message.pasted"), true);
                 }
                 break;
             case INVENTORY:
-                if (realEntity != null && realEntity instanceof LivingEntity) {
-                    openInventoryEditor(player, (LivingEntity) realEntity);
+                if (realEntity instanceof LivingEntity) {
+                    EditorGuis.openInventoryEditor(player, (LivingEntity) realEntity);
                 } else {
-                    openInventoryEditor(player, armorStand);
+                    EditorGuis.openInventoryEditor(player, armorStand);
                 }
                 break;
             case RENAME:
                 Entity nameTarget = realEntity != null ? realEntity : armorStand;
 
-                openRenaming(player, nameTarget);
+                EditorGuis.openRenaming(player, nameTarget);
                 break;
         }
 
         if (realEntity != null) {
             ((EntityDisguise) realEntity).disguiseAs(armorStand);
         }
-    }
-
-    public static void openRenaming(ServerPlayerEntity player, Entity entity) {
-        ItemStack stack = Items.MAGMA_CREAM.getDefaultStack();
-        stack.setCustomName(new TranslatableText("armorstandeditor.gui.clearname").setStyle(Style.EMPTY.withItalic(false)));
-
-        ItemStack stack2 = Items.SLIME_BALL.getDefaultStack();
-        stack2.setCustomName(new TranslatableText("armorstandeditor.gui.setname").setStyle(Style.EMPTY.withItalic(false)));
-
-        AnvilInputGui gui = new AnvilInputGui(player, false) {
-            @Override
-            public void onInput(String input) {
-                super.onInput(input);
-                stack2.setCustomName(new TranslatableText("armorstandeditor.gui.setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
-                this.setSlot(2, stack2, (index, type, action) -> {
-                    entity.setCustomName(new LiteralText(this.getInput()));
-                    entity.setCustomNameVisible(true);
-                    this.close(false);
-                });
-            }
-        };
-
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.rename_title"));
-        gui.setDefaultInputValue(entity.getCustomName() != null ? entity.getCustomName().getString() : "");
-
-
-        gui.setSlot(1, stack, (index, type, action) -> {
-            entity.setCustomName(new LiteralText(""));
-            entity.setCustomNameVisible(false);
-            gui.close(false);
-        });
-
-        gui.setSlot(2, stack2, (index, type, action) -> {
-            entity.setCustomName(new LiteralText(gui.getInput()));
-            entity.setCustomNameVisible(true);
-            gui.close(false);
-        });
-
-        gui.open();
-    }
-
-    public static void openInventoryEditor(ServerPlayerEntity player, LivingEntity entity) {
-        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
-
-        ArmorStandInventory inventory = new ArmorStandInventory(entity);
-
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.inventory_title"));
-        for (int x = 0; x < inventory.size(); x++) {
-            gui.setSlotRedirect(x, new Slot(inventory, x, 0, 0));
-        }
-
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")).build();
-
-        gui.setSlot(6, empty);
-        gui.setSlot(7, empty);
-
-        gui.setSlot(8, new GuiElementBuilder(Items.BARRIER)
-                .setName(new TranslatableText("armorstandeditor.gui.close").setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback(((index, type, action) -> {gui.close();}))
-        );
-
-        gui.open();
-    }
-
-    public static void openGui(ServerPlayerEntity player) {
-        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X5, player, false) {
-            @Override
-            public boolean onClick(int index, ClickType type, SlotActionType action, GuiElementInterface element) {
-                setIcons(player, this);
-                return super.onClick(index, type, action, element);
-            }
-        };
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.editor_title"));
-        setIcons(player, gui);
-        gui.open();
-    }
-
-    private static void setIcons(ServerPlayerEntity player, SimpleGui gui) {
-        createIcon(player, gui, 0, Items.RED_WOOL, "x", 0);
-        createIcon(player, gui, 1, Items.GREEN_WOOL, "y", 1);
-        createIcon(player, gui, 2, Items.BLUE_WOOL, "z", 2);
-
-        createIcon(player, gui, 6, Items.IRON_NUGGET, "small", 0.01f);
-        createIcon(player, gui, 7, Items.IRON_INGOT, "medium", 0.1f);
-        createIcon(player, gui, 8, Items.IRON_BLOCK, "big", 1f);
-
-        createIcon(player, gui, 9, Items.MINECART, "move", EditorActions.MOVE);
-        createIcon(player, gui, 10, Items.COMPASS, "rotate", EditorActions.ROTATE);
-        createIcon(player, gui, 24, Items.PUFFERFISH, "size", EditorActions.TOGGLE_SIZE);
-        createIcon(player, gui, 25, Items.APPLE, "gravity", EditorActions.TOGGLE_GRAVITY);
-        createIcon(player, gui, 26, Items.GLASS, "visibility", EditorActions.TOGGLE_VISIBILITY);
-        createIcon(player, gui, 34, Items.STICK, "arms", EditorActions.TOGGLE_ARMS);
-        createIcon(player, gui, 35, Items.STONE_SLAB, "base", EditorActions.TOGGLE_BASE);
-
-        createIcon(player, gui, 19, Items.LEATHER_HELMET, "head", EditorActions.MODIFY_HEAD);
-        createIcon(player, gui, 27, Items.STICK, "left_arm", EditorActions.MODIFY_LEFT_ARM);
-        createIcon(player, gui, 28, Items.LEATHER_CHESTPLATE, "body", EditorActions.MODIFY_BODY);
-        createIcon(player, gui, 29, Items.STICK, "right_arm", EditorActions.MODIFY_RIGHT_ARM);
-        createIcon(player, gui, 30, Items.LEVER, "reset_pose", EditorActions.RESET_POSE);
-
-        createIcon(player, gui, 36, Items.LEATHER_BOOTS, "left_leg", EditorActions.MODIFY_LEFT_LEG);
-        createIcon(player, gui, 37, Items.CHEST, "inventory", EditorActions.INVENTORY);
-        createIcon(player, gui, 38, Items.LEATHER_BOOTS, "right_leg", EditorActions.MODIFY_RIGHT_LEG);
-        createIcon(player, gui, 39, Items.NAME_TAG, "rename", EditorActions.RENAME);
-
-        createIcon(player, gui, 43, Items.SLIME_BALL, "copy", EditorActions.COPY);
-        createIcon(player, gui, 44, Items.MAGMA_CREAM, "paste", EditorActions.PASTE);
-    }
-
-    private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, int xyz) {
-        ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-
-        if (((SPEInterface) player).getArmorStandEditorXYZ() == xyz) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
-        }
-
-        gui.setSlot(index, itemStack, (index2, type, actionType) -> {
-            ((SPEInterface) player).setArmorStandEditorXYZ(xyz);
-        });
-    }
-
-    private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, EditorActions action) {
-        if (!Permissions.check(player, "armorstandeditor" + action.permission, ConfigManager.getConfig().configData.toggleAllPermissionOnByDefault)) {
-            return;
-        }
-
-        ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-
-        if (((SPEInterface) player).getArmorStandEditorAction() == action) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
-        }
-
-        gui.setSlot(index, itemStack, (index2, type, actionType) -> {
-            ((SPEInterface) player).setArmorStandEditorAction(action);
-        });
-    }
-
-    private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, float power) {
-        ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-
-        if (((SPEInterface) player).getArmorStandEditorPower() == power) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
-        }
-
-        gui.setSlot(index, itemStack, (index2, type, actionType) -> {
-            ((SPEInterface) player).setArmorStandEditorPower(power);
-        });
     }
 }

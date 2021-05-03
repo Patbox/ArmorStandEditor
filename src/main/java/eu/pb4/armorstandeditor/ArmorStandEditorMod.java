@@ -1,7 +1,7 @@
 package eu.pb4.armorstandeditor;
 
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import eu.pb4.armorstandeditor.other.GeneralCommands;
+import eu.pb4.armorstandeditor.helpers.GeneralCommands;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;

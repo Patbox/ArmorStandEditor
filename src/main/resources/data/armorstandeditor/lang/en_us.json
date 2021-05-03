@@ -5,9 +5,12 @@
   "armorstandeditor.gui.name.y": "Modify Y axis",
   "armorstandeditor.gui.name.z": "Modify Z axis",
 
-  "armorstandeditor.gui.name.small": "Small change size",
-  "armorstandeditor.gui.name.medium": "Medium change size",
-  "armorstandeditor.gui.name.big": "Big change size",
+  "armorstandeditor.gui.name.custom_change": "Custom change",
+
+  "armorstandeditor.gui.name.small": "Small change",
+  "armorstandeditor.gui.name.medium": "Medium change",
+  "armorstandeditor.gui.name.big": "Big change",
+  "armorstandeditor.gui.blocksdeg": "%s blocks / %s deg",
 
   "armorstandeditor.gui.name.move": "Move",
   "armorstandeditor.gui.name.rotate": "Rotate",
@@ -20,7 +23,9 @@
   "armorstandeditor.gui.name.right_leg": "Rotate right leg",
   "armorstandeditor.gui.name.inventory": "Open inventory",
   "armorstandeditor.gui.name.rename": "Rename",
+
   "armorstandeditor.gui.name.reset_pose": "Reset pose",
+  "armorstandeditor.gui.name.flip_pose": "Flip pose",
 
   "armorstandeditor.gui.name.size": "Toggle size",
   "armorstandeditor.gui.name.gravity": "Toggle gravity",
@@ -30,6 +35,7 @@
 
   "armorstandeditor.gui.name.copy": "Copy",
   "armorstandeditor.gui.name.paste": "Paste",
+  "armorstandeditor.gui.name.presets": "Presets",
 
   "armorstandeditor.gui.inventory_title": "Armor Stand Inventory",
 
@@ -40,8 +46,25 @@
   "armorstandeditor.gui.setname": "Change name to: %s",
   "armorstandeditor.gui.close": "Close",
 
+  "armorstandeditor.gui.cantlockslots": "You can't lock slots of this entity!",
+
+  "armorstandeditor.gui.preset-author": "Created by: %s",
+  "armorstandeditor.gui.presets_title": "Armor Stand Presets",
+
   "armorstandeditor.message.copied": "Armor stand copied! Changed to Paste mode",
   "armorstandeditor.message.pasted": "Changed armor stand to use stored values",
 
-  "armorstandeditor.command.give": "Given Armor Stand Editor tool to %s"
+  "armorstandeditor.command.give": "Given Armor Stand Editor tool to %s",
+
+  "armorstandeditor.command.save-preset.success": "Preset %s (%s) saved successfully!",
+  "armorstandeditor.command.save-preset.fail": "You need to copy an Armor Stand first!",
+  "armorstandeditor.command.invalid-id": "Provided id (%s) contains invalid characters! Only valid characters are lowercase letters from a-z, numbers from 0 to 9 and _!",
+
+  "armorstandeditor.command.delete-preset.success": "Preset %s deleted successfully!",
+  "armorstandeditor.command.delete-preset.fail": "Couldn't delete preset %s!",
+
+  "armorstandeditor.gui.name.if-fixed": "Fixed: %s",
+  "armorstandeditor.gui.name.if-invisible": "Invisible: %s",
+  "armorstandeditor.gui.name.if-rotate": "Rotation: %s",
+  "armorstandeditor.gui.item_frame_title": "Item Frame Editor"
 }

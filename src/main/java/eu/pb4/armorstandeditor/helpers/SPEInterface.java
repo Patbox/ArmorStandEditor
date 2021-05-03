@@ -1,8 +1,6 @@
-package eu.pb4.armorstandeditor.other;
-
+package eu.pb4.armorstandeditor.helpers;
 
 import eu.pb4.armorstandeditor.EditorActions;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 
 public interface SPEInterface {
     EditorActions getArmorStandEditorAction();
@@ -11,6 +9,6 @@ public interface SPEInterface {
     void setArmorStandEditorPower(float power);
     int getArmorStandEditorXYZ();
     void setArmorStandEditorXYZ(int xyz);
-    ArmorStandEntity getArmorStandEditorRefData();
-    void setArmorStandEditorRefData(ArmorStandEntity entity);
+    ArmorStandData getArmorStandEditorData();
+    void setArmorStandEditorData(ArmorStandData data);
 }
