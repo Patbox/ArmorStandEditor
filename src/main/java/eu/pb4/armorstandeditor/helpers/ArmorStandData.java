@@ -38,7 +38,7 @@ public class ArmorStandData {
 
     public void copyFrom(ArmorStandEntity armorStand) {
         ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) armorStand;
-        this.yaw = armorStand.yaw;
+        this.yaw = armorStand.getYaw();
         this.noGravity = armorStand.hasNoGravity();
         this.hidePlate = armorStand.shouldHideBasePlate();
         this.small = armorStand.isSmall();
@@ -46,10 +46,10 @@ public class ArmorStandData {
         this.invisible = armorStand.isInvisible();
         this.headRotation = armorStand.getHeadRotation();
         this.bodyRotation = armorStand.getBodyRotation();
-        this.leftArmRotation = asea.getLeftArmRotation();
-        this.rightArmRotation = asea.getRightArmRotation();
-        this.leftLegRotation = asea.getLeftLegRotation();
-        this.rightLegRotation = asea.getRightLegRotation();
+        this.leftArmRotation = armorStand.getLeftArmRotation();
+        this.rightArmRotation = armorStand.getRightArmRotation();
+        this.leftLegRotation = armorStand.getLeftLegRotation();
+        this.rightLegRotation = armorStand.getRightLegRotation();
 
         this.customNameVisible = armorStand.isCustomNameVisible() && armorStand.hasCustomName();
         if (armorStand.getCustomName() != null) {

@@ -16,6 +16,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -75,9 +76,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements SP
                 tickTimer++;
                 if (tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
                     tickTimer = 0;
-                    List<ArmorStandEntity> armorStands = this.world.getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), null);
+                    List<ArmorStandEntity> armorStands = this.world.getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
-                    ParticleEffect particleEffect = new DustParticleEffect(0.8f, 0.2f, 0.2f, 1f);
+                    ParticleEffect particleEffect = new DustParticleEffect(new Vec3f(0.8f, 0.2f, 0.2f), 1f);
 
                     for (ArmorStandEntity armorStand : armorStands) {
                         this.networkHandler.sendPacket(new ParticleS2CPacket(particleEffect,
@@ -88,9 +89,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements SP
                                 0.2f, 0.2f, 0.2f, 0.1f, 3));
                     }
 
-                    List<ItemFrameEntity> itemFrames = this.world.getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), null);
+                    List<ItemFrameEntity> itemFrames = this.world.getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
-                    ParticleEffect particleEffect2 = new DustParticleEffect(0.2f, 0.8f, 0.2f, 1f);
+                    ParticleEffect particleEffect2 = new DustParticleEffect(new Vec3f(0.2f, 0.8f, 0.2f), 1f);
 
                     for (ItemFrameEntity itemFrame : itemFrames) {
                         this.networkHandler.sendPacket(new ParticleS2CPacket(particleEffect2,

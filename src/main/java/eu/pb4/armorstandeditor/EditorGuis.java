@@ -2,7 +2,6 @@ package eu.pb4.armorstandeditor;
 
 import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import eu.pb4.armorstandeditor.helpers.ArmorStandData;
 import eu.pb4.armorstandeditor.helpers.ItemFrameInventory;
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import eu.pb4.armorstandeditor.helpers.ArmorStandInventory;
@@ -21,12 +20,11 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
@@ -38,10 +36,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class EditorGuis {
     public static void openRenaming(ServerPlayerEntity player, Entity entity) {
@@ -203,6 +199,7 @@ public class EditorGuis {
 
         gui.setSlot(42, new GuiElementBuilder(Items.MOJANG_BANNER_PATTERN)
                 .setName(new TranslatableText("armorstandeditor.gui.name.presets").setStyle(Style.EMPTY.withItalic(false)))
+                .hideFlags()
                 .setCallback((x, y, z) -> openPresetSelector(player)));
     }
 
@@ -244,8 +241,8 @@ public class EditorGuis {
         ItemStack itemStack = item.getDefaultStack();
         itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
 
-        ListTag lore = new ListTag();
-        lore.add(StringTag.of(Text.Serializer.toJson(
+        NbtList lore = new NbtList();
+        lore.add(NbtString.of(Text.Serializer.toJson(
                 new TranslatableText("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
 
@@ -270,8 +267,8 @@ public class EditorGuis {
         SPEInterface spe = (SPEInterface) player;
         float power = spe.getArmorStandEditorPower();
 
-        ListTag lore = new ListTag();
-        lore.add(StringTag.of(Text.Serializer.toJson(
+        NbtList lore = new NbtList();
+        lore.add(NbtString.of(Text.Serializer.toJson(
                 new TranslatableText("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
         itemStack.getOrCreateTag().getCompound("display").put("Lore", lore);
@@ -356,6 +353,12 @@ public class EditorGuis {
 
                             this.onUpdate(false);
                         }));
+            }
+
+            @Override
+            public void onClose() {
+                super.onClose();
+                EditorGuis.openGui(this.player);
             }
         };
         gui.setTitle(new TranslatableText("armorstandeditor.gui.presets_title"));

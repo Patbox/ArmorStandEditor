@@ -10,11 +10,17 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.List;
 
-public class ArmorStandInventory implements Inventory {
-    private final LivingEntity entity;
+public record ArmorStandInventory(LivingEntity entity) implements Inventory {
 
-    public ArmorStandInventory(LivingEntity entity) {
-        this.entity = entity;
+    public static EquipmentSlot getEquipmentSlot(int index) {
+        return switch (index) {
+            case 1 -> EquipmentSlot.CHEST;
+            case 2 -> EquipmentSlot.LEGS;
+            case 3 -> EquipmentSlot.FEET;
+            case 4 -> EquipmentSlot.MAINHAND;
+            case 5 -> EquipmentSlot.OFFHAND;
+            default -> EquipmentSlot.HEAD;
+        };
     }
 
     @Override
@@ -36,35 +42,7 @@ public class ArmorStandInventory implements Inventory {
                 entity.getEquippedStack(EquipmentSlot.FEET),
                 entity.getEquippedStack(EquipmentSlot.MAINHAND),
                 entity.getEquippedStack(EquipmentSlot.OFFHAND)
-                );
-    }
-
-    public static EquipmentSlot getEquipmentSlot(int index) {
-        EquipmentSlot slot;
-        switch (index) {
-            case 0:
-                slot = EquipmentSlot.HEAD;
-                break;
-            case 1:
-                slot = EquipmentSlot.CHEST;
-                break;
-            case 2:
-                slot = EquipmentSlot.LEGS;
-                break;
-            case 3:
-                slot = EquipmentSlot.FEET;
-                break;
-            case 4:
-                slot = EquipmentSlot.MAINHAND;
-                break;
-            case 5:
-                slot = EquipmentSlot.OFFHAND;
-                break;
-            default:
-                slot = EquipmentSlot.HEAD;
-        }
-
-        return slot;
+        );
     }
 
     @Override
@@ -88,7 +66,7 @@ public class ArmorStandInventory implements Inventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        this.entity.equipStack(this.getEquipmentSlot(slot), stack);
+        this.entity.equipStack(getEquipmentSlot(slot), stack);
     }
 
     @Override

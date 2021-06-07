@@ -166,8 +166,8 @@ public class Events {
                 armorStand.teleport(posX + dX * power * val, posY + dY * power * val, posZ + dZ * power * val);
                 break;
             case ROTATE:
-                armorStand.setYaw(armorStand.getYaw(1.0F) + angleChange);
-                armorStand.updatePositionAndAngles(posX, posY, posZ, armorStand.getYaw(1.0F), 0);
+                armorStand.setYaw(armorStand.getYaw() + angleChange);
+                armorStand.updatePositionAndAngles(posX, posY, posZ, armorStand.getYaw(), 0);
                 break;
             case TOGGLE_GRAVITY:
                 armorStand.setNoGravity(!armorStand.hasNoGravity());
@@ -193,19 +193,19 @@ public class Events {
                 armorStand.setBodyRotation(new EulerAngle(angle.getPitch() + dX * angleChange, angle.getYaw() + dY * angleChange, angle.getRoll() + dZ * angleChange));
                 break;
             case MODIFY_LEFT_ARM:
-                angle = asea.getLeftArmRotation();
+                angle = armorStand.getLeftArmRotation();
                 armorStand.setLeftArmRotation(new EulerAngle(angle.getPitch() + dX * angleChange, angle.getYaw() + dY * angleChange, angle.getRoll() + dZ * angleChange));
                 break;
             case MODIFY_RIGHT_ARM:
-                angle = asea.getRightArmRotation();
+                angle = armorStand.getRightArmRotation();
                 armorStand.setRightArmRotation(new EulerAngle(angle.getPitch() + dX * angleChange, angle.getYaw() + dY * angleChange, angle.getRoll() + dZ * angleChange));
                 break;
             case MODIFY_LEFT_LEG:
-                angle = asea.getLeftLegRotation();
+                angle = armorStand.getLeftLegRotation();
                 armorStand.setLeftLegRotation(new EulerAngle(angle.getPitch() + dX * angleChange, angle.getYaw() + dY * angleChange, angle.getRoll() + dZ * angleChange));
                 break;
             case MODIFY_RIGHT_LEG:
-                angle = asea.getRightLegRotation();
+                angle = armorStand.getRightLegRotation();
                 armorStand.setRightLegRotation(new EulerAngle(angle.getPitch() + dX * angleChange, angle.getYaw() + dY * angleChange, angle.getRoll() + dZ * angleChange));
                 break;
             case RESET_POSE:

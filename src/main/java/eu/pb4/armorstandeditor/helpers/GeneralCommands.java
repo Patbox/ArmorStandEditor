@@ -140,7 +140,7 @@ public class GeneralCommands {
         EntitySelector entitySelector = context.getArgument("targets", EntitySelector.class);
 
         for (ServerPlayerEntity player : entitySelector.getPlayers(context.getSource())) {
-            player.inventory.offerOrDrop(player.world, itemStack);
+            player.getInventory().offerOrDrop(itemStack);
             context.getSource().sendFeedback(new TranslatableText("armorstandeditor.command.give", player.getDisplayName()), true);
         }
 

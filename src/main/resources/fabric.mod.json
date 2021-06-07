@@ -28,7 +28,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.16.x",
-    "sgui": ">=0.3.0"
+    "minecraft": "1.17.x",
+    "sgui": ">=1.0.0-rc1"
   }
 }
