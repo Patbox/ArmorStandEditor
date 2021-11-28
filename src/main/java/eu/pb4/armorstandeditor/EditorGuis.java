@@ -246,7 +246,7 @@ public class EditorGuis {
                 new TranslatableText("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
 
-        itemStack.getOrCreateTag().getCompound("display").put("Lore", lore);
+        itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
 
         itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
         itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
@@ -271,7 +271,7 @@ public class EditorGuis {
         lore.add(NbtString.of(Text.Serializer.toJson(
                 new TranslatableText("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
-        itemStack.getOrCreateTag().getCompound("display").put("Lore", lore);
+        itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
 
         itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
         itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);

@@ -136,7 +136,7 @@ public class GeneralCommands {
 
     private static int giveTool(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ItemStack itemStack = ConfigManager.getConfig().armorStandTool.getDefaultStack();
-        itemStack.getOrCreateTag().putBoolean("isArmorStandEditor", true);
+        itemStack.getOrCreateNbt().putBoolean("isArmorStandEditor", true);
         EntitySelector entitySelector = context.getArgument("targets", EntitySelector.class);
 
         for (ServerPlayerEntity player : entitySelector.getPlayers(context.getSource())) {

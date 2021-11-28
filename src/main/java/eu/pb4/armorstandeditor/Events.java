@@ -39,7 +39,7 @@ public class Events {
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
 
                     EntityDisguise disguise = (EntityDisguise) entity;
 
@@ -62,7 +62,7 @@ public class Events {
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
 
                     EntityDisguise disguise = (EntityDisguise) entity;
 
@@ -85,7 +85,7 @@ public class Events {
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
 
                     Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
 
@@ -102,7 +102,7 @@ public class Events {
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
                     Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
                     return ActionResult.SUCCESS;
                 }
@@ -118,7 +118,7 @@ public class Events {
             if (player instanceof ServerPlayerEntity
                     && itemStack.getItem() == config.armorStandTool
                     && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
-                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
                 EditorGuis.openGui((ServerPlayerEntity) player);
                 return TypedActionResult.success(player.getMainHandStack());
             }
@@ -134,7 +134,7 @@ public class Events {
                     && player instanceof ServerPlayerEntity
                     && Permissions.check(player, "armorstandeditor.useItemFrame", config.configData.toggleAllPermissionOnByDefault)
                     && itemStack.getItem() == config.armorStandTool
-                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateTag().getBoolean("isArmorStandEditor"))) {
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
 
                 EditorGuis.openItemFrameEditor((ServerPlayerEntity) player, (ItemFrameEntity) entity);
                 return ActionResult.SUCCESS;
