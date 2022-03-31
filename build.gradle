@@ -1,11 +1,9 @@
 plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'maven-publish'
-	id "com.modrinth.minotaur" version "1.2.1"
+	id "com.modrinth.minotaur" version "2.+"
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
-import com.modrinth.minotaur.TaskModrinthUpload
-import com.modrinth.minotaur.request.VersionType
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -37,13 +35,13 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
-	modImplementation include("eu.pb4:sgui:1.0.0+1.18.1")
+	modImplementation include("eu.pb4:sgui:1.0.1+1.18.2")
 
 	modImplementation include("fr.catcore:server-translations-api:1.4.9+1.18.2-rc1")
 
 
 	//modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
-	modCompileOnly "com.github.NucleoidMC:DisguiseLib:1.0.1"
+	modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
@@ -112,7 +110,7 @@ curseforge {
 			releaseType = "release"
 			changelog = System.getenv("CHANGELOG")
 			changelogType = "markdown"
-			addGameVersion ((String) project.minecraft_version)
+			addGameVersion((String) project.minecraft_version)
 			addGameVersion "Fabric"
 			mainArtifact(remapJar)
 
@@ -120,30 +118,26 @@ curseforge {
 				uploadTask.dependsOn("remapJar")
 			}
 		}
-	}
-
-	options {
-		forgeGradleIntegration = false
+		remapJar {
+			finalizedBy project.tasks.curseforge
+		}
 	}
 }
 
-task publishModrinth (type: TaskModrinthUpload){
-	onlyIf {
-		System.getenv("MODRINTH")
+if (System.getenv("MODRINTH")) {
+	modrinth {
+		token = System.getenv("MODRINTH")
+		projectId = 'Ef9ZREBZ'
+		versionNumber = version
+		versionType = "release"
+		changelog = System.getenv("CHANGELOG")
+		// On fabric, use 'remapJar' instead of 'jar'
+		uploadFile = remapJar
+		gameVersions = [((String) project.minecraft_version)]
+		loaders = ["fabric"]
 	}
 
-	token = System.getenv("MODRINTH")
-	projectId = 'Ef9ZREBZ'
-	versionNumber = version
-	versionType = VersionType.RELEASE
-	changelog = System.getenv("CHANGELOG")
-	// On fabric, use 'remapJar' instead of 'jar'
-	uploadFile = remapJar
-	addGameVersion((String) project.minecraft_version)
-	addLoader('fabric')
-}
-
-remapJar {
-	finalizedBy publishModrinth
-	finalizedBy project.tasks.curseforge
+	remapJar {
+		finalizedBy project.tasks.modrinth
+	}
 }

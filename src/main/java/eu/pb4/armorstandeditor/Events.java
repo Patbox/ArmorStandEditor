@@ -25,8 +25,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
-
-import xyz.nucleoid.disguiselib.casts.EntityDisguise;
+import xyz.nucleoid.disguiselib.api.EntityDisguise;
 
 public class Events {
     public static void registerEvents() {
@@ -35,14 +34,11 @@ public class Events {
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
 
-                if (entity instanceof EntityDisguise
+                if (entity instanceof EntityDisguise disguise
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
-
-                    EntityDisguise disguise = (EntityDisguise) entity;
-
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND && Permissions.check(player, "armorstandeditor.useDisguised", 2)) {
                         Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), 1, entity);
                         return ActionResult.SUCCESS;
@@ -58,14 +54,11 @@ public class Events {
             UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
-                if (entity instanceof EntityDisguise
+                if (entity instanceof EntityDisguise disguise
                         && player instanceof ServerPlayerEntity
                         && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
-
-                    EntityDisguise disguise = (EntityDisguise) entity;
-
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND) {
                         Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), -1, entity);
                         return ActionResult.SUCCESS;
