@@ -29,10 +29,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
@@ -42,36 +40,36 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EditorGuis {
     public static void openRenaming(ServerPlayerEntity player, Entity entity) {
         ItemStack stack = Items.MAGMA_CREAM.getDefaultStack();
-        stack.setCustomName(new TranslatableText("armorstandeditor.gui.clearname").setStyle(Style.EMPTY.withItalic(false)));
+        stack.setCustomName(Text.translatable("armorstandeditor.gui.clearname").setStyle(Style.EMPTY.withItalic(false)));
 
         ItemStack stack2 = Items.SLIME_BALL.getDefaultStack();
-        stack2.setCustomName(new TranslatableText("armorstandeditor.gui.setname").setStyle(Style.EMPTY.withItalic(false)));
+        stack2.setCustomName(Text.translatable("armorstandeditor.gui.setname").setStyle(Style.EMPTY.withItalic(false)));
 
         AnvilInputGui gui = new AnvilInputGui(player, false) {
             @Override
             public void onInput(String input) {
                 super.onInput(input);
-                stack2.setCustomName(new TranslatableText("armorstandeditor.gui.setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
+                stack2.setCustomName(Text.translatable("armorstandeditor.gui.setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
                 this.setSlot(2, stack2, (index, type, action) -> {
-                    entity.setCustomName(new LiteralText(this.getInput()));
+                    entity.setCustomName(Text.literal(this.getInput()));
                     entity.setCustomNameVisible(true);
                     this.close(false);
                 });
             }
         };
 
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.rename_title"));
+        gui.setTitle(Text.translatable("armorstandeditor.gui.rename_title"));
         gui.setDefaultInputValue(entity.getCustomName() != null ? entity.getCustomName().getString() : "");
 
 
         gui.setSlot(1, stack, (index, type, action) -> {
-            entity.setCustomName(new LiteralText(""));
+            entity.setCustomName(Text.literal(""));
             entity.setCustomNameVisible(false);
             gui.close(false);
         });
 
         gui.setSlot(2, stack2, (index, type, action) -> {
-            entity.setCustomName(new LiteralText(gui.getInput()));
+            entity.setCustomName(Text.literal(gui.getInput()));
             entity.setCustomNameVisible(true);
             gui.close(false);
         });
@@ -88,7 +86,7 @@ public class EditorGuis {
 
         ArmorStandInventory inventory = new ArmorStandInventory(entity);
 
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.inventory_title"));
+        gui.setTitle(Text.translatable("armorstandeditor.gui.inventory_title"));
         for (int x = 0; x < inventory.size(); x++) {
             gui.setSlotRedirect(x, new Slot(inventory, x, 0, 0));
             if (entity instanceof ArmorStandEntity) {
@@ -96,7 +94,7 @@ public class EditorGuis {
                 ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) ae;
                 boolean isUnlocked = isSlotUnlocked(ae, ArmorStandInventory.getEquipmentSlot(x));
                 gui.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                        .setName(new TranslatableText(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                        .setName(Text.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                 .setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             EquipmentSlot slot = ArmorStandInventory.getEquipmentSlot(index - 9);
@@ -121,7 +119,7 @@ public class EditorGuis {
 
                             ItemStack stack = new ItemStack(isUnlocked2 ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                            stack.setCustomName(new TranslatableText(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                            stack.setCustomName(Text.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                     .setStyle(Style.EMPTY.withItalic(false)));
 
                             ((GuiElement) gui.getSlot(index)).setItemStack(stack);
@@ -129,12 +127,12 @@ public class EditorGuis {
                 );
             } else {
                 gui.setSlot(x + 9, new GuiElementBuilder(Items.RED_STAINED_GLASS_PANE)
-                        .setName(new TranslatableText("armorstandeditor.gui.cantlockslots")
+                        .setName(Text.translatable("armorstandeditor.gui.cantlockslots")
                                 .setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.RED))));
             }
         }
 
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")).build();
+        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")).build();
 
         gui.setSlot(6, empty);
         gui.setSlot(7, empty);
@@ -143,7 +141,7 @@ public class EditorGuis {
         gui.setSlot(15, empty);
         gui.setSlot(16, empty);
         gui.setSlot(17, new GuiElementBuilder(Items.BARRIER)
-                .setName(new TranslatableText("armorstandeditor.gui.close").setStyle(Style.EMPTY.withItalic(false)))
+                .setName(Text.translatable("armorstandeditor.gui.close").setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback(((index, type, action) -> {gui.close();}))
         );
 
@@ -158,7 +156,7 @@ public class EditorGuis {
                 return super.onClick(index, type, action, element);
             }
         };
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.editor_title"));
+        gui.setTitle(Text.translatable("armorstandeditor.gui.editor_title"));
         setIcons(player, gui);
         gui.open();
     }
@@ -198,14 +196,14 @@ public class EditorGuis {
         createIcon(player, gui, 44, Items.MAGMA_CREAM, "paste", EditorActions.PASTE);
 
         gui.setSlot(42, new GuiElementBuilder(Items.MOJANG_BANNER_PATTERN)
-                .setName(new TranslatableText("armorstandeditor.gui.name.presets").setStyle(Style.EMPTY.withItalic(false)))
+                .setName(Text.translatable("armorstandeditor.gui.name.presets").setStyle(Style.EMPTY.withItalic(false)))
                 .hideFlags()
                 .setCallback((x, y, z) -> openPresetSelector(player)));
     }
 
     private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, int xyz) {
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
+        itemStack.setCustomName(Text.translatable("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
         itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
         itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
 
@@ -224,7 +222,7 @@ public class EditorGuis {
         }
 
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
+        itemStack.setCustomName(Text.translatable("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
         itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
         itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
 
@@ -239,11 +237,11 @@ public class EditorGuis {
 
     private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, float power) {
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
+        itemStack.setCustomName(Text.translatable("armorstandeditor.gui.name." + text).setStyle(Style.EMPTY.withItalic(false)));
 
         NbtList lore = new NbtList();
         lore.add(NbtString.of(Text.Serializer.toJson(
-                new TranslatableText("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
+                Text.translatable("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
 
         itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
@@ -262,14 +260,14 @@ public class EditorGuis {
 
     private static void createIconCustomPower(ServerPlayerEntity player, SimpleGui gui, int index, Item item) {
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(new TranslatableText("armorstandeditor.gui.name.custom_change").setStyle(Style.EMPTY.withItalic(false)));
+        itemStack.setCustomName(Text.translatable("armorstandeditor.gui.name.custom_change").setStyle(Style.EMPTY.withItalic(false)));
 
         SPEInterface spe = (SPEInterface) player;
         float power = spe.getArmorStandEditorPower();
 
         NbtList lore = new NbtList();
         lore.add(NbtString.of(Text.Serializer.toJson(
-                new TranslatableText("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
+                Text.translatable("armorstandeditor.gui.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
         itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
 
@@ -306,7 +304,7 @@ public class EditorGuis {
 
                 if (firstUpdate) {
                     for (int x = 0; x < 9; x++) {
-                        this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")));
+                        this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")));
                     }
                 }
 
@@ -317,26 +315,26 @@ public class EditorGuis {
                         final ArmorStandPreset preset = presets.get(page.get() * 18 + x);
 
                         this.setSlot(x, new GuiElementBuilder(Items.ARMOR_STAND)
-                                .setName(new LiteralText(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GREEN)))
-                                .addLoreLine(new TranslatableText("armorstandeditor.gui.preset-author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY)))
+                                .setName(Text.literal(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GREEN)))
+                                .addLoreLine(Text.translatable("armorstandeditor.gui.preset-author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY)))
 
                                 .setCallback((t1, t2, t3) -> {
                                     ((SPEInterface) this.player).setArmorStandEditorData(preset.asData());
                                     ((SPEInterface) this.player).setArmorStandEditorAction(EditorActions.PASTE);
-                                    player.sendMessage(new TranslatableText("armorstandeditor.message.copied"), true);
+                                    player.sendMessage(Text.translatable("armorstandeditor.message.copied"), true);
                                     this.close();
                                 }));
                     }
                 }
 
                 this.setSlot(this.size - 5, new GuiElementBuilder(Items.BARRIER)
-                        .setName(new TranslatableText("dataPack.validation.back").setStyle(Style.EMPTY.withItalic(false)))
+                        .setName(Text.translatable("dataPack.validation.back").setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             this.close();
                         }));
 
                 this.setSlot(this.size - 8, new GuiElementBuilder(page.get() != 0 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                        .setName(new TranslatableText("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)))
+                        .setName(Text.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             if (page.addAndGet(-1) < 0) {
                                 page.set(0);
@@ -345,7 +343,7 @@ public class EditorGuis {
                             this.onUpdate(false);
                         }));
                 this.setSlot(this.size - 2, new GuiElementBuilder(page.get() != maxPage - 1 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                        .setName(new TranslatableText("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)))
+                        .setName(Text.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             if (page.addAndGet(1) >= maxPage) {
                                 page.set(maxPage - 1);
@@ -361,7 +359,7 @@ public class EditorGuis {
                 EditorGuis.openGui(this.player);
             }
         };
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.presets_title"));
+        gui.setTitle(Text.translatable("armorstandeditor.gui.presets_title"));
 
         gui.open();
     }
@@ -373,15 +371,15 @@ public class EditorGuis {
 
         ItemFrameInventory inventory = new ItemFrameInventory(entity);
 
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")).build();
+        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")).build();
 
-        gui.setTitle(new TranslatableText("armorstandeditor.gui.item_frame_title"));
+        gui.setTitle(Text.translatable("armorstandeditor.gui.item_frame_title"));
 
         gui.setSlotRedirect(0, new Slot(inventory, 0, 0, 0));
         gui.setSlot(1, empty);
 
         gui.setSlot(2, new GuiElementBuilder(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                .setName(new TranslatableText("armorstandeditor.gui.name.if-fixed", ifa.getFixed())
+                .setName(Text.translatable("armorstandeditor.gui.name.if-fixed", ifa.getFixed())
                         .setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback((index, type, action) -> {
 
@@ -389,14 +387,14 @@ public class EditorGuis {
 
                     ItemStack stack = new ItemStack(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                    stack.setCustomName(new TranslatableText("armorstandeditor.gui.name.if-fixed", ifa.getFixed())
+                    stack.setCustomName(Text.translatable("armorstandeditor.gui.name.if-fixed", ifa.getFixed())
                             .setStyle(Style.EMPTY.withItalic(false)));
 
                     ((GuiElement) gui.getSlot(index)).setItemStack(stack);
                 }));
 
         gui.setSlot(3, new GuiElementBuilder(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                .setName(new TranslatableText("armorstandeditor.gui.name.if-invisible", entity.isInvisible())
+                .setName(Text.translatable("armorstandeditor.gui.name.if-invisible", entity.isInvisible())
                         .setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback((index, type, action) -> {
 
@@ -404,14 +402,14 @@ public class EditorGuis {
                     System.out.println(entity.isInvisible());
                     ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                    stack.setCustomName(new TranslatableText("armorstandeditor.gui.name.if-invisible", entity.isInvisible())
+                    stack.setCustomName(Text.translatable("armorstandeditor.gui.name.if-invisible", entity.isInvisible())
                             .setStyle(Style.EMPTY.withItalic(false)));
 
                     ((GuiElement) gui.getSlot(index)).setItemStack(stack);
                 }));
 
         gui.setSlot(4, new GuiElementBuilder(Items.ARROW)
-                .setName(new TranslatableText("armorstandeditor.gui.name.if-rotate", entity.getRotation())
+                .setName(Text.translatable("armorstandeditor.gui.name.if-rotate", entity.getRotation())
                         .setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback((index, type, action) -> {
                     if (type.isLeft || type.isRight) {
@@ -425,7 +423,7 @@ public class EditorGuis {
 
                         ItemStack stack = new ItemStack(Items.ARROW);
 
-                        stack.setCustomName(new TranslatableText("armorstandeditor.gui.name.if-rotate", rotation)
+                        stack.setCustomName(Text.translatable("armorstandeditor.gui.name.if-rotate", rotation)
                                 .setStyle(Style.EMPTY.withItalic(false)));
 
                         ((GuiElement) gui.getSlot(index)).setItemStack(stack);
@@ -437,7 +435,7 @@ public class EditorGuis {
         }
 
         gui.setSlot(8, new GuiElementBuilder(Items.BARRIER)
-                .setName(new TranslatableText("armorstandeditor.gui.close").setStyle(Style.EMPTY.withItalic(false)))
+                .setName(Text.translatable("armorstandeditor.gui.close").setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback(((index, type, action) -> {gui.close();}))
         );
 

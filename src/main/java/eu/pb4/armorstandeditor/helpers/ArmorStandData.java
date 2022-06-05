@@ -53,7 +53,7 @@ public class ArmorStandData {
 
         this.customNameVisible = armorStand.isCustomNameVisible() && armorStand.hasCustomName();
         if (armorStand.getCustomName() != null) {
-            this.customName = armorStand.getCustomName().shallowCopy();
+            this.customName = armorStand.getCustomName().copy();
         }
 
         this.headItem = armorStand.getEquippedStack(EquipmentSlot.HEAD).copy();

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 	id "com.modrinth.minotaur" version "2.+"
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
@@ -35,10 +35,9 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
-	modImplementation include("eu.pb4:sgui:1.0.1+1.18.2")
+	modImplementation include("eu.pb4:sgui:1.1.0+1.19")
 
-	modImplementation include("fr.catcore:server-translations-api:1.4.9+1.18.2-rc1")
-
+	modImplementation include("fr.catcore:server-translations-api:1.4.14+1.19-rc2")
 
 	//modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
 	modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')
@@ -112,6 +111,7 @@ curseforge {
 			changelogType = "markdown"
 			addGameVersion((String) project.minecraft_version)
 			addGameVersion "Fabric"
+			addGameVersion "quilt"
 			mainArtifact(remapJar)
 
 			afterEvaluate {
@@ -129,12 +129,12 @@ if (System.getenv("MODRINTH")) {
 		token = System.getenv("MODRINTH")
 		projectId = 'Ef9ZREBZ'
 		versionNumber = version
-		versionType = "release"
+		versionType = "beta"
 		changelog = System.getenv("CHANGELOG")
 		// On fabric, use 'remapJar' instead of 'jar'
 		uploadFile = remapJar
 		gameVersions = [((String) project.minecraft_version)]
-		loaders = ["fabric"]
+		loaders = ["fabric", "quilt"]
 	}
 
 	remapJar {

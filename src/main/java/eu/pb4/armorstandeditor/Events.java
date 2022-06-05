@@ -19,7 +19,7 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -222,7 +222,7 @@ public class Events {
             case COPY:
                 spei.setArmorStandEditorData(new ArmorStandData(armorStand));
                 spei.setArmorStandEditorAction(EditorActions.PASTE);
-                player.sendMessage(new TranslatableText("armorstandeditor.message.copied"), true);
+                player.sendMessage(Text.translatable("armorstandeditor.message.copied"), true);
                 break;
             case PASTE:
                 if (spei.getArmorStandEditorData() != null) {
@@ -245,7 +245,7 @@ public class Events {
                         }
                     }
 
-                    player.sendMessage(new TranslatableText("armorstandeditor.message.pasted"), true);
+                    player.sendMessage(Text.translatable("armorstandeditor.message.pasted"), true);
                 }
                 break;
             case INVENTORY:
