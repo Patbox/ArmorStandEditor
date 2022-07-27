@@ -35,9 +35,9 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
-	modImplementation include("eu.pb4:sgui:1.1.0+1.19")
+	modImplementation include("eu.pb4:sgui:1.1.3+1.19.1")
 
-	modImplementation include("fr.catcore:server-translations-api:1.4.14+1.19-rc2")
+	modImplementation include("fr.catcore:server-translations-api:1.4.16+1.19")
 
 	//modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
 	modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')
@@ -111,13 +111,18 @@ curseforge {
 			changelogType = "markdown"
 			addGameVersion((String) project.minecraft_version)
 			addGameVersion "Fabric"
-			addGameVersion "quilt"
+			addGameVersion "Quilt"
 			mainArtifact(remapJar)
 
 			afterEvaluate {
 				uploadTask.dependsOn("remapJar")
 			}
 		}
+
+		options {
+			forgeGradleIntegration = false
+		}
+
 		remapJar {
 			finalizedBy project.tasks.curseforge
 		}
@@ -128,8 +133,8 @@ if (System.getenv("MODRINTH")) {
 	modrinth {
 		token = System.getenv("MODRINTH")
 		projectId = 'Ef9ZREBZ'
-		versionNumber = version
-		versionType = "beta"
+		versionNumber = "" + version
+		versionType = "release"
 		changelog = System.getenv("CHANGELOG")
 		// On fabric, use 'remapJar' instead of 'jar'
 		uploadFile = remapJar
