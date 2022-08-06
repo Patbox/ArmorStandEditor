@@ -1,70 +1,142 @@
 {
-  "armorstandeditor.gui.editor_title": "Armor Stand Editor",
+  "gui.armor_stand_editor.editor_title": "Armor Stand Editor",
 
-  "armorstandeditor.gui.name.x": "Modify X axis",
-  "armorstandeditor.gui.name.y": "Modify Y axis",
-  "armorstandeditor.gui.name.z": "Modify Z axis",
+  "gui.armor_stand_editor.inventory_title": "Armor Stand Inventory",
 
-  "armorstandeditor.gui.name.custom_change": "Custom change",
+  "gui.armor_stand_editor.rename_title": "Rename Armor Stand",
 
-  "armorstandeditor.gui.name.small": "Small change",
-  "armorstandeditor.gui.name.medium": "Medium change",
-  "armorstandeditor.gui.name.big": "Big change",
-  "armorstandeditor.gui.blocksdeg": "%s blocks / %s deg",
+  "gui.armor_stand_editor.clearname": "Clear name",
 
-  "armorstandeditor.gui.name.move": "Move",
-  "armorstandeditor.gui.name.rotate": "Rotate",
+  "gui.armor_stand_editor.setname": "Change name to: %s",
+  "gui.armor_stand_editor.close": "Close",
 
-  "armorstandeditor.gui.name.head": "Rotate head",
-  "armorstandeditor.gui.name.body": "Rotate body",
-  "armorstandeditor.gui.name.left_arm": "Rotate left arm",
-  "armorstandeditor.gui.name.right_arm": "Rotate right arm",
-  "armorstandeditor.gui.name.left_leg": "Rotate left leg",
-  "armorstandeditor.gui.name.right_leg": "Rotate right leg",
-  "armorstandeditor.gui.name.inventory": "Open inventory",
-  "armorstandeditor.gui.name.rename": "Rename",
+  "gui.armor_stand_editor.cantlockslots": "You can't lock slots of this entity!",
 
-  "armorstandeditor.gui.name.reset_pose": "Reset pose",
-  "armorstandeditor.gui.name.flip_pose": "Flip pose",
+  "gui.armor_stand_editor.preset_author": "Created by: %s",
+  "gui.armor_stand_editor.presets_title": "Armor Stand Presets",
 
-  "armorstandeditor.gui.name.size": "Toggle size",
-  "armorstandeditor.gui.name.gravity": "Toggle gravity",
-  "armorstandeditor.gui.name.visibility": "Toggle visibility",
-  "armorstandeditor.gui.name.arms": "Toggle arms",
-  "armorstandeditor.gui.name.base": "Toggle base plate",
+  "text.armor_stand_editor.message.copied": "Armor stand copied!",
+  "text.armor_stand_editor.message.pasted": "Changed armor stand to use stored values",
 
-  "armorstandeditor.gui.name.copy": "Copy",
-  "armorstandeditor.gui.name.paste": "Paste",
-  "armorstandeditor.gui.name.presets": "Presets",
+  "command.armor_stand_editor.give": "Given Armor Stand Editor tool to %s",
 
-  "armorstandeditor.gui.inventory_title": "Armor Stand Inventory",
+  "command.armor_stand_editor.save-preset.success": "Preset %s (%s) saved successfully!",
+  "command.armor_stand_editor.save-preset.fail": "You need to copy an Armor Stand first!",
+  "command.armor_stand_editor.invalid-id": "Provided id (%s) contains invalid characters! Only valid characters are lowercase letters from a-z, numbers from 0 to 9 and _!",
 
-  "armorstandeditor.gui.rename_title": "Rename Armor Stand",
+  "command.armor_stand_editor.delete-preset.success": "Preset %s deleted successfully!",
+  "command.armor_stand_editor.delete-preset.fail": "Couldn't delete preset %s!",
 
-  "armorstandeditor.gui.clearname": "Clear name",
+  "command.armor_stand_editor.switchui.main": "Switched to main interface style!",
+  "command.armor_stand_editor.switchui.legacy": "Switched to legacy interface style!",
 
-  "armorstandeditor.gui.setname": "Change name to: %s",
-  "armorstandeditor.gui.close": "Close",
 
-  "armorstandeditor.gui.cantlockslots": "You can't lock slots of this entity!",
 
-  "armorstandeditor.gui.preset-author": "Created by: %s",
-  "armorstandeditor.gui.presets_title": "Armor Stand Presets",
+  "gui.armor_stand_editor.name.if-fixed": "Fixed: %s",
+  "gui.armor_stand_editor.name.if-invisible": "Invisible: %s",
+  "gui.armor_stand_editor.name.if-rotate": "Rotation: %s",
+  "gui.armor_stand_editor.item_frame_title": "Item Frame Editor",
 
-  "armorstandeditor.message.copied": "Armor stand copied! Changed to Paste mode",
-  "armorstandeditor.message.pasted": "Changed armor stand to use stored values",
 
-  "armorstandeditor.command.give": "Given Armor Stand Editor tool to %s",
+  "gui.armor_stand_editor.entry.type.move": "Move",
+  "gui.armor_stand_editor.entry.type.pose": "Pose",
+  "gui.armor_stand_editor.entry.type.inventory": "Inventory",
+  "gui.armor_stand_editor.entry.type.rename": "Rename",
+  "gui.armor_stand_editor.entry.type.properties": "Properties",
+  "gui.armor_stand_editor.entry.type.copying": "Copying/Presets",
 
-  "armorstandeditor.command.save-preset.success": "Preset %s (%s) saved successfully!",
-  "armorstandeditor.command.save-preset.fail": "You need to copy an Armor Stand first!",
-  "armorstandeditor.command.invalid-id": "Provided id (%s) contains invalid characters! Only valid characters are lowercase letters from a-z, numbers from 0 to 9 and _!",
+  "gui.armor_stand_editor.entry.part.head": "Pose Head",
+  "gui.armor_stand_editor.entry.part.body": "Pose Body",
+  "gui.armor_stand_editor.entry.part.left_arm": "Pose Left Arm",
+  "gui.armor_stand_editor.entry.part.right_arm": "Pose Right Arm",
+  "gui.armor_stand_editor.entry.part.left_leg": "Pose Left Leg",
+  "gui.armor_stand_editor.entry.part.right_leg": "Pose Right Leg",
+  "gui.armor_stand_editor.action.pose.flip": "Flip Pose",
+  "gui.armor_stand_editor.action.pose.reset": "Reset Pose",
 
-  "armorstandeditor.command.delete-preset.success": "Preset %s deleted successfully!",
-  "armorstandeditor.command.delete-preset.fail": "Couldn't delete preset %s!",
 
-  "armorstandeditor.gui.name.if-fixed": "Fixed: %s",
-  "armorstandeditor.gui.name.if-invisible": "Invisible: %s",
-  "armorstandeditor.gui.name.if-rotate": "Rotation: %s",
-  "armorstandeditor.gui.item_frame_title": "Item Frame Editor"
+  "gui.armor_stand_editor.action.move.x": "Move along X axis",
+  "gui.armor_stand_editor.action.move.y": "Move along Y axis",
+  "gui.armor_stand_editor.action.move.z": "Move along Z axis",
+  "gui.armor_stand_editor.action.move.look": "Move forward (%s)",
+
+  "gui.armor_stand_editor.action.move.rotate": "Rotate %s degrees",
+  "gui.armor_stand_editor.action.move.rotate.set": "Current: %s degrees",
+  "gui.armor_stand_editor.action.move": "Move %s blocks %s",
+  "gui.armor_stand_editor.action.move.set": "Current: %s blocks",
+
+  "gui.armor_stand_editor.action.rotate.angle.pitch": "Rotate Pitch",
+  "gui.armor_stand_editor.action.rotate.angle.yaw": "Rotate Yaw",
+  "gui.armor_stand_editor.action.rotate.angle.roll": "Rotate Roll",
+  "gui.armor_stand_editor.action.rotate": "Rotate %s degrees",
+  "gui.armor_stand_editor.action.rotate.set": "Current: %s degrees",
+
+
+  "gui.armor_stand_editor.property.invisible": "Invisible: %s",
+  "gui.armor_stand_editor.property.no_gravity": "No Gravity: %s",
+  "gui.armor_stand_editor.property.arms": "Show Arms: %s",
+  "gui.armor_stand_editor.property.hide_base": "Hide Base: %s",
+  "gui.armor_stand_editor.property.small": "Small: %s",
+
+  "gui.armor_stand_editor.action.copy": "Copy Settings",
+  "gui.armor_stand_editor.action.paste": "Paste Settings",
+  "gui.armor_stand_editor.action.paste.inventory": "Paste Settings and Inventory",
+  "gui.armor_stand_editor.entry.presets": "Presets",
+
+
+  "text.armor_stand_editor.presets.selected": "Selected preset \"%s\". Apply it by using \"Paste\" action",
+  "text.armor_stand_editor.open_info": "Armor Stand Editor opened! Close it by pressing \"%s\"!",
+
+
+  "text.armor_stand_editor.dir.south": "South",
+  "text.armor_stand_editor.dir.north": "North",
+  "text.armor_stand_editor.dir.west": "West",
+  "text.armor_stand_editor.dir.east": "East",
+  "text.armor_stand_editor.dir.up": "Up",
+  "text.armor_stand_editor.dir.down": "Down",
+
+  "text.armor_stand_editor.enabled": "Enabled",
+  "text.armor_stand_editor.disabled": "Disabled",
+
+  "gui.armor_stand_editor.back": "Back",
+
+
+  "text.armor_stand_editor.message.copied.legacy": "Armor stand copied! Changed to Paste mode",
+
+  "gui.armor_stand_editor.name.legacy.x": "Modify X axis",
+  "gui.armor_stand_editor.name.legacy.y": "Modify Y axis",
+  "gui.armor_stand_editor.name.legacy.z": "Modify Z axis",
+  "gui.armor_stand_editor.name.legacy.head": "Rotate head",
+  "gui.armor_stand_editor.name.legacy.body": "Rotate body",
+  "gui.armor_stand_editor.name.legacy.left_arm": "Rotate left arm",
+  "gui.armor_stand_editor.name.legacy.right_arm": "Rotate right arm",
+  "gui.armor_stand_editor.name.legacy.left_leg": "Rotate left leg",
+  "gui.armor_stand_editor.name.legacy.right_leg": "Rotate right leg",
+  "gui.armor_stand_editor.name.legacy.small": "Small change",
+  "gui.armor_stand_editor.name.legacy.medium": "Medium change",
+  "gui.armor_stand_editor.name.legacy.big": "Big change",
+  "gui.armor_stand_editor.name.legacy.custom_change": "Custom change",
+  "gui.armor_stand_editor.name.legacy.rotate": "Rotate",
+
+  "gui.armor_stand_editor.legacy.blocksdeg": "%s blocks / %s deg",
+  "gui.armor_stand_editor.name.legacy.move": "Move",
+  "gui.armor_stand_editor.name.legacy.inventory": "Open Inventory",
+  "gui.armor_stand_editor.name.legacy.rename": "Rename",
+
+  "gui.armor_stand_editor.name.legacy.reset_pose": "Reset pose",
+  "gui.armor_stand_editor.name.legacy.flip_pose": "Flip pose",
+
+  "gui.armor_stand_editor.name.legacy.size": "Toggle size",
+  "gui.armor_stand_editor.name.legacy.gravity": "Toggle gravity",
+  "gui.armor_stand_editor.name.legacy.visibility": "Toggle visibility",
+  "gui.armor_stand_editor.name.legacy.arms": "Toggle arms",
+  "gui.armor_stand_editor.name.legacy.base": "Toggle base plate",
+
+  "gui.armor_stand_editor.name.legacy.copy": "Copy",
+  "gui.armor_stand_editor.name.legacy.paste": "Paste",
+
+  "gui.armor_stand_editor.name.legacy.move": "Move",
+  "gui.armor_stand_editor.name.legacy.inventory": "Open Inventory",
+  "gui.armor_stand_editor.name.legacy.rename": "Rename",
+  "gui.armor_stand_editor.name.legacy.presets": "Presets"
 }

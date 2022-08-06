@@ -1,10 +1,10 @@
-package eu.pb4.armorstandeditor;
+package eu.pb4.armorstandeditor.legacy;
 
+import eu.pb4.armorstandeditor.EditorActions;
 import eu.pb4.armorstandeditor.config.Config;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
-import eu.pb4.armorstandeditor.helpers.ArmorStandData;
-import eu.pb4.armorstandeditor.helpers.SPEInterface;
+import eu.pb4.armorstandeditor.util.ArmorStandData;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -27,23 +27,27 @@ import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
 import xyz.nucleoid.disguiselib.api.EntityDisguise;
 
-public class Events {
+public class LegacyEvents {
     public static void registerEvents() {
         if (FabricLoader.getInstance().isModLoaded("disguiselib")) {
             AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (!LegacyPlayerExt.useLegacy(player)) {
+                    return ActionResult.PASS;
+                }
+
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
 
                 if (entity instanceof EntityDisguise disguise
                         && player instanceof ServerPlayerEntity
-                        && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
+                        && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
-                    if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND && Permissions.check(player, "armorstandeditor.useDisguised", 2)) {
-                        Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), 1, entity);
+                    if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND && Permissions.check(player, "armor_stand_editor.modify_disguised", 2)) {
+                        LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), 1, entity);
                         return ActionResult.SUCCESS;
                     } else if (entity instanceof ArmorStandEntity) {
-                        Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
+                        LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
                         return ActionResult.SUCCESS;
                     }
                 }
@@ -52,18 +56,22 @@ public class Events {
             });
 
             UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (!LegacyPlayerExt.useLegacy(player)) {
+                    return ActionResult.PASS;
+                }
+
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
                 if (entity instanceof EntityDisguise disguise
                         && player instanceof ServerPlayerEntity
-                        && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
+                        && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND) {
-                        Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), -1, entity);
+                        LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), -1, entity);
                         return ActionResult.SUCCESS;
                     } else if (entity instanceof ArmorStandEntity) {
-                        Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
+                        LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
                         return ActionResult.SUCCESS;
                     }
                 }
@@ -72,15 +80,19 @@ public class Events {
             });
         } else {
             AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (!LegacyPlayerExt.useLegacy(player)) {
+                    return ActionResult.PASS;
+                }
+
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
                 if (entity instanceof ArmorStandEntity
                         && player instanceof ServerPlayerEntity
-                        && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
+                        && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
 
-                    Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
+                    LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
 
                     return ActionResult.SUCCESS;
                 }
@@ -89,14 +101,18 @@ public class Events {
             });
 
             UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (!LegacyPlayerExt.useLegacy(player)) {
+                    return ActionResult.PASS;
+                }
+
                 Config config = ConfigManager.getConfig();
                 ItemStack itemStack = player.getMainHandStack();
                 if (entity instanceof ArmorStandEntity
                         && player instanceof ServerPlayerEntity
-                        && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
+                        && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
                         && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
-                    Events.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
+                    LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
                     return ActionResult.SUCCESS;
                 }
 
@@ -106,13 +122,17 @@ public class Events {
 
 
         UseItemCallback.EVENT.register((PlayerEntity player, World world, Hand hand) -> {
+            if (!LegacyPlayerExt.useLegacy(player)) {
+                return TypedActionResult.pass(player.getStackInHand(hand));
+            }
+
             Config config = ConfigManager.getConfig();
             ItemStack itemStack = player.getMainHandStack();
             if (player instanceof ServerPlayerEntity
                     && itemStack.getItem() == config.armorStandTool
-                    && Permissions.check(player, "armorstandeditor.use", config.configData.toggleAllPermissionOnByDefault)
+                    && EditorActions.OPEN_EDITOR.canUse(player)
                     && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
-                EditorGuis.openGui((ServerPlayerEntity) player);
+                LegacyEditorGuis.openGui((ServerPlayerEntity) player);
                 return TypedActionResult.success(player.getMainHandStack());
             }
 
@@ -125,11 +145,11 @@ public class Events {
 
             if (entity instanceof ItemFrameEntity
                     && player instanceof ServerPlayerEntity
-                    && Permissions.check(player, "armorstandeditor.useItemFrame", config.configData.toggleAllPermissionOnByDefault)
+                    && EditorActions.OPEN_ITEM_FRAME_EDITOR.canUse(player)
                     && itemStack.getItem() == config.armorStandTool
                     && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
 
-                EditorGuis.openItemFrameEditor((ServerPlayerEntity) player, (ItemFrameEntity) entity);
+                LegacyEditorGuis.openItemFrameEditor((ServerPlayerEntity) player, (ItemFrameEntity) entity);
                 return ActionResult.SUCCESS;
             }
 
@@ -138,14 +158,14 @@ public class Events {
     }
 
     public static void modifyArmorStand(ServerPlayerEntity player, ArmorStandEntity armorStand, int val, Entity realEntity) {
-        SPEInterface spei = (SPEInterface) player;
+        LegacyPlayerExt spei = (LegacyPlayerExt) player;
         ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) armorStand;
 
-        double power = spei.getArmorStandEditorPower();
+        double power = spei.aselegacy$getArmorStandEditorPower();
 
-        int dX = spei.getArmorStandEditorXYZ() == 0 ? 1 : 0;
-        int dY = spei.getArmorStandEditorXYZ() == 1 ? 1 : 0;
-        int dZ = spei.getArmorStandEditorXYZ() == 2 ? 1 : 0;
+        int dX = spei.aselegacy$getArmorStandEditorXYZ() == 0 ? 1 : 0;
+        int dY = spei.aselegacy$getArmorStandEditorXYZ() == 1 ? 1 : 0;
+        int dZ = spei.aselegacy$getArmorStandEditorXYZ() == 2 ? 1 : 0;
 
         double posX = armorStand.getX();
         double posY = armorStand.getY();
@@ -154,7 +174,7 @@ public class Events {
         float angleChange = (float) (val * power * 30);
         EulerAngle angle;
 
-        switch (spei.getArmorStandEditorAction()) {
+        switch (spei.aselegacy$getArmorStandEditorAction()) {
             case MOVE:
                 armorStand.teleport(posX + dX * power * val, posY + dY * power * val, posZ + dZ * power * val);
                 break;
@@ -220,13 +240,13 @@ public class Events {
 
                 break;
             case COPY:
-                spei.setArmorStandEditorData(new ArmorStandData(armorStand));
-                spei.setArmorStandEditorAction(EditorActions.PASTE);
-                player.sendMessage(Text.translatable("armorstandeditor.message.copied"), true);
+                spei.aselegacy$setArmorStandEditorData(new ArmorStandData(armorStand));
+                spei.aselegacy$setArmorStandEditorAction(EditorActions.PASTE);
+                player.sendMessage(Text.translatable("text.armor_stand_editor.message.copied.legacy"), true);
                 break;
             case PASTE:
-                if (spei.getArmorStandEditorData() != null) {
-                    ArmorStandData base = spei.getArmorStandEditorData();
+                if (spei.aselegacy$getArmorStandEditorData() != null) {
+                    ArmorStandData base = spei.aselegacy$getArmorStandEditorData();
                     base.apply(armorStand, player.isCreative());
 
                     if (realEntity != null) {
@@ -245,20 +265,20 @@ public class Events {
                         }
                     }
 
-                    player.sendMessage(Text.translatable("armorstandeditor.message.pasted"), true);
+                    player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
                 }
                 break;
             case INVENTORY:
                 if (realEntity instanceof LivingEntity) {
-                    EditorGuis.openInventoryEditor(player, (LivingEntity) realEntity);
+                    LegacyEditorGuis.openInventoryEditor(player, (LivingEntity) realEntity, () -> {});
                 } else {
-                    EditorGuis.openInventoryEditor(player, armorStand);
+                    LegacyEditorGuis.openInventoryEditor(player, armorStand, () -> {});
                 }
                 break;
             case RENAME:
                 Entity nameTarget = realEntity != null ? realEntity : armorStand;
 
-                EditorGuis.openRenaming(player, nameTarget);
+                LegacyEditorGuis.openRenaming(player, nameTarget, () -> {});
                 break;
         }
 

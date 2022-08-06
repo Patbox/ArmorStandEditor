@@ -1,7 +1,6 @@
-package eu.pb4.armorstandeditor.helpers;
+package eu.pb4.armorstandeditor.util;
 
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -10,17 +9,11 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.List;
 
-public record ArmorStandInventory(LivingEntity entity) implements Inventory {
+public class ItemFrameInventory implements Inventory {
+    private final ItemFrameEntity entity;
 
-    public static EquipmentSlot getEquipmentSlot(int index) {
-        return switch (index) {
-            case 1 -> EquipmentSlot.CHEST;
-            case 2 -> EquipmentSlot.LEGS;
-            case 3 -> EquipmentSlot.FEET;
-            case 4 -> EquipmentSlot.MAINHAND;
-            case 5 -> EquipmentSlot.OFFHAND;
-            default -> EquipmentSlot.HEAD;
-        };
+    public ItemFrameInventory(ItemFrameEntity entity) {
+        this.entity = entity;
     }
 
     @Override
@@ -34,20 +27,12 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
     }
 
     public List<ItemStack> getItems() {
-        return DefaultedList.copyOf(
-                ItemStack.EMPTY,
-                entity.getEquippedStack(EquipmentSlot.HEAD),
-                entity.getEquippedStack(EquipmentSlot.CHEST),
-                entity.getEquippedStack(EquipmentSlot.LEGS),
-                entity.getEquippedStack(EquipmentSlot.FEET),
-                entity.getEquippedStack(EquipmentSlot.MAINHAND),
-                entity.getEquippedStack(EquipmentSlot.OFFHAND)
-        );
+        return DefaultedList.copyOf(ItemStack.EMPTY, this.entity.getHeldItemStack());
     }
 
     @Override
     public ItemStack getStack(int slot) {
-        return entity.getEquippedStack(getEquipmentSlot(slot));
+        return entity.getHeldItemStack();
     }
 
     @Override
@@ -66,7 +51,7 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        this.entity.equipStack(getEquipmentSlot(slot), stack);
+        this.entity.setHeldItemStack(stack);
     }
 
     @Override
@@ -81,6 +66,6 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
 
     @Override
     public void clear() {
-
+        this.entity.setHeldItemStack(ItemStack.EMPTY);
     }
 }

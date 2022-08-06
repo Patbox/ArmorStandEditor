@@ -1,6 +1,6 @@
 package eu.pb4.armorstandeditor.config;
 
-import eu.pb4.armorstandeditor.helpers.ArmorStandData;
+import eu.pb4.armorstandeditor.util.ArmorStandData;
 import net.minecraft.util.math.EulerAngle;
 
 public class ArmorStandPreset {

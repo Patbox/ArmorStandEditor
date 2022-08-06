@@ -3,9 +3,10 @@ package eu.pb4.armorstandeditor.mixin;
 
 import com.mojang.authlib.GameProfile;
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import eu.pb4.armorstandeditor.helpers.ArmorStandData;
-import eu.pb4.armorstandeditor.EditorActions;
-import eu.pb4.armorstandeditor.helpers.SPEInterface;
+import eu.pb4.armorstandeditor.gui.BaseGui;
+import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
+import eu.pb4.sgui.api.GuiHelpers;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,66 +23,39 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin extends PlayerEntity implements SPEInterface {
+public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Shadow public ServerPlayNetworkHandler networkHandler;
-    private EditorActions armorStandEditorAction = EditorActions.MOVE;
-    private float armorStandEditorPower = 1;
-    private int armorStandEditorXYZ = 0;
-    private ArmorStandData armorStandEditorData = null;
 
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
         super(world, pos, yaw, gameProfile, publicKey);
     }
 
+    @Unique
+    private long ase$tickTimer = 0;
 
-    public EditorActions getArmorStandEditorAction() {
-        return this.armorStandEditorAction;
+    @Inject(method = "damage", at = @At("TAIL"))
+    private void ase$closeOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (GuiHelpers.getCurrentGui((ServerPlayerEntity) (Object) this) instanceof BaseGui baseGui) {
+            baseGui.close();
+        }
     }
-
-    public void setArmorStandEditorAction(EditorActions action) {
-        this.armorStandEditorAction = action;
-    }
-
-    public float getArmorStandEditorPower() {
-        return this.armorStandEditorPower;
-    }
-
-    public void setArmorStandEditorPower(float power) {
-        this.armorStandEditorPower = power;
-    }
-
-    public int getArmorStandEditorXYZ() {
-        return this.armorStandEditorXYZ;
-    }
-
-    public void setArmorStandEditorXYZ(int xyz) {
-        this.armorStandEditorXYZ = xyz;
-    }
-
-    public ArmorStandData getArmorStandEditorData() {
-        return this.armorStandEditorData;
-    }
-
-    public void setArmorStandEditorData(ArmorStandData data) {
-        this.armorStandEditorData = data;
-    }
-
-    private long tickTimer = 0;
 
     @Inject(method = "playerTick", at = @At("HEAD"))
-    private void showInvisible(CallbackInfo ci) {
+    private void ase$showInvisible(CallbackInfo ci) {
         try {
             if (ConfigManager.getConfig().configData.holdingToolSpawnsParticles) {
-                tickTimer++;
-                if (tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
-                    tickTimer = 0;
+                ase$tickTimer++;
+                if (ase$tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
+                    ase$tickTimer = 0;
                     List<ArmorStandEntity> armorStands = this.world.getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
                     ParticleEffect particleEffect = new DustParticleEffect(new Vec3f(0.8f, 0.2f, 0.2f), 1f);

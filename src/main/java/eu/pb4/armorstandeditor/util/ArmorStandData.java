@@ -1,4 +1,4 @@
-package eu.pb4.armorstandeditor.helpers;
+package eu.pb4.armorstandeditor.util;
 
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import net.minecraft.entity.EquipmentSlot;
