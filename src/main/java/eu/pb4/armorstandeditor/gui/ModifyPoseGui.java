@@ -3,6 +3,7 @@ package eu.pb4.armorstandeditor.gui;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.EulerAngle;
 import net.minecraft.util.math.MathHelper;
@@ -83,11 +84,11 @@ public class ModifyPoseGui extends BaseGui {
 
             var delta = slot - current;
 
-            this.context.moveRotationDelta = MathHelper.clamp(this.context.moveRotationDelta + delta, 0, 360);
-            this.player.sendMessage(TextUtils.gui("action.rotate.set", this.context.moveRotationDelta), true);
+            this.context.rotationDelta = MathHelper.clamp(this.context.rotationDelta + delta, 0, 360);
+            this.player.sendMessage(TextUtils.gui("action.rotate.set", this.context.rotationDelta), true);
 
             this.playSound(SoundEvents.BLOCK_NOTE_BLOCK_HAT, 0.5f, 1f);
-            this.setSelectedSlot(current);
+            this.player.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(this.selectedSlot));
             this.buildUi();
 
             return false;

@@ -2,6 +2,7 @@ package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.util.TextUtils;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -57,19 +58,20 @@ public class MoveGui extends BaseGui {
                 })
         );
 
-        this.setSlot(2, baseElement(Items.IRON_NUGGET, TextUtils.gui("action.move", moveBase * 0.5, TextUtils.direction(this.getDirection(false))),false)
+
+        this.setSlot(1, baseElement(Items.IRON_NUGGET, TextUtils.gui("action.move", moveBase * 0.5, TextUtils.direction(this.getDirection(false))),false)
                 .setCallback((x, y, z, c) -> {
                     this.move(-moveBase * 0.5);
                 })
         );
 
-        this.setSlot(3, baseElement(Items.IRON_INGOT, TextUtils.gui("action.move", moveBase, TextUtils.direction(this.getDirection(false))), false)
+        this.setSlot(2, baseElement(Items.IRON_INGOT, TextUtils.gui("action.move", moveBase, TextUtils.direction(this.getDirection(false))), false)
                 .setCallback((x, y, z, c) -> {
                     this.move(-moveBase);
                 })
         );
 
-        this.setSlot(4, baseElement(Items.COMPASS, TextUtils.gui("action.move.rotate", this.context.moveRotationDelta), false)
+        this.setSlot(3, baseElement(Items.COMPASS, TextUtils.gui("action.move.rotate", this.context.moveRotationDelta), false)
                 .setCallback((x, y, z, c) -> {
                     if (this.player.isSneaking()) {
                         return;
@@ -79,15 +81,37 @@ public class MoveGui extends BaseGui {
                 })
         );
 
-        this.setSlot(5, baseElement(Items.GOLD_INGOT, TextUtils.gui("action.move", moveBase, TextUtils.direction(this.getDirection(true))), false)
+        this.setSlot(4, baseElement(Items.GOLD_INGOT, TextUtils.gui("action.move", moveBase, TextUtils.direction(this.getDirection(true))), false)
                 .setCallback((x, y, z, c) -> {
                     this.move(moveBase);
                 })
         );
 
-        this.setSlot(6, baseElement(Items.GOLD_NUGGET, TextUtils.gui("action.move", moveBase * 0.5, TextUtils.direction(this.getDirection(true))), false)
+        this.setSlot(5, baseElement(Items.GOLD_NUGGET, TextUtils.gui("action.move", moveBase * 0.5, TextUtils.direction(this.getDirection(true))), false)
                 .setCallback((x, y, z, c) -> {
                     this.move(moveBase * 0.5);
+                })
+        );
+
+        this.setSlot(6, baseElement(Items.ENDER_PEARL, TextUtils.gui("action.move.teleport"), false)
+                .setCallback((x, y, z, c) -> {
+                    if (this.player.isSneaking()) {
+                        return;
+                    }
+                    this.playClickSound();
+                    this.context.armorStand.setPosition(this.player.getPos());
+                })
+        );
+
+
+        this.setSlot(7, baseElement(Items.PLAYER_HEAD, TextUtils.gui("action.move.rotate.copy_player"), false)
+                .setCallback((x, y, z, c) -> {
+                    if (this.player.isSneaking()) {
+                        return;
+                    }
+                    this.playClickSound();
+                    var pos = this.context.armorStand.getPos();
+                    this.context.armorStand.updatePositionAndAngles(pos.x, pos.y, pos.z, this.player.getYaw(), 0);
                 })
         );
     }
@@ -107,7 +131,7 @@ public class MoveGui extends BaseGui {
 
             var delta = slot - current;
 
-            if (current == 4) {
+            if (current == 3) {
                 this.context.moveRotationDelta = MathHelper.clamp(this.context.moveRotationDelta + delta, 0, 360);
                 this.player.sendMessage(TextUtils.gui("action.move.rotate.set", this.context.moveRotationDelta), true);
             } else {
@@ -124,7 +148,7 @@ public class MoveGui extends BaseGui {
             }
 
             this.playSound(SoundEvents.BLOCK_NOTE_BLOCK_HAT, 0.5f, 1f);
-            this.setSelectedSlot(current);
+            this.player.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(this.selectedSlot));
             this.buildUi();
 
             return false;

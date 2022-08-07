@@ -16,6 +16,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class BaseGui extends HotbarGui {
     protected EditingContext context;
@@ -57,6 +58,11 @@ public abstract class BaseGui extends HotbarGui {
         this.setSlot(38, this.player.getEquippedStack(EquipmentSlot.CHEST).copy());
         this.setSlot(39, this.player.getEquippedStack(EquipmentSlot.LEGS).copy());
         this.setSlot(40, this.player.getEquippedStack(EquipmentSlot.FEET).copy());
+    }
+
+    @Override
+    public void setSelectedSlot(int value) {
+        this.selectedSlot = MathHelper.clamp(value, 0, 8);
     }
 
     protected void playClickSound() {

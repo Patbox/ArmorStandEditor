@@ -62,6 +62,8 @@
 
   "gui.armor_stand_editor.action.move.rotate": "Rotate %s degrees",
   "gui.armor_stand_editor.action.move.rotate.set": "Current: %s degrees",
+  "gui.armor_stand_editor.action.move.rotate.copy_player": "Copy player's rotation",
+  "gui.armor_stand_editor.action.move.teleport": "Teleport to Player",
   "gui.armor_stand_editor.action.move": "Move %s blocks %s",
   "gui.armor_stand_editor.action.move.set": "Current: %s blocks",
 

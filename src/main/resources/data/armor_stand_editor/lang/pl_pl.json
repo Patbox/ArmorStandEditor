@@ -62,6 +62,8 @@
 
   "gui.armor_stand_editor.action.move.rotate": "Obróć o %s stopni",
   "gui.armor_stand_editor.action.move.rotate.set": "Aktualny obrót: %s stopni",
+  "gui.armor_stand_editor.action.move.rotate.copy_player": "Kopiuj obrót gracza",
+  "gui.armor_stand_editor.action.move.teleport": "Teleportuj do gracza",
   "gui.armor_stand_editor.action.move": "Przemieść %s bloków na %s",
   "gui.armor_stand_editor.action.move.set": "Aktualna odległość: %s bloków",
 
