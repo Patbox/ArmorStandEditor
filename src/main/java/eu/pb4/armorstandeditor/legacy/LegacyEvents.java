@@ -31,6 +31,10 @@ public class LegacyEvents {
     public static void registerEvents() {
         if (FabricLoader.getInstance().isModLoaded("disguiselib")) {
             AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (world.isClient) {
+                    return ActionResult.PASS;
+                }
+
                 if (!LegacyPlayerExt.useLegacy(player)) {
                     return ActionResult.PASS;
                 }
@@ -56,6 +60,10 @@ public class LegacyEvents {
             });
 
             UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (world.isClient) {
+                    return ActionResult.PASS;
+                }
+
                 if (!LegacyPlayerExt.useLegacy(player)) {
                     return ActionResult.PASS;
                 }
@@ -80,6 +88,10 @@ public class LegacyEvents {
             });
         } else {
             AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (world.isClient) {
+                    return ActionResult.PASS;
+                }
+
                 if (!LegacyPlayerExt.useLegacy(player)) {
                     return ActionResult.PASS;
                 }
@@ -101,6 +113,10 @@ public class LegacyEvents {
             });
 
             UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                if (world.isClient) {
+                    return ActionResult.PASS;
+                }
+
                 if (!LegacyPlayerExt.useLegacy(player)) {
                     return ActionResult.PASS;
                 }
@@ -122,6 +138,10 @@ public class LegacyEvents {
 
 
         UseItemCallback.EVENT.register((PlayerEntity player, World world, Hand hand) -> {
+            if (world.isClient) {
+                return TypedActionResult.pass(player.getStackInHand(hand));
+            }
+
             if (!LegacyPlayerExt.useLegacy(player)) {
                 return TypedActionResult.pass(player.getStackInHand(hand));
             }
@@ -140,6 +160,10 @@ public class LegacyEvents {
         });
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (world.isClient) {
+                return ActionResult.PASS;
+            }
+
             Config config = ConfigManager.getConfig();
             ItemStack itemStack = player.getMainHandStack();
 
