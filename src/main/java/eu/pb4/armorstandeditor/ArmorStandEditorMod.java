@@ -39,6 +39,10 @@ public class ArmorStandEditorMod implements ModInitializer {
         final var checkDisguise = FabricLoader.getInstance().isModLoaded("disguiselib");
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (world.isClient) {
+                return ActionResult.PASS;
+            }
+
             if (LegacyPlayerExt.useLegacy(player)) {
                 return ActionResult.PASS;
             }
