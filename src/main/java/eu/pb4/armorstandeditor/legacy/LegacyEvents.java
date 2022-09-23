@@ -5,6 +5,7 @@ import eu.pb4.armorstandeditor.config.Config;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
+import eu.pb4.common.protection.api.CommonProtection;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -201,6 +202,9 @@ public class LegacyEvents {
         switch (spei.aselegacy$getArmorStandEditorAction()) {
             case MOVE:
                 armorStand.teleport(posX + dX * power * val, posY + dY * power * val, posZ + dZ * power * val);
+                if (!CommonProtection.canInteractEntity(player.getWorld(), armorStand, player.getGameProfile(), player)) {
+                    armorStand.teleport(posX, posY, posZ);
+                }
                 break;
             case ROTATE:
                 armorStand.setYaw(armorStand.getYaw() + angleChange);
