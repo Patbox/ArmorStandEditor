@@ -56,9 +56,8 @@ public class ArmorStandEditorMod implements ModInitializer {
 
 
                 if (checkDisguise) {
-                    if (entity instanceof EntityDisguise disguise && disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND) {
+                    if (entity instanceof EntityDisguise disguise && disguise.isDisguised()) {
                         entity = disguise.getDisguiseEntity();
-                        return ActionResult.SUCCESS;
                     }
                 }
 
