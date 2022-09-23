@@ -1,6 +1,7 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.util.TextUtils;
+import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
 import net.minecraft.sound.SoundEvents;
@@ -174,6 +175,9 @@ public class MoveGui extends BaseGui {
                     pos.y + this.playerLookingDirection.getOffsetY() * v,
                     pos.z + this.playerLookingDirection.getOffsetZ() * v
             );
+        }
+        if (!CommonProtection.canInteractEntity(this.context.player.getEntityWorld(), this.context.armorStand, this.context.player.getGameProfile(), this.context.player)) {
+            this.context.armorStand.setPosition(pos);
         }
     }
 
