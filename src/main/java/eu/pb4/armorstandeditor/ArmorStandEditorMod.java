@@ -8,6 +8,7 @@ import eu.pb4.armorstandeditor.util.GeneralCommands;
 import eu.pb4.armorstandeditor.legacy.LegacyEvents;
 import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
 import eu.pb4.armorstandeditor.util.TextUtils;
+import eu.pb4.common.protection.api.CommonProtection;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -52,7 +53,9 @@ public class ArmorStandEditorMod implements ModInitializer {
             if (player instanceof ServerPlayerEntity
                     && EditorActions.OPEN_EDITOR.canUse(player)
                     && itemStack.getItem() == config.armorStandTool
-                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))
+                    && CommonProtection.canInteractEntity(world, entity, player.getGameProfile(), player)
+            ) {
 
 
                 if (checkDisguise) {
