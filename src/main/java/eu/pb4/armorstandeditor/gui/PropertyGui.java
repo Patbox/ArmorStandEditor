@@ -32,7 +32,7 @@ public class PropertyGui extends BaseGui {
     @Override
     protected void buildUi() {
         for (var entry : ENTRIES) {
-            this.addSlot(entry(entry));
+            this.addSlot(entry.action, entry(entry));
         }
     }
 
