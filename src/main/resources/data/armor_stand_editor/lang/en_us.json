@@ -140,5 +140,8 @@
   "gui.armor_stand_editor.name.legacy.move": "Move",
   "gui.armor_stand_editor.name.legacy.inventory": "Open Inventory",
   "gui.armor_stand_editor.name.legacy.rename": "Rename",
-  "gui.armor_stand_editor.name.legacy.presets": "Presets"
+  "gui.armor_stand_editor.name.legacy.presets": "Presets",
+
+  "text.armor_stand_editor.about.version": "Version: %s",
+  "text.armor_stand_editor.about.contributors": "Contributors"
 }

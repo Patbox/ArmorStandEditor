@@ -30,6 +30,8 @@ public class ArmorStandEditorMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        GenericModInfo.build(FabricLoader.getInstance().getModContainer("armor-stand-editor").get());
+
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             ConfigManager.loadConfig();
         });

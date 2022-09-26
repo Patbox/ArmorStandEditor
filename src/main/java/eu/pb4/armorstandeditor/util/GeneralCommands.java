@@ -3,7 +3,7 @@ package eu.pb4.armorstandeditor.util;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import eu.pb4.armorstandeditor.ArmorStandEditorMod;
+import eu.pb4.armorstandeditor.GenericModInfo;
 import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
@@ -171,7 +171,11 @@ public class GeneralCommands {
     }
 
     private static int about(CommandContext<ServerCommandSource> context) {
-        context.getSource().sendFeedback(Text.literal("Armor Stand Editor - ").formatted(Formatting.GOLD).append(Text.literal(ArmorStandEditorMod.VERSION).formatted(Formatting.WHITE)), false);
+        //context.getSource().sendFeedback(Text.literal("Armor Stand Editor - ").formatted(Formatting.GOLD).append(Text.literal(ArmorStandEditorMod.VERSION).formatted(Formatting.WHITE)), false);
+        for (var t : context.getSource().isExecutedByPlayer() ? GenericModInfo.getAboutFull() : GenericModInfo.getAboutConsole()) {
+            context.getSource().sendFeedback(t, false);
+        }
+
         return 1;
     }
 }

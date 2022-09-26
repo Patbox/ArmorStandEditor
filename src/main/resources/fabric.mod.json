@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Armor Stand Editor",
-  "description": "Server side armor stand editor",
+  "description": "Pose and modify your armor stand with ease!",
   "authors": [
     "Patbox"
   ],
@@ -14,6 +14,7 @@
   },
 
   "license": "LGPLv3",
+  "icon": "assets/armor_stand_editor/icon.png",
 
   "environment": "*",
   "entrypoints": {

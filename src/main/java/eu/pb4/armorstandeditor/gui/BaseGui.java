@@ -16,16 +16,19 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
 
 public abstract class BaseGui extends HotbarGui {
     protected EditingContext context;
+    private int currentBlockClickTick;
 
     public BaseGui(EditingContext context, int selectedSlot) {
         super(context.player);
         this.setSelectedSlot(selectedSlot);
         this.context = context;
         context.currentUi = this;
+        this.currentBlockClickTick = context.player.age;
     }
 
     @Override
@@ -34,6 +37,29 @@ public abstract class BaseGui extends HotbarGui {
             this.close();
         }
         super.onTick();
+    }
+
+    @Override
+    public boolean onClickBlock(BlockHitResult hitResult) {
+        if (this.player.age - this.currentBlockClickTick >= 5) {
+            return super.onClickBlock(hitResult);
+        }
+        return false;
+    }
+
+    @Override
+    public void onClickItem() {
+        if (this.player.age - this.currentBlockClickTick >= 5) {
+            super.onClickItem();
+        }
+    }
+
+    @Override
+    public boolean onHandSwing() {
+        if (this.player.age - this.currentBlockClickTick >= 5) {
+            return super.onHandSwing();
+        }
+        return false;
     }
 
     protected void rebuildUi() {

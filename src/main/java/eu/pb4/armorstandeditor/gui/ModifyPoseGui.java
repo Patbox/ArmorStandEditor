@@ -27,6 +27,10 @@ public class ModifyPoseGui extends BaseGui {
 
     @Override
     protected void buildUi() {
+        if (this.rotationType == null) {
+            this.rotationType = RotationType.PITCH;
+        }
+
         var wool = switch (this.rotationType) {
             case PITCH -> Items.RED_WOOL;
             case YAW -> Items.GREEN_WOOL;
