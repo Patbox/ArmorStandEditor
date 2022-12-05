@@ -10,6 +10,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -175,8 +177,8 @@ public abstract class BaseGui extends HotbarGui {
         }
     }
 
-    protected void playSound(SoundEvent event, float volume, float pitch) {
-        this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(event, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
+    protected void playSound(RegistryEntry<SoundEvent> sound, float volume, float pitch) {
+        this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
     }
 
     @FunctionalInterface

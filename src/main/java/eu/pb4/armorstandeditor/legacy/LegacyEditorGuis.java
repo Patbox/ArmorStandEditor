@@ -4,11 +4,11 @@ import eu.pb4.armorstandeditor.EditorActions;
 import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.gui.BaseGui;
+import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
+import eu.pb4.armorstandeditor.mixin.ItemFrameEntityAccessor;
+import eu.pb4.armorstandeditor.util.ArmorStandInventory;
 import eu.pb4.armorstandeditor.util.ItemFrameInventory;
 import eu.pb4.armorstandeditor.util.TextUtils;
-import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
-import eu.pb4.armorstandeditor.util.ArmorStandInventory;
-import eu.pb4.armorstandeditor.mixin.ItemFrameEntityAccessor;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
@@ -313,15 +313,15 @@ public class LegacyEditorGuis {
 
         SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X3, player, false) {
             @Override
-            public void onUpdate(boolean firstUpdate) {
-                super.onUpdate(firstUpdate);
-
-                if (firstUpdate) {
-                    for (int x = 0; x < 9; x++) {
-                        this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")));
-                    }
+            public void onOpen() {
+                super.onOpen();
+                for (int x = 0; x < 9; x++) {
+                    this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")));
                 }
+                updateDisplay();
+            }
 
+            private void updateDisplay() {
                 for (int x = 0; x < 18; x++) {
                     this.clearSlot(x);
 
@@ -353,8 +353,7 @@ public class LegacyEditorGuis {
                             if (page.addAndGet(-1) < 0) {
                                 page.set(0);
                             }
-
-                            this.onUpdate(false);
+                            updateDisplay();
                         }));
                 this.setSlot(this.size - 2, new GuiElementBuilder(page.get() != maxPage - 1 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
                         .setName(Text.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)))
@@ -362,8 +361,7 @@ public class LegacyEditorGuis {
                             if (page.addAndGet(1) >= maxPage) {
                                 page.set(maxPage - 1);
                             }
-
-                            this.onUpdate(false);
+                            updateDisplay();
                         }));
             }
 
@@ -413,7 +411,6 @@ public class LegacyEditorGuis {
                 .setCallback((index, type, action) -> {
 
                     entity.setInvisible(!entity.isInvisible());
-                    System.out.println(entity.isInvisible());
                     ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
                     stack.setCustomName(TextUtils.gui("name.if-invisible", entity.isInvisible())

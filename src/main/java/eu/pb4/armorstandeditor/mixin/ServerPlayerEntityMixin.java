@@ -4,13 +4,11 @@ package eu.pb4.armorstandeditor.mixin;
 import com.mojang.authlib.GameProfile;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.gui.BaseGui;
-import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
 import eu.pb4.sgui.api.GuiHelpers;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -18,9 +16,8 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,12 +32,12 @@ import java.util.List;
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Shadow public ServerPlayNetworkHandler networkHandler;
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
-        super(world, pos, yaw, gameProfile, publicKey);
-    }
-
     @Unique
     private long ase$tickTimer = 0;
+
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+        super(world, pos, yaw, gameProfile);
+    }
 
     @Inject(method = "damage", at = @At("TAIL"))
     private void ase$closeOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
@@ -58,7 +55,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                     ase$tickTimer = 0;
                     List<ArmorStandEntity> armorStands = this.world.getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
-                    ParticleEffect particleEffect = new DustParticleEffect(new Vec3f(0.8f, 0.2f, 0.2f), 1f);
+                    ParticleEffect particleEffect = new DustParticleEffect(new Vector3f(0.8f, 0.2f, 0.2f), 1f);
 
                     for (ArmorStandEntity armorStand : armorStands) {
                         this.networkHandler.sendPacket(new ParticleS2CPacket(particleEffect,
@@ -71,7 +68,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
                     List<ItemFrameEntity> itemFrames = this.world.getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
-                    ParticleEffect particleEffect2 = new DustParticleEffect(new Vec3f(0.2f, 0.8f, 0.2f), 1f);
+                    ParticleEffect particleEffect2 = new DustParticleEffect(new Vector3f(0.2f, 0.8f, 0.2f), 1f);
 
                     for (ItemFrameEntity itemFrame : itemFrames) {
                         this.networkHandler.sendPacket(new ParticleS2CPacket(particleEffect2,

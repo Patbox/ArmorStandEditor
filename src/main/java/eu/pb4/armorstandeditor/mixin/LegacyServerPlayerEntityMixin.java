@@ -3,14 +3,12 @@ package eu.pb4.armorstandeditor.mixin;
 
 import com.mojang.authlib.GameProfile;
 import eu.pb4.armorstandeditor.EditorActions;
-import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
+import eu.pb4.armorstandeditor.util.ArmorStandData;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ServerPlayerEntity.class)
@@ -20,8 +18,8 @@ public abstract class LegacyServerPlayerEntityMixin extends PlayerEntity impleme
     private int aselegacy$armorStandEditorXYZ = 0;
     private ArmorStandData aselegacy$armorStandEditorData = null;
 
-    public LegacyServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
-        super(world, pos, yaw, gameProfile, publicKey);
+    public LegacyServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+        super(world, pos, yaw, gameProfile);
     }
 
     public EditorActions aselegacy$getArmorStandEditorAction() {
