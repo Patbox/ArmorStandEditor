@@ -7,6 +7,7 @@ import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.common.protection.api.CommonProtection;
 import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -21,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -28,10 +30,14 @@ import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
 import xyz.nucleoid.disguiselib.api.EntityDisguise;
 
+import static eu.pb4.armorstandeditor.ArmorStandEditorMod.PHASE;
+
 public class LegacyEvents {
+
     public static void registerEvents() {
+        AttackEntityCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, PHASE);
         if (FabricLoader.getInstance().isModLoaded("disguiselib")) {
-            AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            AttackEntityCallback.EVENT.register(PHASE, (player, world, hand, entity, hitResult) -> {
                 if (world.isClient) {
                     return ActionResult.PASS;
                 }
@@ -60,7 +66,7 @@ public class LegacyEvents {
                 return ActionResult.PASS;
             });
 
-            UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            UseEntityCallback.EVENT.register(PHASE, (player, world, hand, entity, hitResult) -> {
                 if (world.isClient) {
                     return ActionResult.PASS;
                 }
@@ -88,7 +94,7 @@ public class LegacyEvents {
                 return ActionResult.PASS;
             });
         } else {
-            AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            AttackEntityCallback.EVENT.register(PHASE, (player, world, hand, entity, hitResult) -> {
                 if (world.isClient) {
                     return ActionResult.PASS;
                 }
@@ -113,7 +119,7 @@ public class LegacyEvents {
                 return ActionResult.PASS;
             });
 
-            UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            UseEntityCallback.EVENT.register(PHASE, (player, world, hand, entity, hitResult) -> {
                 if (world.isClient) {
                     return ActionResult.PASS;
                 }
@@ -138,7 +144,7 @@ public class LegacyEvents {
         }
 
 
-        UseItemCallback.EVENT.register((PlayerEntity player, World world, Hand hand) -> {
+        UseItemCallback.EVENT.register(PHASE, (PlayerEntity player, World world, Hand hand) -> {
             if (world.isClient) {
                 return TypedActionResult.pass(player.getStackInHand(hand));
             }
@@ -160,7 +166,7 @@ public class LegacyEvents {
             return TypedActionResult.pass(player.getMainHandStack());
         });
 
-        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+        AttackEntityCallback.EVENT.register(PHASE, (player, world, hand, entity, hitResult) -> {
             if (world.isClient) {
                 return ActionResult.PASS;
             }
@@ -270,7 +276,7 @@ public class LegacyEvents {
             case COPY:
                 spei.aselegacy$setArmorStandEditorData(new ArmorStandData(armorStand));
                 spei.aselegacy$setArmorStandEditorAction(EditorActions.PASTE);
-                player.sendMessage(Text.translatable("text.armor_stand_editor.message.copied.legacy"), true);
+                player.sendMessage(new TranslatableText("text.armor_stand_editor.message.copied.legacy"), true);
                 break;
             case PASTE:
                 if (spei.aselegacy$getArmorStandEditorData() != null) {
@@ -293,7 +299,7 @@ public class LegacyEvents {
                         }
                     }
 
-                    player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
+                    player.sendMessage(new TranslatableText("text.armor_stand_editor.message.pasted"), true);
                 }
                 break;
             case INVENTORY:

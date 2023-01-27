@@ -176,7 +176,7 @@ public abstract class BaseGui extends HotbarGui {
     }
 
     protected void playSound(SoundEvent event, float volume, float pitch) {
-        this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(event, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
+        this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(event, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch));
     }
 
     @FunctionalInterface

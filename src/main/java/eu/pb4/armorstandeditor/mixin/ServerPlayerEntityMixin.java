@@ -4,13 +4,11 @@ package eu.pb4.armorstandeditor.mixin;
 import com.mojang.authlib.GameProfile;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.gui.BaseGui;
-import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
-import eu.pb4.sgui.api.GuiHelpers;
+import eu.pb4.sgui.virtual.VirtualScreenHandlerInterface;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -20,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,16 +32,17 @@ import java.util.List;
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Shadow public ServerPlayNetworkHandler networkHandler;
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
-        super(world, pos, yaw, gameProfile, publicKey);
-    }
 
     @Unique
     private long ase$tickTimer = 0;
 
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
+        super(world, pos, yaw, profile);
+    }
+
     @Inject(method = "damage", at = @At("TAIL"))
     private void ase$closeOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (GuiHelpers.getCurrentGui((ServerPlayerEntity) (Object) this) instanceof BaseGui baseGui) {
+        if (this.currentScreenHandler instanceof VirtualScreenHandlerInterface handler && handler.getGui() instanceof BaseGui baseGui) {
             baseGui.close();
         }
     }

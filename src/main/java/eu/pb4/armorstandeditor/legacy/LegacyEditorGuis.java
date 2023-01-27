@@ -30,8 +30,10 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class LegacyEditorGuis {
                 super.onInput(input);
                 stack2.setCustomName(TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
                 this.setSlot(2, stack2, (index, type, action) -> {
-                    entity.setCustomName(Text.literal(this.getInput()));
+                    entity.setCustomName(new LiteralText(this.getInput()));
                     entity.setCustomNameVisible(true);
                     this.close(false);
                 });
@@ -69,13 +71,13 @@ public class LegacyEditorGuis {
 
 
         gui.setSlot(1, stack, (index, type, action) -> {
-            entity.setCustomName(Text.literal(""));
+            entity.setCustomName(new LiteralText(""));
             entity.setCustomNameVisible(false);
             gui.close(false);
         });
 
         gui.setSlot(2, stack2, (index, type, action) -> {
-            entity.setCustomName(Text.literal(gui.getInput()));
+            entity.setCustomName(new LiteralText(gui.getInput()));
             entity.setCustomNameVisible(true);
             gui.close(false);
         });
@@ -105,7 +107,7 @@ public class LegacyEditorGuis {
                 ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) ae;
                 boolean isUnlocked = isSlotUnlocked(ae, ArmorStandInventory.getEquipmentSlot(x));
                 gui.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                        .setName(Text.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                        .setName(new TranslatableText(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                 .setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             EquipmentSlot slot = ArmorStandInventory.getEquipmentSlot(index - 9);
@@ -130,7 +132,7 @@ public class LegacyEditorGuis {
 
                             ItemStack stack = new ItemStack(isUnlocked2 ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                            stack.setCustomName(Text.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                            stack.setCustomName(new TranslatableText(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                     .setStyle(Style.EMPTY.withItalic(false)));
 
                             ((GuiElement) gui.getSlot(index)).setItemStack(stack);
@@ -143,7 +145,7 @@ public class LegacyEditorGuis {
             }
         }
 
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")).build();
+        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")).build();
 
         gui.setSlot(6, empty);
         gui.setSlot(7, empty);
@@ -318,7 +320,7 @@ public class LegacyEditorGuis {
 
                 if (firstUpdate) {
                     for (int x = 0; x < 9; x++) {
-                        this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")));
+                        this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")));
                     }
                 }
 
@@ -329,7 +331,7 @@ public class LegacyEditorGuis {
                         final ArmorStandPreset preset = presets.get(page.get() * 18 + x);
 
                         this.setSlot(x, new GuiElementBuilder(Items.ARMOR_STAND)
-                                .setName(Text.literal(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GREEN)))
+                                .setName(new LiteralText(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GREEN)))
                                 .addLoreLine(TextUtils.gui("preset_author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY)))
 
                                 .setCallback((t1, t2, t3) -> {
@@ -342,13 +344,13 @@ public class LegacyEditorGuis {
                 }
 
                 this.setSlot(this.size - 5, new GuiElementBuilder(Items.BARRIER)
-                        .setName(Text.translatable("dataPack.validation.back").setStyle(Style.EMPTY.withItalic(false)))
+                        .setName(new TranslatableText("dataPack.validation.back").setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             this.close();
                         }));
 
                 this.setSlot(this.size - 8, new GuiElementBuilder(page.get() != 0 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                        .setName(Text.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)))
+                        .setName(new TranslatableText("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             if (page.addAndGet(-1) < 0) {
                                 page.set(0);
@@ -357,7 +359,7 @@ public class LegacyEditorGuis {
                             this.onUpdate(false);
                         }));
                 this.setSlot(this.size - 2, new GuiElementBuilder(page.get() != maxPage - 1 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                        .setName(Text.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)))
+                        .setName(new TranslatableText("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)))
                         .setCallback((index, type, action) -> {
                             if (page.addAndGet(1) >= maxPage) {
                                 page.set(maxPage - 1);
@@ -385,7 +387,7 @@ public class LegacyEditorGuis {
 
         ItemFrameInventory inventory = new ItemFrameInventory(entity);
 
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")).build();
+        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(new LiteralText("")).build();
 
         gui.setTitle(TextUtils.gui("item_frame_title"));
 

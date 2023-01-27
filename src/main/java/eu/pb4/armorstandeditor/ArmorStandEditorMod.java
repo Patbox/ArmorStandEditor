@@ -11,6 +11,7 @@ import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.common.protection.api.CommonProtection;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,8 +19,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.KeybindText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.nucleoid.disguiselib.api.EntityDisguise;
@@ -27,6 +30,8 @@ import xyz.nucleoid.disguiselib.api.EntityDisguise;
 public class ArmorStandEditorMod implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger("Armor Stand Editor");
     public static String VERSION = FabricLoader.getInstance().getModContainer("armor-stand-editor").get().getMetadata().getVersion().getFriendlyString();
+
+    public static Identifier PHASE = new Identifier("armor_stand_editor", "late_event");
 
     @Override
     public void onInitialize() {
@@ -36,12 +41,13 @@ public class ArmorStandEditorMod implements ModInitializer {
             ConfigManager.loadConfig();
         });
         GeneralCommands.register();
+        UseEntityCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, PHASE);
+
         LegacyEvents.registerEvents();
 
 
         final var checkDisguise = FabricLoader.getInstance().isModLoaded("disguiselib");
-
-        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+        UseEntityCallback.EVENT.register(PHASE, (player, world, hand, entity, hitResult) -> {
             if (world.isClient) {
                 return ActionResult.PASS;
             }
@@ -68,7 +74,7 @@ public class ArmorStandEditorMod implements ModInitializer {
 
                 if (entity instanceof ArmorStandEntity) {
                     new MainGui(new EditingContext((ServerPlayerEntity) player, (ArmorStandEntity) entity), 0);
-                    player.sendMessage(TextUtils.text("open_info", Text.keybind("key.drop")), true);
+                    player.sendMessage(TextUtils.text("open_info", new KeybindText("key.drop")), true);
                     return ActionResult.SUCCESS;
                 }
             }

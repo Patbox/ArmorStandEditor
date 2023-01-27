@@ -5,6 +5,7 @@ import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 public class CopyGui extends BaseGui {
     public CopyGui(EditingContext context, int slot) {
@@ -23,7 +24,7 @@ public class CopyGui extends BaseGui {
                             this.playClickSound();
 
                             spei.aselegacy$setArmorStandEditorData(new ArmorStandData(this.context.armorStand));
-                            player.sendMessage(Text.translatable("text.armor_stand_editor.message.copied"), true);
+                            player.sendMessage(new TranslatableText("text.armor_stand_editor.message.copied"), true);
                             this.rebuildUi();
                         })
         );
@@ -35,7 +36,7 @@ public class CopyGui extends BaseGui {
                                 this.playClickSound();
 
                                 spei.aselegacy$getArmorStandEditorData().apply(this.context.armorStand, false);
-                                player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
+                                player.sendMessage(new TranslatableText("text.armor_stand_editor.message.pasted"), true);
                             })
             );
 
@@ -47,7 +48,7 @@ public class CopyGui extends BaseGui {
                                         this.playClickSound();
 
                                         spei.aselegacy$getArmorStandEditorData().apply(this.context.armorStand, true);
-                                        player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
+                                        player.sendMessage(new TranslatableText("text.armor_stand_editor.message.pasted"), true);
                                     }
                                 })
                 );

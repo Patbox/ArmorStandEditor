@@ -9,7 +9,7 @@ import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
 import eu.pb4.playerdata.api.PlayerDataApi;
 import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.item.ItemStack;
@@ -17,6 +17,7 @@ import net.minecraft.nbt.NbtByte;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -27,7 +28,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class GeneralCommands {
     public static void register() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, environment) -> {
             dispatcher.register(
                     literal("armorstandeditor")
                             .requires(Permissions.require("armor_stand_editor.commands.main", true))
@@ -66,14 +67,14 @@ public class GeneralCommands {
         }
 
     private static int switchUi(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        boolean current = LegacyPlayerExt.useLegacy(context.getSource().getPlayerOrThrow());
+        boolean current = LegacyPlayerExt.useLegacy(context.getSource().getPlayer());
         PlayerDataApi.setGlobalDataFor(context.getSource().getPlayer(), LegacyPlayerExt.LEGACY_UI, NbtByte.of(!current));
         context.getSource().sendFeedback(TextUtils.command("switchui." + (current ? "main" : "legacy")), false);
         return 0;
     }
 
     private static int savePreset(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
+        ServerPlayerEntity player = context.getSource().getPlayer();
 
         LegacyPlayerExt spei = (LegacyPlayerExt) player;
 
@@ -117,28 +118,28 @@ public class GeneralCommands {
     }
 
     private static int listPresets(CommandContext<ServerCommandSource> context) {
-        MutableText text = Text.literal("").formatted(Formatting.DARK_GRAY);
+        MutableText text = new LiteralText("").formatted(Formatting.DARK_GRAY);
 
         Iterator<ArmorStandPreset> iterator = ConfigManager.PRESETS.values().iterator();
 
         while (iterator.hasNext()) {
             ArmorStandPreset preset = iterator.next();
             if (preset.id.startsWith("$")) {
-                text.append(Text.literal(preset.name)
+                text.append(new LiteralText(preset.name)
                         .formatted(Formatting.YELLOW)
-                        .append(Text.literal(" (").formatted(Formatting.GRAY)
-                                .append(Text.literal("buildin/" + preset.id.substring(1)).formatted(Formatting.RED))
-                                .append(Text.literal(")").formatted(Formatting.GRAY))));
+                        .append(new LiteralText(" (").formatted(Formatting.GRAY)
+                                .append(new LiteralText("buildin/" + preset.id.substring(1)).formatted(Formatting.RED))
+                                .append(new LiteralText(")").formatted(Formatting.GRAY))));
             } else {
-                text.append(Text.literal(preset.name)
+                text.append(new LiteralText(preset.name)
                         .formatted(Formatting.WHITE)
-                        .append(Text.literal(" (").formatted(Formatting.GRAY)
-                                .append(Text.literal(preset.id).formatted(Formatting.BLUE))
-                                .append(Text.literal(")").formatted(Formatting.GRAY))));
+                        .append(new LiteralText(" (").formatted(Formatting.GRAY)
+                                .append(new LiteralText(preset.id).formatted(Formatting.BLUE))
+                                .append(new LiteralText(")").formatted(Formatting.GRAY))));
             }
 
             if (iterator.hasNext()) {
-                text.append(Text.literal(", "));
+                text.append(new LiteralText(", "));
             }
         }
 
@@ -163,16 +164,16 @@ public class GeneralCommands {
 
     private static int reloadConfig(CommandContext<ServerCommandSource> context) {
         if (ConfigManager.loadConfig()) {
-            context.getSource().sendFeedback(Text.literal("Reloaded config!"), false);
+            context.getSource().sendFeedback(new LiteralText("Reloaded config!"), false);
         } else {
-            context.getSource().sendError(Text.literal("Error accrued while reloading config!").formatted(Formatting.RED));
+            context.getSource().sendError(new LiteralText("Error accrued while reloading config!").formatted(Formatting.RED));
         }
         return 1;
     }
 
     private static int about(CommandContext<ServerCommandSource> context) {
-        //context.getSource().sendFeedback(Text.literal("Armor Stand Editor - ").formatted(Formatting.GOLD).append(Text.literal(ArmorStandEditorMod.VERSION).formatted(Formatting.WHITE)), false);
-        for (var t : context.getSource().isExecutedByPlayer() ? GenericModInfo.getAboutFull() : GenericModInfo.getAboutConsole()) {
+        //context.getSource().sendFeedback(new LiteralText("Armor Stand Editor - ").formatted(Formatting.GOLD).append(new LiteralText(ArmorStandEditorMod.VERSION).formatted(Formatting.WHITE)), false);
+        for (var t : context.getSource().getEntity() instanceof ServerPlayerEntity ? GenericModInfo.getAboutFull() : GenericModInfo.getAboutConsole()) {
             context.getSource().sendFeedback(t, false);
         }
 
