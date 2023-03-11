@@ -16,14 +16,15 @@ By using right mouse button (use/place action), you can enter/activate action bo
 in its name). To change angle/value of movement/pose related options, sneak while having it selected and use scroll
 to change value up or down.
 
-![](https://imgur.com/rXyXQBQ.png)
+![](https://i.imgur.com/rXyXQBQ.png)
 
 To go back you can click the barrier/icon on right side.
 To close it completely, press Q (drop item).
 
-![](https://imgur.com/uDIaSBm.gif)
+![](https://i.imgur.com/uDIaSBm.gif)
 
 ## Showcase
+- Showcase by Patbox: https://www.youtube.com/watch?v=E7eCwKVZeqY
 - Polish showcase by Patbox: https://www.youtube.com/watch?v=6aqd5d9NkeU
 
 ## Config
