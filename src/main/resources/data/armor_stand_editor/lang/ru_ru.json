@@ -1,0 +1,147 @@
+{
+  "gui.armor_stand_editor.editor_title": "Редактор стойки для брони",
+
+  "gui.armor_stand_editor.inventory_title": "Инвентарь стойки для брони",
+
+  "gui.armor_stand_editor.rename_title": "Переименовать стойку для брони",
+
+  "gui.armor_stand_editor.clearname": "Удалить имя",
+
+  "gui.armor_stand_editor.setname": "Изменить название на: %s",
+  "gui.armor_stand_editor.close": "Закрыть",
+
+  "gui.armor_stand_editor.cantlockslots": "Вы не можете заблокировать слоты!",
+
+  "gui.armor_stand_editor.preset_author": "Создано: %s",
+  "gui.armor_stand_editor.presets_title": "Пресеты стойки для брони",
+
+  "text.armor_stand_editor.message.copied": "Стойка для брони скопирована!",
+  "text.armor_stand_editor.message.pasted": "Сохранённые настройки применены",
+
+  "command.armor_stand_editor.give": "Инструмент стойки для брони выдан %s",
+
+  "command.armor_stand_editor.save-preset.success": "Пресет %s (%s) успешно сохранён!",
+  "command.armor_stand_editor.save-preset.fail": "Сначала нужно скопировать стойку для брони!",
+  "command.armor_stand_editor.invalid-id": "Ваш id (%s) содержит недопустимые символы! Допустимыми символами являются только буквы от a до z, цифры от 0 до 9 и _!",
+
+  "command.armor_stand_editor.delete-preset.success": "Пресет %s успешно удалён!",
+  "command.armor_stand_editor.delete-preset.fail": "Невозможно удалить пресет %s!",
+
+  "command.armor_stand_editor.switchui.main": "Стиль интерфейса переключён на основной!",
+  "command.armor_stand_editor.switchui.legacy": "Стиль интерфейса переключён на старый!",
+
+
+
+  "gui.armor_stand_editor.name.if-fixed": "Исправлено: %s",
+  "gui.armor_stand_editor.name.if-invisible": "Невидимость: %s",
+  "gui.armor_stand_editor.name.if-rotate": "Поворот: %s",
+  "gui.armor_stand_editor.item_frame_title": "Редактор рамок",
+
+
+  "gui.armor_stand_editor.entry.type.move": "Переместить",
+  "gui.armor_stand_editor.entry.type.pose": "Изменить позу",
+  "gui.armor_stand_editor.entry.type.inventory": "Инвентарь",
+  "gui.armor_stand_editor.entry.type.rename": "Переименовать",
+  "gui.armor_stand_editor.entry.type.properties": "Свойства",
+  "gui.armor_stand_editor.entry.type.copying": "Копирование/Пресеты",
+
+  "gui.armor_stand_editor.entry.part.head": "Поза головы",
+  "gui.armor_stand_editor.entry.part.body": "Поза тела",
+  "gui.armor_stand_editor.entry.part.left_arm": "Поза левой руки",
+  "gui.armor_stand_editor.entry.part.right_arm": "Поза правой руки",
+  "gui.armor_stand_editor.entry.part.left_leg": "Поза левой ноги",
+  "gui.armor_stand_editor.entry.part.right_leg": "Поза правой ноги",
+  "gui.armor_stand_editor.action.pose.flip": "Поза переворота",
+  "gui.armor_stand_editor.action.pose.reset": "Сброс позы",
+
+
+  "gui.armor_stand_editor.action.move.x": "Перемещать по оси X",
+  "gui.armor_stand_editor.action.move.y": "Перемещать по оси Y",
+  "gui.armor_stand_editor.action.move.z": "Перемещать по оси Z",
+  "gui.armor_stand_editor.action.move.look": "Двигать вперёд (%s)",
+
+  "gui.armor_stand_editor.action.move.rotate": "Повернуть на %s градусов",
+  "gui.armor_stand_editor.action.move.rotate.set": "Текущее значение: %s градусов",
+  "gui.armor_stand_editor.action.move.rotate.copy_player": "Повернуть туда, куда смотришь ты",
+  "gui.armor_stand_editor.action.move.teleport": "Телпортировать к себе",
+  "gui.armor_stand_editor.action.move": "Переместить на %s блоков на %s",
+  "gui.armor_stand_editor.action.move.set": "Текущее значение: %s блоков",
+
+  "gui.armor_stand_editor.action.rotate.angle.pitch": "Первый тип вращения",
+  "gui.armor_stand_editor.action.rotate.angle.yaw": "Второй тип вращения",
+  "gui.armor_stand_editor.action.rotate.angle.roll": "Третий тип вращения",
+  "gui.armor_stand_editor.action.rotate": "Повернуть на %s градусов",
+  "gui.armor_stand_editor.action.rotate.set": "Текущее значение: %s градусов",
+
+
+  "gui.armor_stand_editor.property.invisible": "Невидимость: %s",
+  "gui.armor_stand_editor.property.no_gravity": "Без гравитации: %s",
+  "gui.armor_stand_editor.property.arms": "Показывать руки: %s",
+  "gui.armor_stand_editor.property.hide_base": "Скрывать основание: %s",
+  "gui.armor_stand_editor.property.small": "Маленький: %s",
+
+  "gui.armor_stand_editor.action.copy": "Копировать настройки",
+  "gui.armor_stand_editor.action.paste": "Вставить настройки",
+  "gui.armor_stand_editor.action.paste.inventory": "Вставить настройки и инвентарь",
+  "gui.armor_stand_editor.entry.presets": "Пресеты",
+
+
+  "text.armor_stand_editor.presets.selected": "Выбран пресет \"%s\". Примените его с помощью действия \"Вставить\"",
+  "text.armor_stand_editor.open_info": "Открыт редактор стоек для брони! Закройте его, нажав \"%s\"!",
+
+
+  "text.armor_stand_editor.dir.south": "Юг",
+  "text.armor_stand_editor.dir.north": "Север",
+  "text.armor_stand_editor.dir.west": "Запад",
+  "text.armor_stand_editor.dir.east": "Восток",
+  "text.armor_stand_editor.dir.up": "Вверх",
+  "text.armor_stand_editor.dir.down": "Вниз",
+
+  "text.armor_stand_editor.enabled": "Включено",
+  "text.armor_stand_editor.disabled": "Выключено",
+
+  "gui.armor_stand_editor.back": "Назад",
+
+
+  "text.armor_stand_editor.message.copied.legacy": "Стойка для брони скопирована! Изменен на режим "Вставить"",
+
+  "gui.armor_stand_editor.name.legacy.x": "Изменить на ось X",
+  "gui.armor_stand_editor.name.legacy.y": "Изменить на ось Y",
+  "gui.armor_stand_editor.name.legacy.z": "Изменить на ось Z",
+  "gui.armor_stand_editor.name.legacy.head": "Повернуть голову",
+  "gui.armor_stand_editor.name.legacy.body": "Повернуть тело",
+  "gui.armor_stand_editor.name.legacy.left_arm": "Повернуть левую руку",
+  "gui.armor_stand_editor.name.legacy.right_arm": "Повернуть правую руку",
+  "gui.armor_stand_editor.name.legacy.left_leg": "Повернуть левую ногу",
+  "gui.armor_stand_editor.name.legacy.right_leg": "Повернуть правую ногу",
+  "gui.armor_stand_editor.name.legacy.small": "Маленькое изменение",
+  "gui.armor_stand_editor.name.legacy.medium": "Средние изменение",
+  "gui.armor_stand_editor.name.legacy.big": "Большое изменение",
+  "gui.armor_stand_editor.name.legacy.custom_change": "Кастомное изменение",
+  "gui.armor_stand_editor.name.legacy.rotate": "Поворачивать",
+
+  "gui.armor_stand_editor.legacy.blocksdeg": "%s blocks / %s deg",
+  "gui.armor_stand_editor.name.legacy.move": "Передвигать",
+  "gui.armor_stand_editor.name.legacy.inventory": "Открытый инвентарь",
+  "gui.armor_stand_editor.name.legacy.rename": "Переменовать",
+
+  "gui.armor_stand_editor.name.legacy.reset_pose": "Сброс позы",
+  "gui.armor_stand_editor.name.legacy.flip_pose": "Поза переворота",
+
+  "gui.armor_stand_editor.name.legacy.size": "Размер",
+  "gui.armor_stand_editor.name.legacy.gravity": "Гравитация",
+  "gui.armor_stand_editor.name.legacy.visibility": "Невидимость",
+  "gui.armor_stand_editor.name.legacy.arms": "Руки",
+  "gui.armor_stand_editor.name.legacy.base": "Основание",
+
+  "gui.armor_stand_editor.name.legacy.copy": "Скопировать",
+  "gui.armor_stand_editor.name.legacy.paste": "Вставить",
+
+  "gui.armor_stand_editor.name.legacy.move": "Передвигать",
+  "gui.armor_stand_editor.name.legacy.inventory": "Открыть инвентарь",
+  "gui.armor_stand_editor.name.legacy.rename": "Переименовать",
+  "gui.armor_stand_editor.name.legacy.presets": "Пресеты",
+
+  "text.armor_stand_editor.about.version": "Версия: %s",
+  "text.armor_stand_editor.about.contributors": "Участники"
+}
