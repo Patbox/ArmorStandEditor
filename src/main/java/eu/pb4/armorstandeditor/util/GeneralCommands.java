@@ -68,7 +68,7 @@ public class GeneralCommands {
     private static int switchUi(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         boolean current = LegacyPlayerExt.useLegacy(context.getSource().getPlayerOrThrow());
         PlayerDataApi.setGlobalDataFor(context.getSource().getPlayer(), LegacyPlayerExt.LEGACY_UI, NbtByte.of(!current));
-        context.getSource().sendFeedback(TextUtils.command("switchui." + (current ? "main" : "legacy")), false);
+        context.getSource().sendFeedback(() -> TextUtils.command("switchui." + (current ? "main" : "legacy")), false);
         return 0;
     }
 
@@ -81,7 +81,7 @@ public class GeneralCommands {
         String name = context.getArgument("name", String.class);
 
         if (ConfigManager.INVALID_CHAR.matcher(id).matches()) {
-            context.getSource().sendFeedback(TextUtils.command("invalid-id", id).formatted(Formatting.RED), false);
+            context.getSource().sendFeedback(() -> TextUtils.command("invalid-id", id).formatted(Formatting.RED), false);
             return 0;
         }
 
@@ -91,9 +91,9 @@ public class GeneralCommands {
 
             ConfigManager.savePreset(preset);
 
-            context.getSource().sendFeedback(TextUtils.command("save-preset.success", name, id), false);
+            context.getSource().sendFeedback(() -> TextUtils.command("save-preset.success", name, id), false);
         } else {
-            context.getSource().sendFeedback(TextUtils.command("save-preset.fail", name, id).formatted(Formatting.RED), false);
+            context.getSource().sendFeedback(() -> TextUtils.command("save-preset.fail", name, id).formatted(Formatting.RED), false);
         }
 
         return 0;
@@ -103,14 +103,14 @@ public class GeneralCommands {
         String id = context.getArgument("id", String.class);
 
         if (ConfigManager.INVALID_CHAR.matcher(id).matches()) {
-            context.getSource().sendFeedback(TextUtils.command("invalid-id", id).formatted(Formatting.RED), false);
+            context.getSource().sendFeedback(() -> TextUtils.command("invalid-id", id).formatted(Formatting.RED), false);
             return 0;
         }
 
         if (ConfigManager.deletePreset(id)) {
-            context.getSource().sendFeedback(TextUtils.command("delete-preset.success", id), false);
+            context.getSource().sendFeedback(() -> TextUtils.command("delete-preset.success", id), false);
         } else {
-            context.getSource().sendFeedback(TextUtils.command("delete-preset.fail", id).formatted(Formatting.RED), false);
+            context.getSource().sendFeedback(() -> TextUtils.command("delete-preset.fail", id).formatted(Formatting.RED), false);
         }
 
         return 0;
@@ -142,7 +142,7 @@ public class GeneralCommands {
             }
         }
 
-        context.getSource().sendFeedback(text, false);
+        context.getSource().sendFeedback(() -> text, false);
 
         return 0;
     }
@@ -154,7 +154,7 @@ public class GeneralCommands {
 
         for (ServerPlayerEntity player : entitySelector.getPlayers(context.getSource())) {
             player.getInventory().offerOrDrop(itemStack);
-            context.getSource().sendFeedback(TextUtils.command("give", player.getDisplayName()), true);
+            context.getSource().sendFeedback(() -> TextUtils.command("give", player.getDisplayName()), true);
         }
 
 
@@ -163,7 +163,7 @@ public class GeneralCommands {
 
     private static int reloadConfig(CommandContext<ServerCommandSource> context) {
         if (ConfigManager.loadConfig()) {
-            context.getSource().sendFeedback(Text.literal("Reloaded config!"), false);
+            context.getSource().sendFeedback(() -> Text.literal("Reloaded config!"), false);
         } else {
             context.getSource().sendError(Text.literal("Error accrued while reloading config!").formatted(Formatting.RED));
         }
@@ -173,7 +173,7 @@ public class GeneralCommands {
     private static int about(CommandContext<ServerCommandSource> context) {
         //context.getSource().sendFeedback(Text.literal("Armor Stand Editor - ").formatted(Formatting.GOLD).append(Text.literal(ArmorStandEditorMod.VERSION).formatted(Formatting.WHITE)), false);
         for (var t : context.getSource().isExecutedByPlayer() ? GenericModInfo.getAboutFull() : GenericModInfo.getAboutConsole()) {
-            context.getSource().sendFeedback(t, false);
+            context.getSource().sendFeedback(() -> t, false);
         }
 
         return 1;
