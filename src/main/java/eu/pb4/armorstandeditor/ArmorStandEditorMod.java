@@ -35,6 +35,10 @@ public class ArmorStandEditorMod implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             ConfigManager.loadConfig();
         });
+
+        ServerLifecycleEvents.SERVER_STARTED.register((s) -> {
+            CardboardWarning.checkAndAnnounce();
+        });
         GeneralCommands.register();
         LegacyEvents.registerEvents();
 
