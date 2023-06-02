@@ -14,6 +14,7 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -30,7 +31,8 @@ import java.util.List;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
-    @Shadow public ServerPlayNetworkHandler networkHandler;
+    @Shadow
+    public ServerPlayNetworkHandler networkHandler;
 
     @Unique
     private long ase$tickTimer = 0;
@@ -53,7 +55,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 ase$tickTimer++;
                 if (ase$tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
                     ase$tickTimer = 0;
-                    List<ArmorStandEntity> armorStands = this.world.getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
+                    List<ArmorStandEntity> armorStands = this.getWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
                     ParticleEffect particleEffect = new DustParticleEffect(new Vector3f(0.8f, 0.2f, 0.2f), 1f);
 
@@ -66,7 +68,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                                 0.2f, 0.2f, 0.2f, 0.1f, 3));
                     }
 
-                    List<ItemFrameEntity> itemFrames = this.world.getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
+                    List<ItemFrameEntity> itemFrames = this.getWorld().getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
 
                     ParticleEffect particleEffect2 = new DustParticleEffect(new Vector3f(0.2f, 0.8f, 0.2f), 1f);
 
@@ -80,7 +82,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                     }
                 }
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
