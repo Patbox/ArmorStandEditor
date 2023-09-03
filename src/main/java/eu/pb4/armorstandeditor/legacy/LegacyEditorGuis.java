@@ -95,7 +95,11 @@ public class LegacyEditorGuis {
             }
             @Override
             public boolean onAnyClick(int index, ClickType type, SlotActionType action) {
-                return super.onAnyClick(index, type, action) && !entity.isRemoved();
+                if(entity.isRemoved()){
+                    close();
+                    return false;
+                }
+                return super.onAnyClick(index, type, action);
             }
         };
 
