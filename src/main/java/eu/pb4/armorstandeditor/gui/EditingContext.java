@@ -19,8 +19,6 @@ public final class EditingContext {
     public EditingContext(ServerPlayerEntity player, ArmorStandEntity armorStand) {
         this.player = player;
         this.armorStand = armorStand;
-
-        //this.player.networkHandler.sendPacket(new );
     }
 
     public void close() {

@@ -47,11 +47,19 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
 
     @Override
     public ItemStack getStack(int slot) {
+        if (entity.isRemoved()) {
+            return ItemStack.EMPTY;
+        }
+
         return entity.getEquippedStack(getEquipmentSlot(slot));
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
+        if (entity.isRemoved()) {
+            return ItemStack.EMPTY;
+        }
+
         ItemStack result = Inventories.splitStack(this.getItems(), slot, amount);
         if (!result.isEmpty()) {
             markDirty();
@@ -61,11 +69,18 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
 
     @Override
     public ItemStack removeStack(int slot) {
+        if (entity.isRemoved()) {
+            return ItemStack.EMPTY;
+        }
+
         return Inventories.removeStack(this.getItems(), slot);
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
+        if (entity.isRemoved()) {
+            return;
+        }
         this.entity.equipStack(getEquipmentSlot(slot), stack);
     }
 

@@ -16,7 +16,6 @@ public abstract class LegacyServerPlayerEntityMixin extends PlayerEntity impleme
     private EditorActions aselegacy$armorStandEditorAction = EditorActions.MOVE;
     private float aselegacy$armorStandEditorPower = 1;
     private int aselegacy$armorStandEditorXYZ = 0;
-    private ArmorStandData aselegacy$armorStandEditorData = null;
 
     public LegacyServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -44,13 +43,5 @@ public abstract class LegacyServerPlayerEntityMixin extends PlayerEntity impleme
 
     public void aselegacy$setArmorStandEditorXYZ(int xyz) {
         this.aselegacy$armorStandEditorXYZ = xyz;
-    }
-
-    public ArmorStandData aselegacy$getArmorStandEditorData() {
-        return this.aselegacy$armorStandEditorData;
-    }
-
-    public void aselegacy$setArmorStandEditorData(ArmorStandData data) {
-        this.aselegacy$armorStandEditorData = data;
     }
 }

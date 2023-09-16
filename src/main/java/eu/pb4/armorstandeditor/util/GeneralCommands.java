@@ -75,7 +75,7 @@ public class GeneralCommands {
     private static int savePreset(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
 
-        LegacyPlayerExt spei = (LegacyPlayerExt) player;
+        var spei = (PlayerExt) player;
 
         String id = context.getArgument("id", String.class);
         String name = context.getArgument("name", String.class);
@@ -85,9 +85,9 @@ public class GeneralCommands {
             return 0;
         }
 
-        if (spei.aselegacy$getArmorStandEditorData() != null) {
+        if (spei.ase$getArmorStandEditorData() != null) {
             ArmorStandPreset preset = new ArmorStandPreset(id, name, player.getGameProfile().getName());
-            preset.fromData(spei.aselegacy$getArmorStandEditorData());
+            preset.fromData(spei.ase$getArmorStandEditorData());
 
             ConfigManager.savePreset(preset);
 

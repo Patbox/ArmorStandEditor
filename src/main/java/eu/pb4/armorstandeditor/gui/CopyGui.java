@@ -1,8 +1,8 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.legacy.LegacyEditorGuis;
-import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
+import eu.pb4.armorstandeditor.util.PlayerExt;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 
@@ -15,26 +15,26 @@ public class CopyGui extends BaseGui {
 
     @Override
     protected void buildUi() {
-        var spei = (LegacyPlayerExt) this.player;
+        var spei = (PlayerExt) this.player;
 
         this.setSlot(0,
                 baseElement(Items.SLIME_BALL, "action.copy", false)
                         .setCallback((x, y, z, c) -> {
                             this.playClickSound();
 
-                            spei.aselegacy$setArmorStandEditorData(new ArmorStandData(this.context.armorStand));
+                            spei.ase$setArmorStandEditorData(new ArmorStandData(this.context.armorStand));
                             player.sendMessage(Text.translatable("text.armor_stand_editor.message.copied"), true);
                             this.rebuildUi();
                         })
         );
 
-        if (spei.aselegacy$getArmorStandEditorData() != null) {
+        if (spei.ase$getArmorStandEditorData() != null) {
             this.setSlot(1,
                     baseElement(Items.MAGMA_CREAM, "action.paste", false)
                             .setCallback((x, y, z, c) -> {
                                 this.playClickSound();
 
-                                spei.aselegacy$getArmorStandEditorData().apply(this.context.armorStand, false);
+                                spei.ase$getArmorStandEditorData().apply(this.context.armorStand, false);
                                 player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
                             })
             );
@@ -46,7 +46,7 @@ public class CopyGui extends BaseGui {
                                     if (this.player.isCreative()) {
                                         this.playClickSound();
 
-                                        spei.aselegacy$getArmorStandEditorData().apply(this.context.armorStand, true);
+                                        spei.ase$getArmorStandEditorData().apply(this.context.armorStand, true);
                                         player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
                                     }
                                 })

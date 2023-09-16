@@ -37,7 +37,7 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
+@Deprecated
 public class LegacyEditorGuis {
     public static void openRenaming(ServerPlayerEntity player, Entity entity, Runnable callback) {
         ItemStack stack = Items.MAGMA_CREAM.getDefaultStack();
@@ -48,7 +48,18 @@ public class LegacyEditorGuis {
 
         AnvilInputGui gui = new AnvilInputGui(player, false) {
             @Override
+            public void onTick() {
+                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 48 * 48) {
+                    this.close();
+                }
+                super.onTick();
+            }
+
+            @Override
             public void onInput(String input) {
+                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 48 * 48) {
+                    return;
+                }
                 super.onInput(input);
                 stack2.setCustomName(TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
                 this.setSlot(2, stack2, (index, type, action) -> {
@@ -89,6 +100,14 @@ public class LegacyEditorGuis {
 
     public static void openInventoryEditor(ServerPlayerEntity player, LivingEntity entity, Runnable callback) {
         SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X2, player, false) {
+            @Override
+            public void onTick() {
+                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 48 * 48) {
+                    this.close();
+                }
+                super.onTick();
+            }
+
             @Override
             public void onClose() {
                 callback.run();

@@ -4,6 +4,8 @@ package eu.pb4.armorstandeditor.mixin;
 import com.mojang.authlib.GameProfile;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.gui.BaseGui;
+import eu.pb4.armorstandeditor.util.ArmorStandData;
+import eu.pb4.armorstandeditor.util.PlayerExt;
 import eu.pb4.sgui.api.GuiHelpers;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -14,7 +16,6 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -30,12 +31,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin extends PlayerEntity {
+public abstract class ServerPlayerEntityMixin extends PlayerEntity implements PlayerExt {
     @Shadow
     public ServerPlayNetworkHandler networkHandler;
 
     @Unique
     private long ase$tickTimer = 0;
+
+    @Unique
+    private ArmorStandData ase$armorStandEditorData = null;
+
 
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -46,6 +51,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         if (GuiHelpers.getCurrentGui((ServerPlayerEntity) (Object) this) instanceof BaseGui baseGui) {
             baseGui.close();
         }
+    }
+
+    public ArmorStandData ase$getArmorStandEditorData() {
+        return this.ase$armorStandEditorData;
+    }
+
+    public void ase$setArmorStandEditorData(ArmorStandData data) {
+        this.ase$armorStandEditorData = data;
     }
 
     @Inject(method = "playerTick", at = @At("HEAD"))

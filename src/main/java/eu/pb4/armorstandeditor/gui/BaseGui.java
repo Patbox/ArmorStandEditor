@@ -10,7 +10,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundCategory;
@@ -20,10 +19,12 @@ import net.minecraft.text.MutableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseGui extends HotbarGui {
+    @Nullable
     protected EditingContext context;
-    private int currentBlockClickTick;
+    private final int currentBlockClickTick;
 
     public BaseGui(EditingContext context, int selectedSlot) {
         super(context.player);
@@ -35,14 +36,19 @@ public abstract class BaseGui extends HotbarGui {
 
     @Override
     public void onTick() {
-        if (this.context != null && (this.context.armorStand.isRemoved() || this.context.armorStand.distanceTo(this.player) > 48)) {
+        this.checkClosed();
+        super.onTick();
+    }
+
+    private void checkClosed() {
+        if (this.context != null && (this.context.armorStand.isRemoved() || this.context.armorStand.squaredDistanceTo(this.player) > 48 * 48)) {
             this.close();
         }
-        super.onTick();
     }
 
     @Override
     public boolean onClickBlock(BlockHitResult hitResult) {
+        this.checkClosed();
         if (this.player.age - this.currentBlockClickTick >= 5) {
             return super.onClickBlock(hitResult);
         }
@@ -51,6 +57,7 @@ public abstract class BaseGui extends HotbarGui {
 
     @Override
     public void onClickItem() {
+        this.checkClosed();
         if (this.player.age - this.currentBlockClickTick >= 5) {
             super.onClickItem();
         }

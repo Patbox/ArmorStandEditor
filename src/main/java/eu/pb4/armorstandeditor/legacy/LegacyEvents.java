@@ -27,7 +27,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
 import xyz.nucleoid.disguiselib.api.EntityDisguise;
-
+@Deprecated
 public class LegacyEvents {
     public static void registerEvents() {
         if (FabricLoader.getInstance().isModLoaded("disguiselib")) {
