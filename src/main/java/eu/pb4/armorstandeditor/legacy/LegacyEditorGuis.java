@@ -93,6 +93,14 @@ public class LegacyEditorGuis {
             public void onClose() {
                 callback.run();
             }
+            @Override
+            public boolean onAnyClick(int index, ClickType type, SlotActionType action) {
+                if(entity.isRemoved()){
+                    close();
+                    return false;
+                }
+                return super.onAnyClick(index, type, action);
+            }
         };
 
         ArmorStandInventory inventory = new ArmorStandInventory(entity);
