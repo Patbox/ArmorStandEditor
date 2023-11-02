@@ -273,7 +273,7 @@ public class LegacyEditorGuis {
         itemStack.setCustomName(TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
 
         NbtList lore = new NbtList();
-        lore.add(NbtString.of(Text.Serializer.toJson(
+        lore.add(NbtString.of(Text.Serialization.toJsonString(
                 TextUtils.gui("legacy.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
 
@@ -299,7 +299,7 @@ public class LegacyEditorGuis {
         float power = spe.aselegacy$getArmorStandEditorPower();
 
         NbtList lore = new NbtList();
-        lore.add(NbtString.of(Text.Serializer.toJson(
+        lore.add(NbtString.of(Text.Serialization.toJsonString(
                 TextUtils.gui("legacy.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
         itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
