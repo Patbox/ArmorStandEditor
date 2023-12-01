@@ -78,6 +78,7 @@ public class ArmorStandData {
             armorStand.updatePositionAndAngles(posX, posY, posZ, this.yaw, 0);
         }
         armorStand.setNoGravity(this.noGravity);
+        armorStand.noClip = this.noGravity;
         asea.callSetHideBasePlate(this.hidePlate);
         asea.callSetSmall(this.small);
         asea.callSetShowArms(this.showArms);
