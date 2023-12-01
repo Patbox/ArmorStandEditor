@@ -68,7 +68,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
                 ase$tickTimer++;
                 if (ase$tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
                     ase$tickTimer = 0;
-                    List<ArmorStandEntity> armorStands = this.getWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
+                    List<ArmorStandEntity> armorStands = this.getWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> true);
 
                     ParticleEffect particleEffect = new DustParticleEffect(new Vector3f(0.8f, 0.2f, 0.2f), 1f);
 
@@ -81,7 +81,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
                                 0.2f, 0.2f, 0.2f, 0.1f, 3));
                     }
 
-                    List<ItemFrameEntity> itemFrames = this.getWorld().getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10), this.getBlockPos().add(-10, -10, -10)), entity -> true);
+                    List<ItemFrameEntity> itemFrames = this.getWorld().getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> true);
 
                     ParticleEffect particleEffect2 = new DustParticleEffect(new Vector3f(0.2f, 0.8f, 0.2f), 1f);
 
