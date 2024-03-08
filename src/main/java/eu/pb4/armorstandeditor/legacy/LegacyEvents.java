@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -47,7 +48,7 @@ public class LegacyEvents {
                         && player instanceof ServerPlayerEntity
                         && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))) {
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND && Permissions.check(player, "armor_stand_editor.modify_disguised", 2)) {
                         LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), 1, entity);
                         return ActionResult.SUCCESS;
@@ -75,7 +76,7 @@ public class LegacyEvents {
                         && player instanceof ServerPlayerEntity
                         && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))) {
                     if (disguise.isDisguised() && disguise.getDisguiseType() == EntityType.ARMOR_STAND) {
                         LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) disguise.getDisguiseEntity(), -1, entity);
                         return ActionResult.SUCCESS;
@@ -103,7 +104,7 @@ public class LegacyEvents {
                         && player instanceof ServerPlayerEntity
                         && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))) {
 
                     LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, 1, null);
 
@@ -128,7 +129,7 @@ public class LegacyEvents {
                         && player instanceof ServerPlayerEntity
                         && EditorActions.OPEN_EDITOR.canUse(player)
                         && itemStack.getItem() == config.armorStandTool
-                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                        && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))) {
                     LegacyEvents.modifyArmorStand((ServerPlayerEntity) player, (ArmorStandEntity) entity, -1, null);
                     return ActionResult.SUCCESS;
                 }
@@ -152,7 +153,7 @@ public class LegacyEvents {
             if (player instanceof ServerPlayerEntity
                     && itemStack.getItem() == config.armorStandTool
                     && EditorActions.OPEN_EDITOR.canUse(player)
-                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))) {
                 LegacyEditorGuis.openGui((ServerPlayerEntity) player);
                 return TypedActionResult.success(player.getMainHandStack());
             }
@@ -172,7 +173,7 @@ public class LegacyEvents {
                     && player instanceof ServerPlayerEntity
                     && EditorActions.OPEN_ITEM_FRAME_EDITOR.canUse(player)
                     && itemStack.getItem() == config.armorStandTool
-                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))) {
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))) {
 
                 LegacyEditorGuis.openItemFrameEditor((ServerPlayerEntity) player, (ItemFrameEntity) entity);
                 return ActionResult.SUCCESS;
@@ -283,13 +284,13 @@ public class LegacyEvents {
                             realEntity.setCustomName(base.customName);
                         }
 
-                        if (player.isCreative() && realEntity instanceof LivingEntity) {
-                            realEntity.equipStack(EquipmentSlot.HEAD, base.headItem);
-                            realEntity.equipStack(EquipmentSlot.CHEST, base.chestItem);
-                            realEntity.equipStack(EquipmentSlot.LEGS, base.legsItem);
-                            realEntity.equipStack(EquipmentSlot.FEET, base.feetItem);
-                            realEntity.equipStack(EquipmentSlot.MAINHAND, base.mainHandItem);
-                            realEntity.equipStack(EquipmentSlot.OFFHAND, base.offhandItem);
+                        if (player.isCreative() && realEntity instanceof LivingEntity livingEntity) {
+                            livingEntity.equipStack(EquipmentSlot.HEAD, base.headItem);
+                            livingEntity.equipStack(EquipmentSlot.CHEST, base.chestItem);
+                            livingEntity.equipStack(EquipmentSlot.LEGS, base.legsItem);
+                            livingEntity.equipStack(EquipmentSlot.FEET, base.feetItem);
+                            livingEntity.equipStack(EquipmentSlot.MAINHAND, base.mainHandItem);
+                            livingEntity.equipStack(EquipmentSlot.OFFHAND, base.offhandItem);
                         }
                     }
 

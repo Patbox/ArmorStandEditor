@@ -12,6 +12,7 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtByte;
 import net.minecraft.server.command.CommandManager;
@@ -149,7 +150,7 @@ public class GeneralCommands {
 
     private static int giveTool(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ItemStack itemStack = ConfigManager.getConfig().armorStandTool.getDefaultStack();
-        itemStack.getOrCreateNbt().putBoolean("isArmorStandEditor", true);
+        itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().putBoolean("isArmorStandEditor", true);
         EntitySelector entitySelector = context.getArgument("targets", EntitySelector.class);
 
         for (ServerPlayerEntity player : entitySelector.getPlayers(context.getSource())) {
