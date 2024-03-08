@@ -14,6 +14,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class ArmorStandEditorMod implements ModInitializer {
             if (player instanceof ServerPlayerEntity
                     && EditorActions.OPEN_EDITOR.canUse(player)
                     && itemStack.getItem() == config.armorStandTool
-                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.getOrCreateNbt().getBoolean("isArmorStandEditor"))
+                    && (!config.configData.requireIsArmorStandEditorTag || itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().getBoolean("isArmorStandEditor"))
                     && CommonProtection.canInteractEntity(world, entity, player.getGameProfile(), player)
             ) {
 
