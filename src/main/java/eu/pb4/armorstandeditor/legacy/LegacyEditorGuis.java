@@ -232,7 +232,7 @@ public class LegacyEditorGuis {
 
         gui.setSlot(42, new GuiElementBuilder(Items.MOJANG_BANNER_PATTERN)
                 .setName(TextUtils.gui("name.legacy.presets").setStyle(Style.EMPTY.withItalic(false)))
-                .hideFlags()
+                .hideDefaultTooltip()
                 .setCallback((x, y, z) -> openPresetSelector(player, () -> LegacyEditorGuis.openGui(player))
                 ));
     }
