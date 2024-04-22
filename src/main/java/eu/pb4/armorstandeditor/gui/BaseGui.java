@@ -78,7 +78,7 @@ public abstract class BaseGui extends HotbarGui {
         this.buildUi();
         this.setSlot(8, new GuiElementBuilder(Items.BARRIER)
                 .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back"))
-                .hideFlags()
+                .hideDefaultTooltip()
                 .setCallback((x, y, z, c) -> {
                     this.playClickSound();
                     if (this.context == null || this.context.interfaceList.isEmpty()) {
@@ -133,7 +133,7 @@ public abstract class BaseGui extends HotbarGui {
     protected GuiElementBuilder baseElement(Item item, String name, boolean selected) {
         var builder = new GuiElementBuilder(item)
                 .setName(TextUtils.gui(name).formatted(Formatting.WHITE))
-                .hideFlags();
+                .hideDefaultTooltip();
 
         if (selected) {
             builder.glow();
@@ -145,7 +145,7 @@ public abstract class BaseGui extends HotbarGui {
     protected GuiElementBuilder baseElement(Item item, MutableText text, boolean selected) {
         var builder = new GuiElementBuilder(item)
                 .setName(text.formatted(Formatting.WHITE))
-                .hideFlags();
+                .hideDefaultTooltip();
 
         if (selected) {
             builder.glow();
@@ -157,7 +157,7 @@ public abstract class BaseGui extends HotbarGui {
     protected GuiElementBuilder switchElement(Item item, String name, SwitchableUi ui) {
         return new GuiElementBuilder(item)
                 .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
-                .hideFlags()
+                .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));
     }
 

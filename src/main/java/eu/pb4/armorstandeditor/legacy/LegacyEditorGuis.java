@@ -15,6 +15,8 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -41,10 +43,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LegacyEditorGuis {
     public static void openRenaming(ServerPlayerEntity player, Entity entity, Runnable callback) {
         ItemStack stack = Items.MAGMA_CREAM.getDefaultStack();
-        stack.setCustomName(TextUtils.gui("clearname").setStyle(Style.EMPTY.withItalic(false)));
+        stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("clearname").setStyle(Style.EMPTY.withItalic(false)));
+
 
         ItemStack stack2 = Items.SLIME_BALL.getDefaultStack();
-        stack2.setCustomName(TextUtils.gui("setname").setStyle(Style.EMPTY.withItalic(false)));
+        stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("setname").setStyle(Style.EMPTY.withItalic(false)));
 
         AnvilInputGui gui = new AnvilInputGui(player, false) {
             @Override
@@ -61,7 +64,7 @@ public class LegacyEditorGuis {
                     return;
                 }
                 super.onInput(input);
-                stack2.setCustomName(TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
+                stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
                 this.setSlot(2, stack2, (index, type, action) -> {
                     entity.setCustomName(Text.literal(this.getInput()));
                     entity.setCustomNameVisible(true);
@@ -149,7 +152,7 @@ public class LegacyEditorGuis {
 
                             ItemStack stack = new ItemStack(isUnlocked2 ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                            stack.setCustomName(Text.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                            stack.set(DataComponentTypes.CUSTOM_NAME, Text.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                     .setStyle(Style.EMPTY.withItalic(false)));
 
                             ((GuiElement) gui.getSlot(index)).setItemStack(stack);
@@ -229,19 +232,17 @@ public class LegacyEditorGuis {
 
         gui.setSlot(42, new GuiElementBuilder(Items.MOJANG_BANNER_PATTERN)
                 .setName(TextUtils.gui("name.legacy.presets").setStyle(Style.EMPTY.withItalic(false)))
-                .hideFlags()
+                .hideDefaultTooltip()
                 .setCallback((x, y, z) -> openPresetSelector(player, () -> LegacyEditorGuis.openGui(player))
                 ));
     }
 
     private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, int xyz) {
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+        itemStack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
 
         if (((LegacyPlayerExt) player).aselegacy$getArmorStandEditorXYZ() == xyz) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
+            itemStack.set(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
         }
 
         gui.setSlot(index, itemStack, (index2, type, actionType) -> {
@@ -255,12 +256,10 @@ public class LegacyEditorGuis {
         }
 
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+        itemStack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
 
         if (((LegacyPlayerExt) player).aselegacy$getArmorStandEditorAction() == action) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
+            itemStack.set(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
         }
 
         gui.setSlot(index, itemStack, (index2, type, actionType) -> {
@@ -270,20 +269,14 @@ public class LegacyEditorGuis {
 
     private static void createIcon(ServerPlayerEntity player, SimpleGui gui, int index, Item item, String text, float power) {
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
+        itemStack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.legacy." + text).setStyle(Style.EMPTY.withItalic(false)));
 
-        NbtList lore = new NbtList();
-        lore.add(NbtString.of(Text.Serialization.toJsonString(
-                TextUtils.gui("legacy.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
+        itemStack.set(DataComponentTypes.LORE, new LoreComponent(List.of(
+            TextUtils.gui("legacy.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
 
-        itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
-
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-
         if (((LegacyPlayerExt) player).aselegacy$getArmorStandEditorPower() == power) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
+            itemStack.set(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
         }
 
         gui.setSlot(index, itemStack, (index2, type, actionType) -> {
@@ -293,22 +286,17 @@ public class LegacyEditorGuis {
 
     private static void createIconCustomPower(ServerPlayerEntity player, SimpleGui gui, int index, Item item) {
         ItemStack itemStack = item.getDefaultStack();
-        itemStack.setCustomName(TextUtils.gui("name.legacy.custom_change").setStyle(Style.EMPTY.withItalic(false)));
+        itemStack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.legacy.custom_change").setStyle(Style.EMPTY.withItalic(false)));
 
         LegacyPlayerExt spe = (LegacyPlayerExt) player;
         float power = spe.aselegacy$getArmorStandEditorPower();
 
-        NbtList lore = new NbtList();
-        lore.add(NbtString.of(Text.Serialization.toJsonString(
-                TextUtils.gui("legacy.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
+        itemStack.set(DataComponentTypes.LORE, new LoreComponent(List.of(
+            TextUtils.gui("legacy.blocksdeg", (Math.round(power * 100) / 100f), Math.floor(power * 3000) / 100).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY))
         )));
-        itemStack.getOrCreateNbt().getCompound("display").put("Lore", lore);
-
-        itemStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
-        itemStack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
 
         if (power != 1f && power != 0.01f && power != 0.1f) {
-            itemStack.addEnchantment(Enchantments.POWER, 1);
+            itemStack.set(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
         }
 
         gui.setSlot(index, itemStack, (index2, type, actionType) -> {
@@ -418,7 +406,7 @@ public class LegacyEditorGuis {
 
                     ItemStack stack = new ItemStack(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                    stack.setCustomName(TextUtils.gui("name.if-fixed", ifa.getFixed())
+                    stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-fixed", ifa.getFixed())
                             .setStyle(Style.EMPTY.withItalic(false)));
 
                     ((GuiElement) gui.getSlot(index)).setItemStack(stack);
@@ -432,7 +420,7 @@ public class LegacyEditorGuis {
                     entity.setInvisible(!entity.isInvisible());
                     ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                    stack.setCustomName(TextUtils.gui("name.if-invisible", entity.isInvisible())
+                    stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-invisible", entity.isInvisible())
                             .setStyle(Style.EMPTY.withItalic(false)));
 
                     ((GuiElement) gui.getSlot(index)).setItemStack(stack);
@@ -453,7 +441,7 @@ public class LegacyEditorGuis {
 
                         ItemStack stack = new ItemStack(Items.ARROW);
 
-                        stack.setCustomName(TextUtils.gui("name.if-rotate", rotation)
+                        stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-rotate", rotation)
                                 .setStyle(Style.EMPTY.withItalic(false)));
 
                         ((GuiElement) gui.getSlot(index)).setItemStack(stack);
