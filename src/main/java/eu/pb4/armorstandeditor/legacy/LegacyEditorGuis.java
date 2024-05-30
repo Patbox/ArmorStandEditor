@@ -386,7 +386,15 @@ public class LegacyEditorGuis {
     public static void openItemFrameEditor(ServerPlayerEntity player, ItemFrameEntity entity) {
         ItemFrameEntityAccessor ifa = (ItemFrameEntityAccessor) entity;
 
-        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
+        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false) {
+            @Override
+            public void onTick() {
+                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 24 * 24) {
+                    this.close();
+                }
+                super.onTick();
+            }
+        };;
 
         ItemFrameInventory inventory = new ItemFrameInventory(entity);
 
