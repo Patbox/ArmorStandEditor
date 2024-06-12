@@ -202,9 +202,9 @@ public class LegacyEvents {
 
         switch (spei.aselegacy$getArmorStandEditorAction()) {
             case MOVE:
-                armorStand.teleport(posX + dX * power * val, posY + dY * power * val, posZ + dZ * power * val);
+                armorStand.teleport(posX + dX * power * val, posY + dY * power * val, posZ + dZ * power * val, false);
                 if (!CommonProtection.canInteractEntity(player.getWorld(), armorStand, player.getGameProfile(), player)) {
-                    armorStand.teleport(posX, posY, posZ);
+                    armorStand.teleport(posX, posY, posZ, false);
                 }
                 break;
             case ROTATE:

@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 @Deprecated
 public interface LegacyPlayerExt {
-    Identifier LEGACY_UI = new Identifier("armor_stand_editor", "use_legacy_ui");
+    Identifier LEGACY_UI = Identifier.of("armor_stand_editor", "use_legacy_ui");
 
     EditorActions aselegacy$getArmorStandEditorAction();
     void aselegacy$setArmorStandEditorAction(EditorActions action);
