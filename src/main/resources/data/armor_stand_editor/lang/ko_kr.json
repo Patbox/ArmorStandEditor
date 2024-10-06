@@ -1,0 +1,18 @@
+{
+  "gui.armor_stand_editor.editor_title": "갑옷 거치대 편집기",
+  "gui.armor_stand_editor.inventory_title": "갑옷 거치대 인벤토리",
+  "gui.armor_stand_editor.rename_title": "갑옷 거치대 이름 바꾸기",
+  "gui.armor_stand_editor.clearname": "이름 지우기",
+  "gui.armor_stand_editor.setname": "이름을 \"%s\"로 변경",
+  "gui.armor_stand_editor.close": "닫기",
+  "gui.armor_stand_editor.cantlockslots": "이 엔티티의 슬롯을 잠글 수 없습니다!",
+  "gui.armor_stand_editor.preset_author": "%s에 의해 생성됨",
+  "gui.armor_stand_editor.presets_title": "갑옷 거치대 사전 설정",
+  "text.armor_stand_editor.message.copied": "갑옷 거치대가 복사되었습니다!",
+  "text.armor_stand_editor.message.pasted": "저장된 값으로 갑옷 거치대의 상태를 변경",
+  "gui.armor_stand_editor.name.legacy.copy": "복사",
+  "gui.armor_stand_editor.name.legacy.paste": "붙여넣기",
+  "gui.armor_stand_editor.name.legacy.presets": "사전 설정",
+  "text.armor_stand_editor.about.version": "버전: %s",
+  "text.armor_stand_editor.about.contributors": "기여자"
+}

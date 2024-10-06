@@ -3,7 +3,7 @@ package eu.pb4.armorstandeditor.mixin;
 
 import com.mojang.authlib.GameProfile;
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import eu.pb4.armorstandeditor.gui.BaseGui;
+import eu.pb4.armorstandeditor.gui.BaseWorldGui;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
 import eu.pb4.sgui.api.GuiHelpers;
@@ -48,7 +48,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
 
     @Inject(method = "damage", at = @At("TAIL"))
     private void ase$closeOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (GuiHelpers.getCurrentGui((ServerPlayerEntity) (Object) this) instanceof BaseGui baseGui) {
+        if (GuiHelpers.getCurrentGui((ServerPlayerEntity) (Object) this) instanceof BaseWorldGui baseGui) {
             baseGui.close();
         }
     }
@@ -68,7 +68,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
                 ase$tickTimer++;
                 if (ase$tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
                     ase$tickTimer = 0;
-                    List<ArmorStandEntity> armorStands = this.getWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> true);
+                    List<ArmorStandEntity> armorStands = this.getWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> !entity.isMarker());
 
                     ParticleEffect particleEffect = new DustParticleEffect(new Vector3f(0.8f, 0.2f, 0.2f), 1f);
 

@@ -39,6 +39,9 @@ public class ConfigManager {
 
             ConfigData configData = configFile.exists() ? GSON.fromJson(new InputStreamReader(new FileInputStream(configFile), "UTF-8"), ConfigData.class) : new ConfigData();
 
+            configData.update();
+
+
             CONFIG = new Config(configData);
 
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), "UTF-8"));

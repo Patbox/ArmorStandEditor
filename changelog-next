@@ -1,0 +1,8 @@
+- Added scale controls! They are available from `Properties` option.
+- Added Saved Presets - players can now save / restore their own private presets! They are limited in amount by config.
+- Setting name of Armor Stand to empty fully hides it, instead of leaving empty nameplate.
+- When selecting presets, "Paste Settings with Inventory" option will no longer be shown.
+- Fixed some uis not playing the click sound.
+- Fixed some texts using 0/1 instead of true/false
+- Marker Armor Stands are no longer highlighted with particles.
+- More internal preparation for removal of legacy ui.

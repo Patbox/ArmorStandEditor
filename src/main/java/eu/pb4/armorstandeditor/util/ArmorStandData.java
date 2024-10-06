@@ -2,6 +2,7 @@ package eu.pb4.armorstandeditor.util;
 
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -22,6 +23,8 @@ public class ArmorStandData {
     public EulerAngle rightLegRotation = new EulerAngle(0,0,0);
     public boolean customNameVisible = false;
     public Text customName = null;
+
+    public boolean hasInventory = false;
     public ItemStack headItem = ItemStack.EMPTY;
     public ItemStack feetItem = ItemStack.EMPTY;
     public ItemStack legsItem = ItemStack.EMPTY;
@@ -29,6 +32,7 @@ public class ArmorStandData {
     public ItemStack mainHandItem = ItemStack.EMPTY;
     public ItemStack offhandItem = ItemStack.EMPTY;
     public int disabledSlots = 0;
+    public float scale = 1;
 
     public ArmorStandData() {}
 
@@ -51,11 +55,14 @@ public class ArmorStandData {
         this.leftLegRotation = armorStand.getLeftLegRotation();
         this.rightLegRotation = armorStand.getRightLegRotation();
 
+        this.scale = armorStand.getScale();
+
         this.customNameVisible = armorStand.isCustomNameVisible() && armorStand.hasCustomName();
         if (armorStand.getCustomName() != null) {
             this.customName = armorStand.getCustomName().copy();
         }
 
+        this.hasInventory = true;
         this.headItem = armorStand.getEquippedStack(EquipmentSlot.HEAD).copy();
         this.chestItem = armorStand.getEquippedStack(EquipmentSlot.CHEST).copy();
         this.legsItem = armorStand.getEquippedStack(EquipmentSlot.LEGS).copy();
@@ -63,12 +70,11 @@ public class ArmorStandData {
         this.mainHandItem = armorStand.getEquippedStack(EquipmentSlot.MAINHAND).copy();
         this.offhandItem = armorStand.getEquippedStack(EquipmentSlot.OFFHAND).copy();
 
+
         this.disabledSlots = asea.getDisabledSlots();
     }
 
     public void apply(ArmorStandEntity armorStand, boolean modifyInventory) {
-
-        
         ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) armorStand;
         if (this.yaw != -1) {
             armorStand.setYaw(this.yaw);
@@ -94,7 +100,9 @@ public class ArmorStandData {
         armorStand.setCustomName(this.customName);
         asea.setDisabledSlots(this.disabledSlots);
 
-        if (modifyInventory) {
+        armorStand.getAttributeInstance(EntityAttributes.GENERIC_SCALE).setBaseValue(scale);
+
+        if (modifyInventory && this.hasInventory) {
             armorStand.equipStack(EquipmentSlot.HEAD, this.headItem);
             armorStand.equipStack(EquipmentSlot.CHEST, this.chestItem);
             armorStand.equipStack(EquipmentSlot.LEGS, this.legsItem);

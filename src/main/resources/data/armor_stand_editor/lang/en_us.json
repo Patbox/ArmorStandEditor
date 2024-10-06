@@ -15,8 +15,8 @@
   "gui.armor_stand_editor.preset_author": "Created by: %s",
   "gui.armor_stand_editor.presets_title": "Armor Stand Presets",
 
-  "text.armor_stand_editor.message.copied": "Armor stand copied!",
-  "text.armor_stand_editor.message.pasted": "Changed armor stand to use stored values",
+  "text.armor_stand_editor.message.copied": "Armor Stand copied!",
+  "text.armor_stand_editor.message.pasted": "Changed Armor Stand to use stored values",
 
   "command.armor_stand_editor.give": "Given Armor Stand Editor tool to %s",
 
@@ -29,8 +29,6 @@
 
   "command.armor_stand_editor.switchui.main": "Switched to main interface style!",
   "command.armor_stand_editor.switchui.legacy": "Switched to legacy interface style!",
-
-
 
   "gui.armor_stand_editor.name.if-fixed": "Fixed: %s",
   "gui.armor_stand_editor.name.if-invisible": "Invisible: %s",
@@ -73,17 +71,33 @@
   "gui.armor_stand_editor.action.rotate": "Rotate %s degrees",
   "gui.armor_stand_editor.action.rotate.set": "Current: %s degrees",
 
-
   "gui.armor_stand_editor.property.invisible": "Invisible: %s",
   "gui.armor_stand_editor.property.no_gravity": "No Gravity: %s",
   "gui.armor_stand_editor.property.arms": "Show Arms: %s",
   "gui.armor_stand_editor.property.hide_base": "Hide Base: %s",
   "gui.armor_stand_editor.property.small": "Small: %s",
 
+  "gui.armor_stand_editor.property.scale": "Scale",
+  "gui.armor_stand_editor.action.scale.value_or_set": "Scale: %s",
+  "gui.armor_stand_editor.action.scale.decrease": "Decrease scale by %s",
+  "gui.armor_stand_editor.action.scale.increase": "Increase scale by %s",
+  "gui.armor_stand_editor.action.scale.reset": "Reset scale",
+  "gui.armor_stand_editor.action.scale.set_change": "Current change: %s",
+  "gui.armor_stand_editor.action.scale.set.title": "Set entity scale",
+  "gui.armor_stand_editor.action.scale.set.set": "Set scale to: %s",
+  "gui.armor_stand_editor.action.scale.set.invalid": "Invalid number: %s",
+
+
   "gui.armor_stand_editor.action.copy": "Copy Settings",
   "gui.armor_stand_editor.action.paste": "Paste Settings",
   "gui.armor_stand_editor.action.paste.inventory": "Paste Settings and Inventory",
   "gui.armor_stand_editor.entry.presets": "Presets",
+  "gui.armor_stand_editor.entry.preset_save": "Create Preset",
+  "gui.armor_stand_editor.entry.preset_save.save": "Save Preset with name: %s",
+  "gui.armor_stand_editor.entry.global_presets": "Global Presets",
+  "gui.armor_stand_editor.entry.player_presets": "Saved Presets",
+
+  "gui.armor_stand_editor.presets.remove": "Press [Shift + Right Click] to remove the preset!",
 
 
   "text.armor_stand_editor.presets.selected": "Selected preset \"%s\". Apply it by using \"Paste\" action",
@@ -121,9 +135,6 @@
   "gui.armor_stand_editor.name.legacy.rotate": "Rotate",
 
   "gui.armor_stand_editor.legacy.blocksdeg": "%s blocks / %s deg",
-  "gui.armor_stand_editor.name.legacy.move": "Move",
-  "gui.armor_stand_editor.name.legacy.inventory": "Open Inventory",
-  "gui.armor_stand_editor.name.legacy.rename": "Rename",
 
   "gui.armor_stand_editor.name.legacy.reset_pose": "Reset pose",
   "gui.armor_stand_editor.name.legacy.flip_pose": "Flip pose",

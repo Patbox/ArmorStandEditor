@@ -10,7 +10,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.Locale;
 
-public class MoveGui extends BaseGui {
+public class MoveGui extends BaseWorldGui {
     private CurrentAxis currentAxis = CurrentAxis.LOOK;
     private Direction playerLookingDirection;
 
@@ -182,8 +182,8 @@ public class MoveGui extends BaseGui {
     }
 
     @Override
-    protected SwitchEntry asSwitchableUi() {
-        return new SwitchEntry(MoveGui::new, this.getSelectedSlot());
+    protected EditingContext.SwitchEntry asSwitchableUi() {
+        return new EditingContext.SwitchEntry(MoveGui::new, this.getSelectedSlot());
     }
 
 

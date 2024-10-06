@@ -1,141 +1,119 @@
 {
   "gui.armor_stand_editor.editor_title": "Edytor stojaków na zbroję",
-
   "gui.armor_stand_editor.inventory_title": "Ekwipunek stojaka na zbroję",
-
   "gui.armor_stand_editor.rename_title": "Nazwij stojak na zbroję",
-
   "gui.armor_stand_editor.clearname": "Usuń nazwę",
-
   "gui.armor_stand_editor.setname": "Zmień nazwę na: %s",
   "gui.armor_stand_editor.close": "Zamknij",
-
-  "gui.armor_stand_editor.cantlockslots": "Nie możesz zablokować slotów tego bytu",
-
-  "text.armor_stand_editor.message.copied": "Skopiowano ustawienie stojaka na zbroję!!",
-  "text.armor_stand_editor.message.pasted": "Wklejono ustawienia stojaka na zbroję",
-
-  "command.armor_stand_editor.give": "Dano narzędzie edycji stojąków na zbroję graczowi %s",
-
-  "command.armor_stand_editor.save-preset.success": "Preset %s (%s) został zapisany pomyślnie!",
-  "command.armor_stand_editor.save-preset.fail": "Aby stworzyć preset, musisz skopioawć stojak na zbroję!",
-
-  "command.armor_stand_editor.switchui.main": "Zmieniono styl interfejsu na domyślny!",
-  "command.armor_stand_editor.switchui.legacy": "Zmieniono styl interfejsu na klasyczny!",
-
+  "gui.armor_stand_editor.cantlockslots": "Nie możesz zablokować slotów tego bytu!",
   "gui.armor_stand_editor.preset_author": "Stworzone przez: %s",
   "gui.armor_stand_editor.presets_title": "Szablony Stojaków na zbroję",
-
-
-  "command.armor_stand_editor.invalid-id": "Podane id (%s) zawiera nieprawidłowe znaki! Jedyne prawidłow znaki to litery od a do z, numery od 0 do 9 oraz _!",
-
+  "text.armor_stand_editor.message.copied": "Skopiowano ustawienie stojaka na zbroję!",
+  "text.armor_stand_editor.message.pasted": "Wklejono ustawienia stojaka na zbroję",
+  "command.armor_stand_editor.give": "Dano narzędzie edycji stojaków na zbroję graczowi %s",
+  "command.armor_stand_editor.save-preset.success": "Szablon %s (%s) został zapisany pomyślnie!",
+  "command.armor_stand_editor.save-preset.fail": "Aby stworzyć szablon, musisz skopiować stojak na zbroję!",
+  "command.armor_stand_editor.invalid-id": "Podane id (%s) zawiera nieprawidłowe znaki! Jedyne prawidłowe znaki to litery od a do z, numery od 0 do 9 oraz _!",
   "command.armor_stand_editor.delete-preset.success": "Szablon %s został usunięty pomyślnie!",
-  "command.armor_stand_editor.delete-preset.fail": "Usuwanie szablonu %s nie powiodło się!",
-
+  "command.armor_stand_editor.delete-preset.fail": "Nie udało się usunąć szablonu %s!",
+  "command.armor_stand_editor.switchui.main": "Zmieniono styl interfejsu na domyślny!",
+  "command.armor_stand_editor.switchui.legacy": "Zmieniono styl interfejsu na klasyczny!",
   "gui.armor_stand_editor.name.if-fixed": "Zablokowany: %s",
   "gui.armor_stand_editor.name.if-invisible": "Niewidzialny: %s",
   "gui.armor_stand_editor.name.if-rotate": "Obrót: %s",
   "gui.armor_stand_editor.item_frame_title": "Edytor ramek na przedmioty",
-
-
   "gui.armor_stand_editor.entry.type.move": "Przemieść",
   "gui.armor_stand_editor.entry.type.pose": "Poza",
   "gui.armor_stand_editor.entry.type.inventory": "Ekwipunek",
   "gui.armor_stand_editor.entry.type.rename": "Zmień nazwę",
   "gui.armor_stand_editor.entry.type.properties": "Właściwości",
   "gui.armor_stand_editor.entry.type.copying": "Kopiowanie/Szablony",
-
   "gui.armor_stand_editor.entry.part.head": "Pozuj głowę",
-  "gui.armor_stand_editor.entry.part.body": "Pozuj tłów",
+  "gui.armor_stand_editor.entry.part.body": "Pozuj tułów",
   "gui.armor_stand_editor.entry.part.left_arm": "Pozuj lewą rękę",
   "gui.armor_stand_editor.entry.part.right_arm": "Pozuj prawą rękę",
   "gui.armor_stand_editor.entry.part.left_leg": "Pozuj lewą nogę",
   "gui.armor_stand_editor.entry.part.right_leg": "Pozuj prawą nogę",
-  "gui.armor_stand_editor.action.pose.flip": "Odbij pozę lustrzanie",
+  "gui.armor_stand_editor.action.pose.flip": "Odbij pozę lustrzane",
   "gui.armor_stand_editor.action.pose.reset": "Zresetuj pozę",
-
-
   "gui.armor_stand_editor.action.move.x": "Przemieść wzdłuż osi X",
   "gui.armor_stand_editor.action.move.y": "Przemieść wzdłuż osi Y",
   "gui.armor_stand_editor.action.move.z": "Przemieść wzdłuż osi Z",
   "gui.armor_stand_editor.action.move.look": "Przemieść do przodu (%s)",
-
   "gui.armor_stand_editor.action.move.rotate": "Obróć o %s stopni",
   "gui.armor_stand_editor.action.move.rotate.set": "Aktualny obrót: %s stopni",
   "gui.armor_stand_editor.action.move.rotate.copy_player": "Kopiuj obrót gracza",
   "gui.armor_stand_editor.action.move.teleport": "Teleportuj do gracza",
   "gui.armor_stand_editor.action.move": "Przemieść %s bloków na %s",
   "gui.armor_stand_editor.action.move.set": "Aktualna odległość: %s bloków",
-
-  "gui.armor_stand_editor.action.rotate.angle.pitch": "Opróć Pitch",
-  "gui.armor_stand_editor.action.rotate.angle.yaw": "Opróć Yaw",
-  "gui.armor_stand_editor.action.rotate.angle.roll": "Opróć Roll",
-  "gui.armor_stand_editor.action.rotate": "Opróć o %s stopni",
+  "gui.armor_stand_editor.action.rotate.angle.pitch": "Obróć Pitch",
+  "gui.armor_stand_editor.action.rotate.angle.yaw": "Obróć Yaw",
+  "gui.armor_stand_editor.action.rotate.angle.roll": "Obróć Roll",
+  "gui.armor_stand_editor.action.rotate": "Obróć o %s stopni",
   "gui.armor_stand_editor.action.rotate.set": "Aktualny obrót: %s stopni",
-
-
   "gui.armor_stand_editor.property.invisible": "Niewidzialny: %s",
   "gui.armor_stand_editor.property.no_gravity": "Brak grawitacji: %s",
   "gui.armor_stand_editor.property.arms": "Pokaż ręce: %s",
   "gui.armor_stand_editor.property.hide_base": "Ukryj podstawę: %s",
   "gui.armor_stand_editor.property.small": "Mały: %s",
-
+  "gui.armor_stand_editor.property.scale": "Skaluj",
+  "gui.armor_stand_editor.action.scale.value_or_set": "Skala: %s",
+  "gui.armor_stand_editor.action.scale.decrease": "Zmniejsz skalę o %s",
+  "gui.armor_stand_editor.action.scale.increase": "Zwiększ skalę o %s",
+  "gui.armor_stand_editor.action.scale.reset": "Zresetuj skalę",
+  "gui.armor_stand_editor.action.scale.set_change": "Aktualna zmiana: %s",
+  "gui.armor_stand_editor.action.scale.set.title": "Ustaw skalę bytu",
+  "gui.armor_stand_editor.action.scale.set.set": "Ustaw skalę na: %s",
+  "gui.armor_stand_editor.action.scale.set.invalid": "Nieprawidłowa liczba: %s",
   "gui.armor_stand_editor.action.copy": "Kopiuj ustawienie",
   "gui.armor_stand_editor.action.paste": "Wklej ustawienie",
   "gui.armor_stand_editor.action.paste.inventory": "Wklej ustawienie z ekwipunkiem",
   "gui.armor_stand_editor.entry.presets": "Szablony",
-
-
+  "gui.armor_stand_editor.entry.preset_save": "Utwórz szablon",
+  "gui.armor_stand_editor.entry.preset_save.save": "Zapisz szablon z nazwą: %s",
+  "gui.armor_stand_editor.entry.global_presets": "Globalne szablony",
+  "gui.armor_stand_editor.entry.player_presets": "Zapisane szablony",
+  "gui.armor_stand_editor.presets.remove": "Naciśnij [Shift + Prawy Przycisk] aby usunąć szablon!",
   "text.armor_stand_editor.presets.selected": "Wybrano szablon \"%s\". Ustaw go używając \"Wklej\"",
-  "text.armor_stand_editor.open_info": "Otworzono Edytor Stojaków na Zbroję! Możesz go zamknąć używając \"%s\"!",
-
-
+  "text.armor_stand_editor.open_info": "Otworzono Edytor Stojaków na Zbroję! Możesz go zamknąć, używając \"%s\"!",
   "text.armor_stand_editor.dir.south": "Południe",
   "text.armor_stand_editor.dir.north": "Północ",
   "text.armor_stand_editor.dir.west": "Zachód",
   "text.armor_stand_editor.dir.east": "Wschód",
   "text.armor_stand_editor.dir.up": "Do góry",
   "text.armor_stand_editor.dir.down": "Na dół",
-
   "text.armor_stand_editor.enabled": "Włączony",
   "text.armor_stand_editor.disabled": "Wyłączony",
-
   "gui.armor_stand_editor.back": "Cofnij",
-
   "text.armor_stand_editor.message.copied.legacy": "Skopiowano! Przełączono na tryb wklejania",
-
-  "gui.armor_stand_editor.legacy.name.x": "Modyfikuj oś X",
-  "gui.armor_stand_editor.legacy.name.y": "Modyfikuj oś Y",
-  "gui.armor_stand_editor.legacy.name.z": "Modyfikuj oś Z",
-
-  "gui.armor_stand_editor.legacy.name.custom_change": "Własna zmiana",
-
-  "gui.armor_stand_editor.legacy.name.small": "Mała zmiana",
-  "gui.armor_stand_editor.legacy.name.medium": "Średnia zmiana",
-  "gui.armor_stand_editor.legacy.name.big": "Duża zmiana",
+  "gui.armor_stand_editor.name.legacy.x": "Modyfikuj oś X",
+  "gui.armor_stand_editor.name.legacy.y": "Modyfikuj oś Y",
+  "gui.armor_stand_editor.name.legacy.z": "Modyfikuj oś Z",
+  "gui.armor_stand_editor.name.legacy.head": "Obróć głowę",
+  "gui.armor_stand_editor.name.legacy.body": "Obróć tułów",
+  "gui.armor_stand_editor.name.legacy.left_arm": "Obróć lewe ramię",
+  "gui.armor_stand_editor.name.legacy.right_arm": "Obróć prawe ramię",
+  "gui.armor_stand_editor.name.legacy.left_leg": "Obróć lewą nogę",
+  "gui.armor_stand_editor.name.legacy.right_leg": "Obróć prawą nogę",
+  "gui.armor_stand_editor.name.legacy.small": "Mała zmiana",
+  "gui.armor_stand_editor.name.legacy.medium": "Średnia zmiana",
+  "gui.armor_stand_editor.name.legacy.big": "Duża zmiana",
+  "gui.armor_stand_editor.name.legacy.custom_change": "Zmiana niestandardowa",
+  "gui.armor_stand_editor.name.legacy.rotate": "Obróć",
   "gui.armor_stand_editor.legacy.blocksdeg": "%s bloków / %s stopni",
-
-  "gui.armor_stand_editor.legacy.name.move": "Przemieść",
-  "gui.armor_stand_editor.legacy.name.rotate": "Obróć",
-
-  "gui.armor_stand_editor.legacy.name.head": "Obracaj główą",
-  "gui.armor_stand_editor.legacy.name.body": "Obracaj ciałem",
-  "gui.armor_stand_editor.legacy.name.left_arm": "Obracaj lewą ręką",
-  "gui.armor_stand_editor.legacy.name.right_arm": "Obracaj prawą ręką",
-  "gui.armor_stand_editor.legacy.name.left_leg": "Obracaj lewą nogą",
-  "gui.armor_stand_editor.legacy.name.right_leg": "Obracaj prawą nogą",
-  "gui.armor_stand_editor.legacy.name.inventory": "Otwórz ekwipunek",
-  "gui.armor_stand_editor.legacy.name.rename": "Zmień nazwę",
-  "gui.armor_stand_editor.legacy.name.reset_pose": "Zresetuj pozę",
-  "gui.armor_stand_editor.legacy.name.flip_pose": "Odbij pozę",
-
-  "gui.armor_stand_editor.legacy.name.size": "Zmień rozmiar",
-  "gui.armor_stand_editor.legacy.name.gravity": "Przełącz grawitację",
-  "gui.armor_stand_editor.legacy.name.visibility": "Przełącz widoczność",
-  "gui.armor_stand_editor.legacy.name.arms": "Przełącz ramiona",
-  "gui.armor_stand_editor.legacy.name.base": "Przełącz podstawę",
-
-  "gui.armor_stand_editor.legacy.name.copy": "Skopiuj",
-  "gui.armor_stand_editor.legacy.name.paste": "Wklej",
-  "gui.armor_stand_editor.legacy.name.presets": "Szablony"
+  "gui.armor_stand_editor.name.legacy.reset_pose": "Zresetuj pozę",
+  "gui.armor_stand_editor.name.legacy.flip_pose": "Odbij pozę lustrzane",
+  "gui.armor_stand_editor.name.legacy.size": "Przełącz rozmiar",
+  "gui.armor_stand_editor.name.legacy.gravity": "Przełącz grawitację",
+  "gui.armor_stand_editor.name.legacy.visibility": "Przełącz widoczność",
+  "gui.armor_stand_editor.name.legacy.arms": "Przełącz ręce",
+  "gui.armor_stand_editor.name.legacy.base": "Przełącz podstawę",
+  "gui.armor_stand_editor.name.legacy.copy": "Kopiuj",
+  "gui.armor_stand_editor.name.legacy.paste": "Wklej",
+  "gui.armor_stand_editor.name.legacy.move": "Przemieść",
+  "gui.armor_stand_editor.name.legacy.inventory": "Otwórz Ekwipunek",
+  "gui.armor_stand_editor.name.legacy.rename": "Zmień nazwę",
+  "gui.armor_stand_editor.name.legacy.presets": "Szablony",
+  "text.armor_stand_editor.about.version": "Wersja: %s",
+  "text.armor_stand_editor.about.contributors": "Kontrybutorzy"
 }

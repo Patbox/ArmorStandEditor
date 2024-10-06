@@ -5,14 +5,13 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.EulerAngle;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class PoseListGui extends BaseGui {
+public class PoseListGui extends BaseWorldGui {
     private static final List<Entry> ENTRIES = List.of(
             Entry.part("head", Items.LEATHER_HELMET, ArmorStandEntity::setHeadRotation, ArmorStandEntity::getHeadRotation),
             Entry.part("left_arm", Items.STICK, ArmorStandEntity::setLeftArmRotation, ArmorStandEntity::getLeftArmRotation),
@@ -70,12 +69,12 @@ public class PoseListGui extends BaseGui {
     }
 
     @Override
-    protected SwitchEntry asSwitchableUi() {
-        return new SwitchEntry(PoseListGui::new, this.getSelectedSlot());
+    protected EditingContext.SwitchEntry asSwitchableUi() {
+        return new EditingContext.SwitchEntry(PoseListGui::new, this.getSelectedSlot());
     }
 
 
-    private record Entry(String name, Item icon, BaseGui.SwitchableUi opener) {
+    private record Entry(String name, Item icon, EditingContext.SwitchableUi opener) {
         protected static Entry part(String name, Item icon, BiConsumer<ArmorStandEntity, EulerAngle> setter, Function<ArmorStandEntity, EulerAngle> getter) {
             return new Entry("part." + name, icon, ModifyPoseGui.create(setter, getter));
         }

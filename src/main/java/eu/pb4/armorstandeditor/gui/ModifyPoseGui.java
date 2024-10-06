@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class ModifyPoseGui extends BaseGui {
+public class ModifyPoseGui extends BaseWorldGui {
     private final BiConsumer<ArmorStandEntity, EulerAngle> setter;
     private final Function<ArmorStandEntity, EulerAngle> getter;
     private RotationType rotationType = RotationType.PITCH;
@@ -118,11 +118,11 @@ public class ModifyPoseGui extends BaseGui {
     }
 
     @Override
-    protected SwitchEntry asSwitchableUi() {
-        return new SwitchEntry((context1, slot) -> new ModifyPoseGui(context1, slot, this.setter, this.getter), this.getSelectedSlot());
+    protected EditingContext.SwitchEntry asSwitchableUi() {
+        return new EditingContext.SwitchEntry((context1, slot) -> new ModifyPoseGui(context1, slot, this.setter, this.getter), this.getSelectedSlot());
     }
 
-    public static SwitchableUi create(BiConsumer<ArmorStandEntity, EulerAngle> setter, Function<ArmorStandEntity, EulerAngle> getter) {
+    public static EditingContext.SwitchableUi create(BiConsumer<ArmorStandEntity, EulerAngle> setter, Function<ArmorStandEntity, EulerAngle> getter) {
         return (ctx, slot) -> new ModifyPoseGui(ctx, slot, setter, getter);
     }
 

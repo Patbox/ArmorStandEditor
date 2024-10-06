@@ -3,7 +3,10 @@ package eu.pb4.armorstandeditor.legacy;
 import eu.pb4.armorstandeditor.EditorActions;
 import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import eu.pb4.armorstandeditor.gui.BaseGui;
+import eu.pb4.armorstandeditor.gui.EditingContext;
+import eu.pb4.armorstandeditor.gui.InventoryEditGui;
+import eu.pb4.armorstandeditor.gui.PresetSelectorGui;
+import eu.pb4.armorstandeditor.gui.RenameGui;
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import eu.pb4.armorstandeditor.mixin.ItemFrameEntityAccessor;
 import eu.pb4.armorstandeditor.util.ArmorStandInventory;
@@ -13,11 +16,9 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
-import eu.pb4.sgui.api.gui.AnvilInputGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -26,8 +27,6 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
@@ -42,145 +41,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Deprecated
 public class LegacyEditorGuis {
     public static void openRenaming(ServerPlayerEntity player, Entity entity, Runnable callback) {
-        ItemStack stack = Items.MAGMA_CREAM.getDefaultStack();
-        stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("clearname").setStyle(Style.EMPTY.withItalic(false)));
-
-
-        ItemStack stack2 = Items.SLIME_BALL.getDefaultStack();
-        stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("setname").setStyle(Style.EMPTY.withItalic(false)));
-
-        AnvilInputGui gui = new AnvilInputGui(player, false) {
-            @Override
-            public void onTick() {
-                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 48 * 48) {
-                    this.close();
-                }
-                super.onTick();
-            }
-
-            @Override
-            public void onInput(String input) {
-                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 48 * 48) {
-                    return;
-                }
-                super.onInput(input);
-                stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
-                this.setSlot(2, stack2, (index, type, action) -> {
-                    entity.setCustomName(Text.literal(this.getInput()));
-                    entity.setCustomNameVisible(true);
-                    this.close(false);
-                });
-            }
-
-            @Override
-            public void onClose() {
-                callback.run();
-            }
-        };
-
-        gui.setTitle(TextUtils.gui("rename_title"));
-        gui.setDefaultInputValue(entity.getCustomName() != null ? entity.getCustomName().getString() : "");
-
-
-        gui.setSlot(1, stack, (index, type, action) -> {
-            entity.setCustomName(Text.literal(""));
-            entity.setCustomNameVisible(false);
-            gui.close(false);
-        });
-
-        gui.setSlot(2, stack2, (index, type, action) -> {
-            entity.setCustomName(Text.literal(gui.getInput()));
-            entity.setCustomNameVisible(true);
-            gui.close(false);
-        });
-
-        gui.open();
-    }
-
-    public static boolean isSlotUnlocked(ArmorStandEntity armorStandEntity, EquipmentSlot slot) {
-        return (((ArmorStandEntityAccessor) armorStandEntity).getDisabledSlots() & 1 << slot.getArmorStandSlotId()) == 0;
+        if (entity instanceof ArmorStandEntity armorStandEntity) {
+            new RenameGui(new EditingContext(player, armorStandEntity),0);
+        }
     }
 
     public static void openInventoryEditor(ServerPlayerEntity player, LivingEntity entity, Runnable callback) {
-        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X2, player, false) {
-            @Override
-            public void onTick() {
-                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 48 * 48) {
-                    this.close();
-                }
-                super.onTick();
-            }
-
-            @Override
-            public void onClose() {
-                callback.run();
-            }
-        };
-
-        ArmorStandInventory inventory = new ArmorStandInventory(entity);
-
-        gui.setTitle(TextUtils.gui("inventory_title"));
-        for (int x = 0; x < inventory.size(); x++) {
-            gui.setSlotRedirect(x, new Slot(inventory, x, 0, 0));
-            if (entity instanceof ArmorStandEntity) {
-                ArmorStandEntity ae = (ArmorStandEntity) entity;
-                ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) ae;
-                boolean isUnlocked = isSlotUnlocked(ae, ArmorStandInventory.getEquipmentSlot(x));
-                gui.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                        .setName(Text.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
-                                .setStyle(Style.EMPTY.withItalic(false)))
-                        .setCallback((index, type, action) -> {
-                            EquipmentSlot slot = ArmorStandInventory.getEquipmentSlot(index - 9);
-
-                            int disabledSlots = asea.getDisabledSlots();
-
-                            boolean isUnlockedTmp = isSlotUnlocked(ae, slot);
-
-                            if (isUnlockedTmp) {
-                                disabledSlots |= 1 << slot.getArmorStandSlotId();
-                                disabledSlots |= 1 << slot.getArmorStandSlotId() + 8;
-                                disabledSlots |= 1 << slot.getArmorStandSlotId() + 16;
-                            } else {
-                                disabledSlots &= ~(1 << slot.getArmorStandSlotId());
-                                disabledSlots &= ~(1 << slot.getArmorStandSlotId() + 8);
-                                disabledSlots &= ~(1 << slot.getArmorStandSlotId() + 16);
-                            }
-
-                            asea.setDisabledSlots(disabledSlots);
-
-                            boolean isUnlocked2 = isSlotUnlocked(ae, slot);
-
-                            ItemStack stack = new ItemStack(isUnlocked2 ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
-
-                            stack.set(DataComponentTypes.CUSTOM_NAME, Text.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
-                                    .setStyle(Style.EMPTY.withItalic(false)));
-
-                            ((GuiElement) gui.getSlot(index)).setItemStack(stack);
-                        })
-                );
-            } else {
-                gui.setSlot(x + 9, new GuiElementBuilder(Items.RED_STAINED_GLASS_PANE)
-                        .setName(TextUtils.gui("cantlockslots")
-                                .setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.RED))));
-            }
+        if (entity instanceof ArmorStandEntity armorStandEntity) {
+            new InventoryEditGui(new EditingContext(player, armorStandEntity),0);
         }
-
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")).build();
-
-        gui.setSlot(6, empty);
-        gui.setSlot(7, empty);
-        gui.setSlot(8, empty);
-
-        gui.setSlot(15, empty);
-        gui.setSlot(16, empty);
-        gui.setSlot(17, new GuiElementBuilder(Items.BARRIER)
-                .setName(TextUtils.gui("close").setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback(((index, type, action) -> {
-                    gui.close();
-                }))
-        );
-
-        gui.open();
     }
 
     public static void openGui(ServerPlayerEntity player) {
@@ -311,172 +180,6 @@ public class LegacyEditorGuis {
     }
 
     public static void openPresetSelector(ServerPlayerEntity player, Runnable runnable) {
-        List<ArmorStandPreset> presets = new ArrayList<>(ConfigManager.PRESETS.values());
-
-        final int presetsSize = presets.size();
-
-        AtomicInteger page = new AtomicInteger();
-        final int maxPage = (int) Math.ceil((double) presetsSize / 18);
-
-        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X3, player, false) {
-            @Override
-            public void onOpen() {
-                super.onOpen();
-                for (int x = 0; x < 9; x++) {
-                    this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")));
-                }
-                updateDisplay();
-            }
-
-            private void updateDisplay() {
-                for (int x = 0; x < 18; x++) {
-                    this.clearSlot(x);
-
-                    if (page.get() * 18 + x < presetsSize) {
-                        final ArmorStandPreset preset = presets.get(page.get() * 18 + x);
-
-                        this.setSlot(x, new GuiElementBuilder(Items.ARMOR_STAND)
-                                .setName(Text.literal(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GREEN)))
-                                .addLoreLine(TextUtils.gui("preset_author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY)))
-
-                                .setCallback((t1, t2, t3) -> {
-                                    ((LegacyPlayerExt) this.player).aselegacy$setArmorStandEditorData(preset.asData());
-                                    ((LegacyPlayerExt) this.player).aselegacy$setArmorStandEditorAction(EditorActions.PASTE);
-                                    player.sendMessage(TextUtils.text("presets.selected", preset.name), true);
-                                    this.close();
-                                }));
-                    }
-                }
-
-                this.setSlot(this.size - 5, new GuiElementBuilder(Items.BARRIER)
-                        .setName(Text.translatable("dataPack.validation.back").setStyle(Style.EMPTY.withItalic(false)))
-                        .setCallback((index, type, action) -> {
-                            this.close();
-                        }));
-
-                this.setSlot(this.size - 8, new GuiElementBuilder(page.get() != 0 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                        .setName(Text.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)))
-                        .setCallback((index, type, action) -> {
-                            if (page.addAndGet(-1) < 0) {
-                                page.set(0);
-                            }
-                            updateDisplay();
-                        }));
-                this.setSlot(this.size - 2, new GuiElementBuilder(page.get() != maxPage - 1 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                        .setName(Text.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)))
-                        .setCallback((index, type, action) -> {
-                            if (page.addAndGet(1) >= maxPage) {
-                                page.set(maxPage - 1);
-                            }
-                            updateDisplay();
-                        }));
-            }
-
-            @Override
-            public void onClose() {
-                super.onClose();
-                runnable.run();
-            }
-        };
-        gui.setTitle(TextUtils.gui("presets_title"));
-
-        gui.open();
-    }
-
-    public static void openItemFrameEditor(ServerPlayerEntity player, ItemFrameEntity entity) {
-        ItemFrameEntityAccessor ifa = (ItemFrameEntityAccessor) entity;
-
-        SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false) {
-            @Override
-            public void onTick() {
-                if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 24 * 24) {
-                    this.close();
-                }
-                super.onTick();
-            }
-        };;
-
-        ItemFrameInventory inventory = new ItemFrameInventory(entity);
-
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).setName(Text.literal("")).build();
-
-        gui.setTitle(TextUtils.gui("item_frame_title"));
-
-        gui.setSlotRedirect(0, new Slot(inventory, 0, 0, 0));
-        gui.setSlot(1, empty);
-
-        gui.setSlot(2, new GuiElementBuilder(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                .setName(TextUtils.gui("name.if-fixed", ifa.getFixed())
-                        .setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback((index, type, action) -> {
-
-                    ifa.setFixed(!ifa.getFixed());
-
-                    ItemStack stack = new ItemStack(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
-
-                    stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-fixed", ifa.getFixed())
-                            .setStyle(Style.EMPTY.withItalic(false)));
-
-                    ((GuiElement) gui.getSlot(index)).setItemStack(stack);
-                }));
-
-        gui.setSlot(3, new GuiElementBuilder(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                .setName(TextUtils.gui("name.if-invisible", entity.isInvisible())
-                        .setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback((index, type, action) -> {
-
-                    entity.setInvisible(!entity.isInvisible());
-                    ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
-
-                    stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-invisible", entity.isInvisible())
-                            .setStyle(Style.EMPTY.withItalic(false)));
-
-                    ((GuiElement) gui.getSlot(index)).setItemStack(stack);
-                }));
-
-        gui.setSlot(4, new GuiElementBuilder(Items.ARROW)
-                .setName(TextUtils.gui("name.if-rotate", entity.getRotation())
-                        .setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback((index, type, action) -> {
-                    if (type.isLeft || type.isRight) {
-                        int rotation = entity.getRotation() + (type.isLeft ? -1 : 1);
-
-                        if (rotation < 0) {
-                            rotation = 8 + rotation;
-                        }
-
-                        entity.setRotation(rotation % 8);
-
-                        ItemStack stack = new ItemStack(Items.ARROW);
-
-                        stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-rotate", rotation)
-                                .setStyle(Style.EMPTY.withItalic(false)));
-
-                        ((GuiElement) gui.getSlot(index)).setItemStack(stack);
-                    }
-                }));
-
-        for (int x = 5; x < 8; x++) {
-            gui.setSlot(x, empty);
-        }
-
-        gui.setSlot(8, new GuiElementBuilder(Items.BARRIER)
-                .setName(TextUtils.gui("close").setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback(((index, type, action) -> {gui.close();}))
-        );
-
-        gui.open();
-    }
-
-    public static BaseGui.SwitchableUi getInventoryEditor() {
-        return (context, slot) -> LegacyEditorGuis.openInventoryEditor(context.player, context.armorStand, () -> context.interfaceList.remove(0).open(context));
-    }
-
-    public static BaseGui.SwitchableUi getRenamingGui() {
-        return (context, slot) -> LegacyEditorGuis.openRenaming(context.player, context.armorStand, () -> context.interfaceList.remove(0).open(context));
-    }
-
-    public static BaseGui.SwitchableUi getPresetsGui() {
-        return (context, slot) -> LegacyEditorGuis.openPresetSelector(context.player, () -> context.interfaceList.remove(0).open(context));
+        PresetSelectorGui.globalPresets(new EditingContext(player, null), -1);
     }
 }

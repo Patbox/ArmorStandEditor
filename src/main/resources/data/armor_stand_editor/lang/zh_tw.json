@@ -1,50 +1,33 @@
 {
   "gui.armor_stand_editor.editor_title": "盔甲座編輯器",
-
   "gui.armor_stand_editor.inventory_title": "盔甲座物品欄",
-
   "gui.armor_stand_editor.rename_title": "重新命名盔甲座",
-
   "gui.armor_stand_editor.clearname": "清除名稱",
-
-  "gui.armor_stand_editor.setname": "變更名稱為: %s",
+  "gui.armor_stand_editor.setname": "變更名稱為： %s",
   "gui.armor_stand_editor.close": "關閉",
-
-  "gui.armor_stand_editor.cantlockslots": "你無法鎖定此實體的欄位!",
-
-  "gui.armor_stand_editor.preset_author": "作者: %s",
+  "gui.armor_stand_editor.cantlockslots": "你無法鎖定此實體的欄位！",
+  "gui.armor_stand_editor.preset_author": "作者： %s",
   "gui.armor_stand_editor.presets_title": "盔甲座範本",
-
-  "text.armor_stand_editor.message.copied": "已複製盔甲座造型!",
+  "text.armor_stand_editor.message.copied": "已複製盔甲座造型！",
   "text.armor_stand_editor.message.pasted": "已貼上盔甲座造型",
-
-  "command.armor_stand_editor.give": "給 %s 盔甲座編輯器",
-
-  "command.armor_stand_editor.save-preset.success": "範本 %s (%s) 已成功儲存!",
-  "command.armor_stand_editor.save-preset.fail": "你必須先複製盔甲座造型!",
-  "command.armor_stand_editor.invalid-id": "輸入 ID (%s) 包含不可用的字元! 只能使用 a-z、0-9、_",
-
-  "command.armor_stand_editor.delete-preset.success": "已成功刪除範本 %s!",
-  "command.armor_stand_editor.delete-preset.fail": "無法刪除範本 %s!",
-
-  "command.armor_stand_editor.switchui.main": "使用快捷欄作為操作介面!",
-  "command.armor_stand_editor.switchui.legacy": "使用物品欄作為操作介面!",
-
-
-
-  "gui.armor_stand_editor.name.if-fixed": "固定: %s",
-  "gui.armor_stand_editor.name.if-invisible": "隱形: %s",
-  "gui.armor_stand_editor.name.if-rotate": "角度: %s",
+  "command.armor_stand_editor.give": "給予 %s 盔甲座編輯器",
+  "command.armor_stand_editor.save-preset.success": "範本 %s (%s) 已成功儲存！",
+  "command.armor_stand_editor.save-preset.fail": "你必須先複製盔甲座造型！",
+  "command.armor_stand_editor.invalid-id": "輸入 ID (%s) 包含不可用的字元！ 只能使用 a-z、0-9、_",
+  "command.armor_stand_editor.delete-preset.success": "已成功刪除範本 %s！",
+  "command.armor_stand_editor.delete-preset.fail": "無法刪除範本 %s！",
+  "command.armor_stand_editor.switchui.main": "使用快捷欄作為操作介面！",
+  "command.armor_stand_editor.switchui.legacy": "使用物品欄作為操作介面！",
+  "gui.armor_stand_editor.name.if-fixed": "固定： %s",
+  "gui.armor_stand_editor.name.if-invisible": "隱形： %s",
+  "gui.armor_stand_editor.name.if-rotate": "角度： %s",
   "gui.armor_stand_editor.item_frame_title": "展示框編輯器",
-
-
   "gui.armor_stand_editor.entry.type.move": "移動",
   "gui.armor_stand_editor.entry.type.pose": "姿勢",
   "gui.armor_stand_editor.entry.type.inventory": "物品欄",
   "gui.armor_stand_editor.entry.type.rename": "重新命名",
   "gui.armor_stand_editor.entry.type.properties": "屬性",
   "gui.armor_stand_editor.entry.type.copying": "複製",
-
   "gui.armor_stand_editor.entry.part.head": "調整頭部",
   "gui.armor_stand_editor.entry.part.body": "調整身體",
   "gui.armor_stand_editor.entry.part.left_arm": "調整左手",
@@ -53,61 +36,59 @@
   "gui.armor_stand_editor.entry.part.right_leg": "調整右腳",
   "gui.armor_stand_editor.action.pose.flip": "鏡像姿勢",
   "gui.armor_stand_editor.action.pose.reset": "重設姿勢",
-
-
-  "gui.armor_stand_editor.action.move.x": "沿X軸移動",
-  "gui.armor_stand_editor.action.move.y": "沿Y軸移動",
-  "gui.armor_stand_editor.action.move.z": "沿Z軸移動",
+  "gui.armor_stand_editor.action.move.x": "沿 X 軸移動",
+  "gui.armor_stand_editor.action.move.y": "沿 Y 軸移動",
+  "gui.armor_stand_editor.action.move.z": "沿 Z 軸移動",
   "gui.armor_stand_editor.action.move.look": "往前移動 (%s)",
-
   "gui.armor_stand_editor.action.move.rotate": "旋轉 %s 度",
-  "gui.armor_stand_editor.action.move.rotate.set": "目前: %s 度",
+  "gui.armor_stand_editor.action.move.rotate.set": "目前： %s 度",
   "gui.armor_stand_editor.action.move.rotate.copy_player": "複製玩家角度",
   "gui.armor_stand_editor.action.move.teleport": "傳送至玩家",
   "gui.armor_stand_editor.action.move": "移動 %s 格 %s",
-  "gui.armor_stand_editor.action.move.set": "目前: %s 格",
-
-  "gui.armor_stand_editor.action.rotate.angle.pitch": "沿X軸旋轉",
-  "gui.armor_stand_editor.action.rotate.angle.yaw": "沿Y軸旋轉",
-  "gui.armor_stand_editor.action.rotate.angle.roll": "沿Z軸旋轉",
+  "gui.armor_stand_editor.action.move.set": "目前：%s 格",
+  "gui.armor_stand_editor.action.rotate.angle.pitch": "沿 X 軸旋轉",
+  "gui.armor_stand_editor.action.rotate.angle.yaw": "沿 Y 軸旋轉",
+  "gui.armor_stand_editor.action.rotate.angle.roll": "沿 Z 軸旋轉",
   "gui.armor_stand_editor.action.rotate": "旋轉 %s 度",
-  "gui.armor_stand_editor.action.rotate.set": "目前t: %s 度",
-
-
-  "gui.armor_stand_editor.property.invisible": "隱形: %s",
-  "gui.armor_stand_editor.property.no_gravity": "無重力: %s",
-  "gui.armor_stand_editor.property.arms": "顯示手臂s: %s",
-  "gui.armor_stand_editor.property.hide_base": "隱藏底座: %s",
-  "gui.armor_stand_editor.property.small": "縮小: %s",
-
+  "gui.armor_stand_editor.action.rotate.set": "目前： %s 度",
+  "gui.armor_stand_editor.property.invisible": "隱形： %s",
+  "gui.armor_stand_editor.property.no_gravity": "無重力： %s",
+  "gui.armor_stand_editor.property.arms": "顯示手臂： %s",
+  "gui.armor_stand_editor.property.hide_base": "隱藏底座： %s",
+  "gui.armor_stand_editor.property.small": "縮小： %s",
+  "gui.armor_stand_editor.property.scale": "比例",
+  "gui.armor_stand_editor.action.scale.value_or_set": "比例：%s",
+  "gui.armor_stand_editor.action.scale.decrease": "縮小比例 %s",
+  "gui.armor_stand_editor.action.scale.increase": "放大比例 %s",
+  "gui.armor_stand_editor.action.scale.reset": "重設比例",
+  "gui.armor_stand_editor.action.scale.set_change": "目前變更：%s",
+  "gui.armor_stand_editor.action.scale.set.title": "設定實體比例",
+  "gui.armor_stand_editor.action.scale.set.set": "設定比例為：%s",
+  "gui.armor_stand_editor.action.scale.set.invalid": "無效數字：%s",
   "gui.armor_stand_editor.action.copy": "複製設定",
   "gui.armor_stand_editor.action.paste": "貼上設定",
   "gui.armor_stand_editor.action.paste.inventory": "貼上設定及物品欄",
   "gui.armor_stand_editor.entry.presets": "範本",
-
-
-  "text.armor_stand_editor.presets.selected": "選擇範本 \"%s\" \"貼上\" 以使用它",
-  "text.armor_stand_editor.open_info": "已打開盔甲座編輯器，點擊 \"%s\" 關閉!",
-
-
+  "gui.armor_stand_editor.entry.preset_save": "建立預設值",
+  "gui.armor_stand_editor.entry.preset_save.save": "以名稱 %s 儲存預設值",
+  "gui.armor_stand_editor.entry.global_presets": "全域預設值",
+  "gui.armor_stand_editor.entry.player_presets": "保存預設值",
+  "gui.armor_stand_editor.presets.remove": "按下 [Shift + 滑鼠右鍵] 以移除預設值！",
+  "text.armor_stand_editor.presets.selected": "選擇範本 \"%s\" 「貼上」 以使用它",
+  "text.armor_stand_editor.open_info": "已打開盔甲座編輯器，點擊 \"%s\" 關閉！",
   "text.armor_stand_editor.dir.south": "向南",
   "text.armor_stand_editor.dir.north": "向北",
   "text.armor_stand_editor.dir.west": "向西",
   "text.armor_stand_editor.dir.east": "向東",
   "text.armor_stand_editor.dir.up": "向上",
   "text.armor_stand_editor.dir.down": "向下",
-
   "text.armor_stand_editor.enabled": "啟用",
   "text.armor_stand_editor.disabled": "關閉",
-
   "gui.armor_stand_editor.back": "返回",
-
-
   "text.armor_stand_editor.message.copied.legacy": "盔甲座已複製，並切換到貼上模式",
-
-  "gui.armor_stand_editor.name.legacy.x": "X方向調整",
-  "gui.armor_stand_editor.name.legacy.y": "Y方向調整",
-  "gui.armor_stand_editor.name.legacy.z": "Z方向調整",
+  "gui.armor_stand_editor.name.legacy.x": "X 方向調整",
+  "gui.armor_stand_editor.name.legacy.y": "Y 方向調整",
+  "gui.armor_stand_editor.name.legacy.z": "Z 方向調整",
   "gui.armor_stand_editor.name.legacy.head": "旋轉頭部",
   "gui.armor_stand_editor.name.legacy.body": "旋轉身體",
   "gui.armor_stand_editor.name.legacy.left_arm": "旋轉左手",
@@ -119,26 +100,20 @@
   "gui.armor_stand_editor.name.legacy.big": "大幅調整",
   "gui.armor_stand_editor.name.legacy.custom_change": "客製化調整",
   "gui.armor_stand_editor.name.legacy.rotate": "旋轉",
-
   "gui.armor_stand_editor.legacy.blocksdeg": "%s 格 / %s 度",
-
   "gui.armor_stand_editor.name.legacy.reset_pose": "重設姿勢",
   "gui.armor_stand_editor.name.legacy.flip_pose": "鏡像姿勢",
-
   "gui.armor_stand_editor.name.legacy.size": "調整大小",
   "gui.armor_stand_editor.name.legacy.gravity": "調整重力",
   "gui.armor_stand_editor.name.legacy.visibility": "調整隱形",
   "gui.armor_stand_editor.name.legacy.arms": "顯示/隱藏手臂",
   "gui.armor_stand_editor.name.legacy.base": "顯示/隱藏底座",
-
   "gui.armor_stand_editor.name.legacy.copy": "複製",
   "gui.armor_stand_editor.name.legacy.paste": "貼上",
-
   "gui.armor_stand_editor.name.legacy.move": "移動",
   "gui.armor_stand_editor.name.legacy.inventory": "打開物品欄",
   "gui.armor_stand_editor.name.legacy.rename": "重新命名",
   "gui.armor_stand_editor.name.legacy.presets": "範本",
-
-  "text.armor_stand_editor.about.version": "版本: %s",
+  "text.armor_stand_editor.about.version": "版本： %s",
   "text.armor_stand_editor.about.contributors": "貢獻者"
 }

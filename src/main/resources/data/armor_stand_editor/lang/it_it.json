@@ -1,0 +1,13 @@
+{
+  "gui.armor_stand_editor.editor_title": "Editor dell'Armor Stand",
+  "gui.armor_stand_editor.inventory_title": "Inventario dell'Armor Stand",
+  "gui.armor_stand_editor.rename_title": "Rinomina Armor Stand",
+  "gui.armor_stand_editor.clearname": "Cancella nome",
+  "gui.armor_stand_editor.setname": "Cambia nome in: %s",
+  "gui.armor_stand_editor.close": "Chiudi",
+  "gui.armor_stand_editor.cantlockslots": "Non puoi bloccare gli slot di quest'entità!",
+  "gui.armor_stand_editor.preset_author": "Creato da: %s",
+  "gui.armor_stand_editor.presets_title": "Presets dell'Armor Stand",
+  "text.armor_stand_editor.message.copied": "Armor Stand Copiato!",
+  "text.armor_stand_editor.message.pasted": "Modificato l'Armor Stand di modo che utilizzi i valori memorizzati"
+}

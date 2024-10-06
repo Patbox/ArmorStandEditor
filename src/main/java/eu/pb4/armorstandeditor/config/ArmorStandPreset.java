@@ -13,6 +13,7 @@ public class ArmorStandPreset {
     public boolean small = false;
     public boolean showArms = false;
     public boolean invisible = false;
+    public float scale = 1;
     public float[] headRotation = new float[]{0, 0, 0};
     public float[] bodyRotation = new float[]{0, 0, 0};
     public float[] leftArmRotation = new float[]{0, 0, 0};
@@ -31,11 +32,13 @@ public class ArmorStandPreset {
     public ArmorStandData asData() {
         ArmorStandData data = new ArmorStandData();
 
+        data.hasInventory = false;
         data.noGravity = this.noGravity;
         data.hidePlate = this.hidePlate;
         data.small = this.small;
         data.showArms = this.showArms;
         data.invisible = this.invisible;
+        data.scale = this.scale;
         data.headRotation = new EulerAngle(this.headRotation[0], this.headRotation[1], this.headRotation[2]);
         data.bodyRotation = new EulerAngle(this.bodyRotation[0], this.bodyRotation[1], this.bodyRotation[2]);
         data.leftArmRotation = new EulerAngle(this.leftArmRotation[0], this.leftArmRotation[1], this.leftArmRotation[2]);
@@ -52,6 +55,7 @@ public class ArmorStandPreset {
         this.small = data.small;
         this.showArms = data.showArms;
         this.invisible = data.invisible;
+        this.scale = data.scale;
         this.headRotation = new float[]{data.headRotation.getPitch(), data.headRotation.getYaw(), data.headRotation.getRoll()};
         this.bodyRotation = new float[]{data.bodyRotation.getPitch(), data.bodyRotation.getYaw(), data.bodyRotation.getRoll()};
         this.leftArmRotation = new float[]{data.leftArmRotation.getPitch(), data.leftArmRotation.getYaw(), data.leftArmRotation.getRoll()};

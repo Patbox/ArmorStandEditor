@@ -6,32 +6,26 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.HotbarGui;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.Rarity;
 
-public abstract class BaseGui extends HotbarGui {
-    @Nullable
+public abstract class BaseChestGui extends SimpleGui {
     protected EditingContext context;
-    private final int currentBlockClickTick;
-
-    public BaseGui(EditingContext context, int selectedSlot) {
-        super(context.player);
-        this.setSelectedSlot(selectedSlot);
+    public BaseChestGui(EditingContext context, ScreenHandlerType type, boolean withPlayerSlots) {
+        super(type, context.player, withPlayerSlots);
         this.context = context;
-        context.currentUi = this;
-        this.currentBlockClickTick = context.player.age;
     }
 
     @Override
@@ -41,34 +35,9 @@ public abstract class BaseGui extends HotbarGui {
     }
 
     private void checkClosed() {
-        if (this.context != null && (this.context.armorStand.isRemoved() || this.context.armorStand.squaredDistanceTo(this.player) > 48 * 48)) {
+        if (this.context.checkClosed()) {
             this.close();
         }
-    }
-
-    @Override
-    public boolean onClickBlock(BlockHitResult hitResult) {
-        this.checkClosed();
-        if (this.player.age - this.currentBlockClickTick >= 5) {
-            return super.onClickBlock(hitResult);
-        }
-        return false;
-    }
-
-    @Override
-    public void onClickItem() {
-        this.checkClosed();
-        if (this.player.age - this.currentBlockClickTick >= 5) {
-            super.onClickItem();
-        }
-    }
-
-    @Override
-    public boolean onHandSwing() {
-        if (this.player.age - this.currentBlockClickTick >= 5) {
-            return super.onHandSwing();
-        }
-        return false;
     }
 
     protected void rebuildUi() {
@@ -76,28 +45,25 @@ public abstract class BaseGui extends HotbarGui {
             this.clearSlot(i);
         }
         this.buildUi();
-        this.setSlot(8, new GuiElementBuilder(Items.BARRIER)
+    }
+
+    protected GuiElementBuilder closeButton() {
+        return new GuiElementBuilder(Items.BARRIER)
                 .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back"))
+                .setRarity(Rarity.COMMON)
                 .hideDefaultTooltip()
                 .setCallback((x, y, z, c) -> {
                     this.playClickSound();
-                    if (this.context == null || this.context.interfaceList.isEmpty()) {
-                        this.close();
-                    } else {
-                        this.switchUi(this.context.interfaceList.remove(0), false);
-                    }
-                })
-        );
-
-        this.setSlot(37, this.player.getEquippedStack(EquipmentSlot.HEAD).copy());
-        this.setSlot(38, this.player.getEquippedStack(EquipmentSlot.CHEST).copy());
-        this.setSlot(39, this.player.getEquippedStack(EquipmentSlot.LEGS).copy());
-        this.setSlot(40, this.player.getEquippedStack(EquipmentSlot.FEET).copy());
+                    this.openPreviousOrClose();
+                });
     }
 
-    @Override
-    public void setSelectedSlot(int value) {
-        this.selectedSlot = MathHelper.clamp(value, 0, 8);
+    protected void openPreviousOrClose() {
+        if (this.context == null || this.context.interfaceList.isEmpty()) {
+            this.close();
+        } else {
+            this.switchUi(this.context.interfaceList.removeFirst(), false);
+        }
     }
 
     protected void playClickSound() {
@@ -128,7 +94,7 @@ public abstract class BaseGui extends HotbarGui {
 
     protected abstract void buildUi();
 
-    protected abstract SwitchEntry asSwitchableUi();
+    protected abstract EditingContext.SwitchEntry asSwitchableUi();
 
     protected GuiElementBuilder baseElement(Item item, String name, boolean selected) {
         var builder = new GuiElementBuilder(item)
@@ -154,24 +120,28 @@ public abstract class BaseGui extends HotbarGui {
         return builder;
     }
 
-    protected GuiElementBuilder switchElement(Item item, String name, SwitchableUi ui) {
+    protected GuiElementBuilder switchElement(Item item, String name, EditingContext.SwitchableUi ui) {
         return new GuiElementBuilder(item)
                 .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
                 .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));
     }
 
-    protected GuiElementInterface.ClickCallback switchCallback(SwitchableUi ui) {
+    protected GuiElementInterface.ClickCallback switchCallback(EditingContext.SwitchableUi ui) {
         return (x, y, z, c) -> {
             this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
-            this.switchUi(new SwitchEntry(ui, 0), true);
+            this.switchUi(new EditingContext.SwitchEntry(ui, 0), true);
         };
     }
 
-    public void switchUi(SwitchEntry uiOpener, boolean addSelf) {
+    public void switchUi(EditingContext.SwitchEntry uiOpener, boolean addSelf) {
+        if (uiOpener.currentSlot() == -1) {
+            this.close(false);
+        }
+
         var context = this.context;
         if (addSelf) {
-            context.interfaceList.add(0, this.asSwitchableUi());
+            context.interfaceList.addFirst(this.asSwitchableUi());
         }
         this.context = null;
         uiOpener.open(context);
@@ -187,17 +157,4 @@ public abstract class BaseGui extends HotbarGui {
     protected void playSound(RegistryEntry<SoundEvent> sound, float volume, float pitch) {
         this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
     }
-
-    @FunctionalInterface
-    public interface SwitchableUi {
-        void openUi(EditingContext context, int selectedSlot);
-    }
-
-    public record SwitchEntry(SwitchableUi ui, int currentSlot) {
-        public void open(EditingContext context) {
-            ui.openUi(context, currentSlot);
-        }
-    }
-
-
 }

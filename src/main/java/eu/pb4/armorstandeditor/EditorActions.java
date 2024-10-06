@@ -17,6 +17,8 @@ public enum EditorActions {
     TOGGLE_GRAVITY("toggle_no_gravity"),
     TOGGLE_BASE("toggle_base"),
 
+    SCALE("scale"),
+
     MODIFY_POSE("modify_pose"),
     MODIFY_LEFT_ARM("modify_pose"),
     MODIFY_RIGHT_ARM("modify_pose"),
@@ -32,7 +34,6 @@ public enum EditorActions {
     PASTE("paste"),
     INVENTORY("inventory"),
     RENAME("rename");
-
 
     public final String permission;
 

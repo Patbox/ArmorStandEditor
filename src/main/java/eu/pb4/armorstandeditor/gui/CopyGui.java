@@ -1,12 +1,14 @@
 package eu.pb4.armorstandeditor.gui;
 
+import eu.pb4.armorstandeditor.config.ConfigManager;
+import eu.pb4.armorstandeditor.config.PlayerData;
 import eu.pb4.armorstandeditor.legacy.LegacyEditorGuis;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 
-public class CopyGui extends BaseGui {
+public class CopyGui extends BaseWorldGui {
     public CopyGui(EditingContext context, int slot) {
         super(context, slot);
         this.rebuildUi();
@@ -39,7 +41,7 @@ public class CopyGui extends BaseGui {
                             })
             );
 
-            if (this.player.isCreative()) {
+            if (this.player.isCreative() && spei.ase$getArmorStandEditorData().hasInventory) {
                 this.setSlot(2,
                         baseElement(Items.MAGMA_CREAM, "action.paste.inventory", false)
                                 .setCallback((x, y, z, c) -> {
@@ -52,15 +54,25 @@ public class CopyGui extends BaseGui {
                                 })
                 );
             }
+
+            if (PlayerData.get(player).presets.size() < ConfigManager.getConfig().configData.presetLimit) {
+                this.setSlot(5,
+                        switchElement(Items.WRITABLE_BOOK, "preset_save", PresetSaveGui::new)
+                );
+            }
         }
 
+
+        this.setSlot(6,
+                switchElement(Items.BOOK, "player_presets", PresetSelectorGui::playerPresets)
+        );
         this.setSlot(7,
-                switchElement(Items.ARMOR_STAND, "presets", LegacyEditorGuis.getPresetsGui())
+                switchElement(Items.ARMOR_STAND, "global_presets", PresetSelectorGui::globalPresets)
         );
     }
 
     @Override
-    protected SwitchEntry asSwitchableUi() {
-        return new SwitchEntry(CopyGui::new, this.getSelectedSlot());
+    protected EditingContext.SwitchEntry asSwitchableUi() {
+        return new EditingContext.SwitchEntry(CopyGui::new, this.getSelectedSlot());
     }
 }
