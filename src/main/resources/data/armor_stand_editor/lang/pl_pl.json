@@ -55,6 +55,7 @@
   "gui.armor_stand_editor.property.no_gravity": "Brak grawitacji: %s",
   "gui.armor_stand_editor.property.arms": "Pokaż ręce: %s",
   "gui.armor_stand_editor.property.hide_base": "Ukryj podstawę: %s",
+  "gui.armor_stand_editor.property.visual_fire": "Wizualnie w ogniu: %s",
   "gui.armor_stand_editor.property.small": "Mały: %s",
   "gui.armor_stand_editor.property.scale": "Skaluj",
   "gui.armor_stand_editor.action.scale.value_or_set": "Skala: %s",

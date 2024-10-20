@@ -69,7 +69,7 @@ public class ScaleGui extends BaseWorldGui {
     }
 
     private void setScale(double scale) {
-        this.context.armorStand.getAttributeInstance(EntityAttributes.GENERIC_SCALE).setBaseValue(scale);
+        this.context.armorStand.getAttributeInstance(EntityAttributes.SCALE).setBaseValue(scale);
         this.updateMiddle();
     }
 

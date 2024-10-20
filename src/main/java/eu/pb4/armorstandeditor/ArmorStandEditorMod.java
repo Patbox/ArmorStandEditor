@@ -6,8 +6,6 @@ import eu.pb4.armorstandeditor.gui.EditingContext;
 import eu.pb4.armorstandeditor.gui.ItemFrameEditorGui;
 import eu.pb4.armorstandeditor.gui.MainGui;
 import eu.pb4.armorstandeditor.util.GeneralCommands;
-import eu.pb4.armorstandeditor.legacy.LegacyEvents;
-import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.common.protection.api.CommonProtection;
 import eu.pb4.playerdata.api.PlayerDataApi;
@@ -49,7 +47,6 @@ public class ArmorStandEditorMod implements ModInitializer {
             CardboardWarning.checkAndAnnounce();
         });
         GeneralCommands.register();
-        LegacyEvents.registerEvents();
 
         final var checkDisguise = FabricLoader.getInstance().isModLoaded("disguiselib");
 
@@ -73,10 +70,6 @@ public class ArmorStandEditorMod implements ModInitializer {
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (world.isClient) {
-                return ActionResult.PASS;
-            }
-
-            if (LegacyPlayerExt.useLegacy(player)) {
                 return ActionResult.PASS;
             }
 

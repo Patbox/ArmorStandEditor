@@ -75,6 +75,7 @@
   "gui.armor_stand_editor.property.no_gravity": "No Gravity: %s",
   "gui.armor_stand_editor.property.arms": "Show Arms: %s",
   "gui.armor_stand_editor.property.hide_base": "Hide Base: %s",
+  "gui.armor_stand_editor.property.visual_fire": "Visual Fire: %s",
   "gui.armor_stand_editor.property.small": "Small: %s",
 
   "gui.armor_stand_editor.property.scale": "Scale",

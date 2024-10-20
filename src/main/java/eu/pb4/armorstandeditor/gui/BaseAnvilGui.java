@@ -54,7 +54,8 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
     }
 
     protected GuiElementBuilder closeButton() {
-        return new GuiElementBuilder(Items.BARRIER)
+        return new GuiElementBuilder()
+                .model(Items.BARRIER)
                 .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back"))
                 .setRarity(Rarity.COMMON)
                 .hideDefaultTooltip()
@@ -131,7 +132,8 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
     }
 
     protected GuiElementBuilder switchElement(Item item, String name, EditingContext.SwitchableUi ui) {
-        return new GuiElementBuilder(item)
+        return new GuiElementBuilder()
+                .model(item)
                 .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
                 .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));

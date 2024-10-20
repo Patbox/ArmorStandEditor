@@ -48,7 +48,8 @@ public abstract class BaseChestGui extends SimpleGui {
     }
 
     protected GuiElementBuilder closeButton() {
-        return new GuiElementBuilder(Items.BARRIER)
+        return new GuiElementBuilder()
+                .model(Items.BARRIER)
                 .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back"))
                 .setRarity(Rarity.COMMON)
                 .hideDefaultTooltip()
@@ -97,7 +98,8 @@ public abstract class BaseChestGui extends SimpleGui {
     protected abstract EditingContext.SwitchEntry asSwitchableUi();
 
     protected GuiElementBuilder baseElement(Item item, String name, boolean selected) {
-        var builder = new GuiElementBuilder(item)
+        var builder = new GuiElementBuilder()
+                .model(item)
                 .setName(TextUtils.gui(name).formatted(Formatting.WHITE))
                 .hideDefaultTooltip();
 
@@ -109,7 +111,8 @@ public abstract class BaseChestGui extends SimpleGui {
     }
 
     protected GuiElementBuilder baseElement(Item item, MutableText text, boolean selected) {
-        var builder = new GuiElementBuilder(item)
+        var builder = new GuiElementBuilder()
+                .model(item)
                 .setName(text.formatted(Formatting.WHITE))
                 .hideDefaultTooltip();
 
@@ -121,7 +124,8 @@ public abstract class BaseChestGui extends SimpleGui {
     }
 
     protected GuiElementBuilder switchElement(Item item, String name, EditingContext.SwitchableUi ui) {
-        return new GuiElementBuilder(item)
+        return new GuiElementBuilder()
+                .model(item)
                 .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
                 .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));

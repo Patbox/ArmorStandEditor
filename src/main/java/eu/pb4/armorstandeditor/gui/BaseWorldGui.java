@@ -74,7 +74,8 @@ public abstract class BaseWorldGui extends HotbarGui {
             this.clearSlot(i);
         }
         this.buildUi();
-        this.setSlot(8, new GuiElementBuilder(Items.BARRIER)
+        this.setSlot(8, new GuiElementBuilder()
+                .model(Items.BARRIER)
                 .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back"))
                 .setRarity(Rarity.COMMON)
                 .hideDefaultTooltip()
@@ -130,7 +131,8 @@ public abstract class BaseWorldGui extends HotbarGui {
     protected abstract EditingContext.SwitchEntry asSwitchableUi();
 
     protected GuiElementBuilder baseElement(Item item, String name, boolean selected) {
-        var builder = new GuiElementBuilder(item)
+        var builder = new GuiElementBuilder()
+                .model(item)
                 .setName(TextUtils.gui(name).formatted(Formatting.WHITE))
                 .hideDefaultTooltip();
 
@@ -142,7 +144,8 @@ public abstract class BaseWorldGui extends HotbarGui {
     }
 
     protected GuiElementBuilder baseElement(Item item, MutableText text, boolean selected) {
-        var builder = new GuiElementBuilder(item)
+        var builder = new GuiElementBuilder()
+                .model(item)
                 .setName(text.formatted(Formatting.WHITE))
                 .hideDefaultTooltip();
 
@@ -154,7 +157,8 @@ public abstract class BaseWorldGui extends HotbarGui {
     }
 
     protected GuiElementBuilder switchElement(Item item, String name, EditingContext.SwitchableUi ui) {
-        return new GuiElementBuilder(item)
+        return new GuiElementBuilder()
+                .model(item)
                 .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
                 .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));

@@ -44,7 +44,7 @@ public class ArmorStandData {
         ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) armorStand;
         this.yaw = armorStand.getYaw();
         this.noGravity = armorStand.hasNoGravity();
-        this.hidePlate = armorStand.shouldHideBasePlate();
+        this.hidePlate = !armorStand.shouldShowBasePlate();
         this.small = armorStand.isSmall();
         this.showArms = armorStand.shouldShowArms();
         this.invisible = armorStand.isInvisible();
@@ -85,7 +85,7 @@ public class ArmorStandData {
         }
         armorStand.setNoGravity(this.noGravity);
         armorStand.noClip = this.noGravity;
-        asea.callSetHideBasePlate(this.hidePlate);
+        armorStand.setHideBasePlate(this.hidePlate);
         asea.callSetSmall(this.small);
         asea.callSetShowArms(this.showArms);
         armorStand.setInvisible(this.invisible);
@@ -100,7 +100,7 @@ public class ArmorStandData {
         armorStand.setCustomName(this.customName);
         asea.setDisabledSlots(this.disabledSlots);
 
-        armorStand.getAttributeInstance(EntityAttributes.GENERIC_SCALE).setBaseValue(scale);
+        armorStand.getAttributeInstance(EntityAttributes.SCALE).setBaseValue(scale);
 
         if (modifyInventory && this.hasInventory) {
             armorStand.equipStack(EquipmentSlot.HEAD, this.headItem);

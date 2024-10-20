@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ConfigData {
-    public int CONFIG_VERSION_DONT_TOUCH_THIS = 3;
+    public int CONFIG_VERSION_DONT_TOUCH_THIS = 4;
 
     public String armorStandTool = "minecraft:flint";
     public boolean requireIsArmorStandEditorTag = false;
@@ -27,12 +27,16 @@ public class ConfigData {
     public Set<String> allowedByDefault = Arrays.stream(EditorActions.values()).map(x -> x.permission).collect(Collectors.toSet());
 
     public void update() {
-        if (CONFIG_VERSION_DONT_TOUCH_THIS <= 2) {
+        if (CONFIG_VERSION_DONT_TOUCH_THIS <= 3) {
             if (this.allowedByDefault.contains(EditorActions.TOGGLE_SIZE.permission)) {
                 this.allowedByDefault.add(EditorActions.SCALE.permission);
             }
+            if (this.allowedByDefault.contains(EditorActions.TOGGLE_VISIBILITY.permission)) {
+                this.allowedByDefault.add(EditorActions.TOGGLE_VISUAL_FIRE.permission);
+            }
         }
 
-        CONFIG_VERSION_DONT_TOUCH_THIS = 3;
+
+        CONFIG_VERSION_DONT_TOUCH_THIS = 4;
     }
 }

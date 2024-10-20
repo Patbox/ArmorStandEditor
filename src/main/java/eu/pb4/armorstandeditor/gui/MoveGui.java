@@ -105,7 +105,7 @@ public class MoveGui extends BaseWorldGui {
         );
 
 
-        this.setSlot(7, baseElement(Items.PLAYER_HEAD, TextUtils.gui("action.move.rotate.copy_player"), false)
+        this.setSlot(7, baseElement(Items.ARROW, TextUtils.gui("action.move.rotate.copy_player"), false)
                 .setCallback((x, y, z, c) -> {
                     if (this.player.isSneaking()) {
                         return;

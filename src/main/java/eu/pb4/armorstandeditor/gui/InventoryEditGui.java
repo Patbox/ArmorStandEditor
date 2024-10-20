@@ -23,7 +23,7 @@ public class InventoryEditGui extends BaseChestGui {
     }
 
     public static boolean isSlotUnlocked(ArmorStandEntity armorStandEntity, EquipmentSlot slot) {
-        return (((ArmorStandEntityAccessor) armorStandEntity).getDisabledSlots() & 1 << slot.getArmorStandSlotId()) == 0;
+        return (((ArmorStandEntityAccessor) armorStandEntity).getDisabledSlots() & 1 << slot.getOffsetIndex(0)) == 0;
     }
 
     @Override
@@ -55,13 +55,13 @@ public class InventoryEditGui extends BaseChestGui {
                         boolean isUnlockedTmp = isSlotUnlocked(ae, slot);
 
                         if (isUnlockedTmp) {
-                            disabledSlots |= 1 << slot.getArmorStandSlotId();
-                            disabledSlots |= 1 << slot.getArmorStandSlotId() + 8;
-                            disabledSlots |= 1 << slot.getArmorStandSlotId() + 16;
+                            disabledSlots |= 1 << slot.getOffsetIndex(0);
+                            disabledSlots |= 1 << slot.getOffsetIndex(8);
+                            disabledSlots |= 1 << slot.getOffsetIndex(16);
                         } else {
-                            disabledSlots &= ~(1 << slot.getArmorStandSlotId());
-                            disabledSlots &= ~(1 << slot.getArmorStandSlotId() + 8);
-                            disabledSlots &= ~(1 << slot.getArmorStandSlotId() + 16);
+                            disabledSlots &= ~(1 << slot.getOffsetIndex(0));
+                            disabledSlots &= ~(1 << slot.getOffsetIndex(8));
+                            disabledSlots &= ~(1 << slot.getOffsetIndex(16));
                         }
 
                         asea.setDisabledSlots(disabledSlots);

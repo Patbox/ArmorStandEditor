@@ -1,7 +1,6 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.EditorActions;
-import eu.pb4.armorstandeditor.legacy.LegacyEditorGuis;
 import net.minecraft.item.Items;
 
 public class MainGui extends BaseWorldGui {
@@ -15,7 +14,7 @@ public class MainGui extends BaseWorldGui {
     protected void buildUi() {
         this.addSlot(EditorActions.MOVE, switchElement(Items.MINECART, "type.move", MoveGui::new));
         this.addSlot(EditorActions.MODIFY_POSE, switchElement(Items.STICK, "type.pose", PoseListGui::new));
-        this.addSlot(EditorActions.INVENTORY, switchElement(Items.CHEST, "type.inventory", InventoryEditGui::new));
+        this.addSlot(EditorActions.INVENTORY, switchElement(Items.OAK_CHEST_BOAT, "type.inventory", InventoryEditGui::new));
         this.addSlot(EditorActions.RENAME, switchElement(Items.NAME_TAG, "type.rename", RenameGui::new));
         this.addSlot(EditorActions.TOGGLE_PROPERTIES, switchElement(Items.FEATHER, "type.properties", PropertyGui::new));
         this.addSlot(EditorActions.COPY, switchElement(Items.SLIME_BALL, "type.copying", CopyGui::new));

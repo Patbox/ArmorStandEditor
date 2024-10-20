@@ -2,7 +2,6 @@ package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.config.PlayerData;
-import eu.pb4.armorstandeditor.legacy.LegacyEditorGuis;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
 import net.minecraft.item.Items;

@@ -6,15 +6,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import eu.pb4.armorstandeditor.GenericModInfo;
 import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import eu.pb4.armorstandeditor.legacy.LegacyPlayerExt;
-import eu.pb4.playerdata.api.PlayerDataApi;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtByte;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -58,20 +55,11 @@ public class GeneralCommands {
                                             .requires(Permissions.require("armor_stand_editor.commands.list_presets", 3))
                                             .executes(GeneralCommands::listPresets)
                                     )
-                            .then(literal("switchui")
-                                    .requires(Permissions.require("armor_stand_editor.commands.switch_ui", 0))
-                                    .executes(GeneralCommands::switchUi)
-                            )
             );
             });
         }
 
-    private static int switchUi(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        boolean current = LegacyPlayerExt.useLegacy(context.getSource().getPlayerOrThrow());
-        PlayerDataApi.setGlobalDataFor(context.getSource().getPlayer(), LegacyPlayerExt.LEGACY_UI, NbtByte.of(!current));
-        context.getSource().sendFeedback(() -> TextUtils.command("switchui." + (current ? "main" : "legacy")), false);
-        return 0;
-    }
+
 
     private static int savePreset(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
