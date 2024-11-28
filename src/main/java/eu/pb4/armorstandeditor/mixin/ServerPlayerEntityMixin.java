@@ -77,6 +77,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
                     for (ArmorStandEntity armorStand : armorStands) {
                         this.networkHandler.sendPacket(new ParticleS2CPacket(particleEffect,
                                 false,
+                                false,
                                 armorStand.getX(),
                                 armorStand.getY() + armorStand.getHeight() / 2,
                                 armorStand.getZ(),
@@ -89,6 +90,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
 
                     for (ItemFrameEntity itemFrame : itemFrames) {
                         this.networkHandler.sendPacket(new ParticleS2CPacket(particleEffect2,
+                                false,
                                 false,
                                 itemFrame.getX(),
                                 itemFrame.getY() + itemFrame.getHeight() / 2,
