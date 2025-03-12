@@ -33,6 +33,16 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
         return false;
     }
 
+    @Override
+    public int getMaxCountPerStack() {
+        return 1;
+    }
+
+    @Override
+    public int getMaxCount(ItemStack stack) {
+        return 1;
+    }
+
     public List<ItemStack> getItems() {
         return DefaultedList.copyOf(
                 ItemStack.EMPTY,

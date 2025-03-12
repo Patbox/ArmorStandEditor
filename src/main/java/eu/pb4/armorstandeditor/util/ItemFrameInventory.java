@@ -17,6 +17,16 @@ public class ItemFrameInventory implements Inventory {
     }
 
     @Override
+    public int getMaxCount(ItemStack stack) {
+        return 1;
+    }
+
+    @Override
+    public int getMaxCountPerStack() {
+        return 1;
+    }
+
+    @Override
     public int size() {
         return 1;
     }
