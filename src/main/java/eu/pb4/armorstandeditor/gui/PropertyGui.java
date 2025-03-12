@@ -20,7 +20,7 @@ public class PropertyGui extends BaseWorldGui {
             Entry.of(EditorActions.TOGGLE_VISIBILITY, "invisible", Items.GLASS, ArmorStandEntity::setInvisible, ArmorStandEntity::isInvisible),
             Entry.of(EditorActions.TOGGLE_GRAVITY,"no_gravity", Items.FEATHER, PropertyGui::setNoGravity, ArmorStandEntity::hasNoGravity),
             Entry.ofa(EditorActions.TOGGLE_ARMS, "arms", Items.STICK, ArmorStandEntityAccessor::callSetShowArms, ArmorStandEntity::shouldShowArms),
-            Entry.ofa(EditorActions.TOGGLE_BASE, "hide_base", Items.SMOOTH_STONE_SLAB, ArmorStandEntityAccessor::callSetHideBasePlate, a -> !a.shouldShowBasePlate()),
+            Entry.ofa(EditorActions.TOGGLE_BASE, "hide_base", Items.SMOOTH_STONE_SLAB, ArmorStandEntityAccessor::callSetHideBasePlate, ArmorStandEntity::shouldHideBasePlate),
             Entry.ofe(EditorActions.TOGGLE_VISUAL_FIRE, "visual_fire", Items.BLAZE_POWDER, EntityAccessor::setHasVisualFire, EntityAccessor::isHasVisualFire),
             Entry.ofa(EditorActions.TOGGLE_SIZE, "small", Items.PUFFERFISH, ArmorStandEntityAccessor::callSetSmall, ArmorStandEntity::isSmall),
             Entry.ofMenu(EditorActions.SCALE, "scale", Items.BROWN_MUSHROOM, ScaleGui::new)
