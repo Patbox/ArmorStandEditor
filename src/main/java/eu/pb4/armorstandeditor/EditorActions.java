@@ -3,6 +3,7 @@ package eu.pb4.armorstandeditor;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 
 public enum EditorActions {
     OPEN_EDITOR("open_editor"),
@@ -16,6 +17,7 @@ public enum EditorActions {
     TOGGLE_VISIBILITY("toggle_visibility"),
     TOGGLE_GRAVITY("toggle_no_gravity"),
     TOGGLE_BASE("toggle_base"),
+    TOGGLE_VISUAL_FIRE("toggle_visual_fire"),
 
     SCALE("scale"),
 
