@@ -104,7 +104,7 @@ public class ArmorStandEditorMod implements ModInitializer {
                 && !player.isSpectator()
                 && itemStack.getItem() == config.armorStandTool
                 && (!config.configData.requireIsArmorStandEditorTag
-                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).getNbt().getBoolean("isArmorStandEditor"))
+                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).getNbt().getBoolean("isArmorStandEditor", false))
                 && (!(entity instanceof ArmorStandEntity armorStandEntity) || !armorStandEntity.isMarker())
                 && (entity == null || CommonProtection.canInteractEntity(entity.getWorld(), entity, player.getGameProfile(), player));
     }
@@ -116,7 +116,7 @@ public class ArmorStandEditorMod implements ModInitializer {
                 && !player.isSpectator()
                 && itemStack.getItem() == config.armorStandTool
                 && (!config.configData.requireIsArmorStandEditorTag
-                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).getNbt().getBoolean("isArmorStandEditor"))
+                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).getNbt().getBoolean("isArmorStandEditor", false))
                 && (entity == null ||  CommonProtection.canInteractEntity(entity.getWorld(), entity, player.getGameProfile(), player));
     }
 }

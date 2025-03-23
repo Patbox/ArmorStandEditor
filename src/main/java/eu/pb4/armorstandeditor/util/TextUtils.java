@@ -23,6 +23,6 @@ public class TextUtils {
     }
 
     public static MutableText direction(Direction from) {
-        return Text.translatable("text.armor_stand_editor.dir." + from.getName());
+        return Text.translatable("text.armor_stand_editor.dir." + from.asString());
     }
 }

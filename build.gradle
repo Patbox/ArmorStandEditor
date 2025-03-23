@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7.+'
+	id 'fabric-loom' version '1.10.+'
 	id 'maven-publish'
 	id "com.modrinth.minotaur" version "2.+"
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
@@ -35,11 +35,11 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation include("me.lucko:fabric-permissions-api:0.3.3")
-	modImplementation include("eu.pb4:sgui:1.8.1+1.21.4")
-	modImplementation include("eu.pb4:player-data-api:0.7.0+1.21.3")
+	modImplementation include("eu.pb4:sgui:1.9.0+1.21.5")
+	modImplementation include("eu.pb4:player-data-api:0.7.0+1.21.5")
 	modImplementation include("eu.pb4:common-protection-api:1.0.0")
 
-	modImplementation include("xyz.nucleoid:server-translations-api:2.4.0+1.21.2-rc1")
+	modImplementation include("xyz.nucleoid:server-translations-api:2.5.0+1.21.5-rc1")
 
 	//modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
 	modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')

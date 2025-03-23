@@ -109,9 +109,9 @@ public class ModifyPoseGui extends BaseWorldGui {
         var base = this.getter.apply(this.context.armorStand);
 
         var out = switch (this.rotationType) {
-            case PITCH -> new EulerAngle((float) (v + base.getPitch()), base.getYaw(), base.getRoll());
-            case YAW -> new EulerAngle(base.getPitch(), (float) (v + base.getYaw()), base.getRoll());
-            case ROLL -> new EulerAngle(base.getPitch(), base.getYaw(), (float) (v + base.getRoll()));
+            case PITCH -> new EulerAngle((float) (v + base.pitch()), base.yaw(), base.roll());
+            case YAW -> new EulerAngle(base.pitch(), (float) (v + base.yaw()), base.roll());
+            case ROLL -> new EulerAngle(base.pitch(), base.yaw(), (float) (v + base.roll()));
         };
 
         this.setter.accept(this.context.armorStand, out);

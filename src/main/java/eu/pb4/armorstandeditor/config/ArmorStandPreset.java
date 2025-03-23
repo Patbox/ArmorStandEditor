@@ -56,12 +56,12 @@ public class ArmorStandPreset {
         this.showArms = data.showArms;
         this.invisible = data.invisible;
         this.scale = data.scale;
-        this.headRotation = new float[]{data.headRotation.getPitch(), data.headRotation.getYaw(), data.headRotation.getRoll()};
-        this.bodyRotation = new float[]{data.bodyRotation.getPitch(), data.bodyRotation.getYaw(), data.bodyRotation.getRoll()};
-        this.leftArmRotation = new float[]{data.leftArmRotation.getPitch(), data.leftArmRotation.getYaw(), data.leftArmRotation.getRoll()};
-        this.rightArmRotation = new float[]{data.rightArmRotation.getPitch(), data.rightArmRotation.getYaw(), data.rightArmRotation.getRoll()};
-        this.leftLegRotation = new float[]{data.leftLegRotation.getPitch(), data.leftLegRotation.getYaw(), data.leftLegRotation.getRoll()};
-        this.rightLegRotation = new float[]{data.rightLegRotation.getPitch(), data.rightLegRotation.getYaw(), data.rightLegRotation.getRoll()};
+        this.headRotation = new float[]{data.headRotation.pitch(), data.headRotation.yaw(), data.headRotation.roll()};
+        this.bodyRotation = new float[]{data.bodyRotation.pitch(), data.bodyRotation.yaw(), data.bodyRotation.roll()};
+        this.leftArmRotation = new float[]{data.leftArmRotation.pitch(), data.leftArmRotation.yaw(), data.leftArmRotation.roll()};
+        this.rightArmRotation = new float[]{data.rightArmRotation.pitch(), data.rightArmRotation.yaw(), data.rightArmRotation.roll()};
+        this.leftLegRotation = new float[]{data.leftLegRotation.pitch(), data.leftLegRotation.yaw(), data.leftLegRotation.roll()};
+        this.rightLegRotation = new float[]{data.rightLegRotation.pitch(), data.rightLegRotation.yaw(), data.rightLegRotation.roll()};
     }
 
 

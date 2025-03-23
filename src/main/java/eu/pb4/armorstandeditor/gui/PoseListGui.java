@@ -41,12 +41,12 @@ public class PoseListGui extends BaseWorldGui {
 
                     var armorStand = this.context.armorStand;
                     ArmorStandData data = new ArmorStandData(armorStand);
-                    armorStand.setHeadRotation(new EulerAngle(data.headRotation.getPitch(),360 - data.headRotation.getYaw(),360 - data.headRotation.getRoll()));
-                    armorStand.setBodyRotation(new EulerAngle(data.bodyRotation.getPitch(),360 - data.bodyRotation.getYaw(),360 - data.bodyRotation.getRoll()));
-                    armorStand.setRightArmRotation(new EulerAngle(data.leftArmRotation.getPitch(),360 - data.leftArmRotation.getYaw(),360 - data.leftArmRotation.getRoll()));
-                    armorStand.setLeftArmRotation(new EulerAngle(data.rightArmRotation.getPitch(),360 - data.rightArmRotation.getYaw(),360 - data.rightArmRotation.getRoll()));
-                    armorStand.setRightLegRotation(new EulerAngle(data.leftLegRotation.getPitch(),360 - data.leftLegRotation.getYaw(),360 - data.leftLegRotation.getRoll()));
-                    armorStand.setLeftLegRotation(new EulerAngle(data.rightLegRotation.getPitch(),360 - data.rightLegRotation.getYaw(),360 - data.rightLegRotation.getRoll()));
+                    armorStand.setHeadRotation(new EulerAngle(data.headRotation.pitch(),360 - data.headRotation.yaw(),360 - data.headRotation.roll()));
+                    armorStand.setBodyRotation(new EulerAngle(data.bodyRotation.pitch(),360 - data.bodyRotation.yaw(),360 - data.bodyRotation.roll()));
+                    armorStand.setRightArmRotation(new EulerAngle(data.leftArmRotation.pitch(),360 - data.leftArmRotation.yaw(),360 - data.leftArmRotation.roll()));
+                    armorStand.setLeftArmRotation(new EulerAngle(data.rightArmRotation.pitch(),360 - data.rightArmRotation.yaw(),360 - data.rightArmRotation.roll()));
+                    armorStand.setRightLegRotation(new EulerAngle(data.leftLegRotation.pitch(),360 - data.leftLegRotation.yaw(),360 - data.leftLegRotation.roll()));
+                    armorStand.setLeftLegRotation(new EulerAngle(data.rightLegRotation.pitch(),360 - data.rightLegRotation.yaw(),360 - data.rightLegRotation.roll()));
 
 
                     var itemStack = armorStand.getEquippedStack(EquipmentSlot.MAINHAND);

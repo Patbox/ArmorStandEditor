@@ -1,1 +1,5 @@
-{}
+{
+  "gui.armor_stand_editor.setname": "",
+  "gui.armor_stand_editor.action.rotate": "旋转 %s 度",
+  "gui.armor_stand_editor.action.scale.set.invalid": "无效号码："
+}
