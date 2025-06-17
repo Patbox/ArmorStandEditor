@@ -32,7 +32,7 @@
   "depends": {
     "fabricloader": ">=0.15.10",
     "fabric": "*",
-    "minecraft": ">=1.20.5-",
-    "sgui": ">=1.1.0"
+    "minecraft": ">=1.21.6-",
+    "sgui": ">=1.10.0"
   }
 }

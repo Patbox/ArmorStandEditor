@@ -176,7 +176,7 @@ public class MoveGui extends BaseWorldGui {
                     pos.z + this.playerLookingDirection.getOffsetZ() * v
             );
         }
-        if (!CommonProtection.canInteractEntity(this.context.player.getEntityWorld(), this.context.armorStand, this.context.player.getGameProfile(), this.context.player)) {
+        if (!CommonProtection.canInteractEntity(this.context.player.getWorld(), this.context.armorStand, this.context.player.getGameProfile(), this.context.player)) {
             this.context.armorStand.setPosition(pos);
         }
     }

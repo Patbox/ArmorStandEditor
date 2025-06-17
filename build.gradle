@@ -34,12 +34,12 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include("me.lucko:fabric-permissions-api:0.3.3")
-	modImplementation include("eu.pb4:sgui:1.9.0+1.21.5")
-	modImplementation include("eu.pb4:player-data-api:0.7.0+1.21.5")
+	modImplementation include("me.lucko:fabric-permissions-api:0.3.4-patbox")
+	modImplementation include("eu.pb4:sgui:1.10.0+1.21.6")
+	modImplementation include("eu.pb4:player-data-api:0.8.0+1.21.6")
 	modImplementation include("eu.pb4:common-protection-api:1.0.0")
 
-	modImplementation include("xyz.nucleoid:server-translations-api:2.5.0+1.21.5-rc1")
+	modImplementation include("xyz.nucleoid:server-translations-api:2.5.1+1.21.5")
 
 	//modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
 	modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')
