@@ -72,6 +72,7 @@
   "gui.armor_stand_editor.action.rotate.set": "Current: %s degrees",
 
   "gui.armor_stand_editor.property.invisible": "Invisible: %s",
+  "gui.armor_stand_editor.property.invulnerable": "Invulnerable: %s",
   "gui.armor_stand_editor.property.no_gravity": "No Gravity: %s",
   "gui.armor_stand_editor.property.arms": "Show Arms: %s",
   "gui.armor_stand_editor.property.hide_base": "Hide Base: %s",

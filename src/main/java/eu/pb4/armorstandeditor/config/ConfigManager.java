@@ -66,9 +66,9 @@ public class ConfigManager {
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                         ArmorStandPreset preset = GSON.fromJson(new InputStreamReader(Files.newInputStream(file), "UTF-8"), ArmorStandPreset.class);
 
-                        if (!CONFIG.configData.blackListedBuildInPresets.contains(preset.id)
-                                && !CONFIG.configData.blackListedBuildInPresets.contains(preset.id.substring(1))
-                                && !CONFIG.configData.blackListedBuildInPresets.contains("buildin/" + preset.id.substring(1))) {
+                        if (!CONFIG.configData.blackListedBuiltInPresets.contains(preset.id)
+                                && !CONFIG.configData.blackListedBuiltInPresets.contains(preset.id.substring(1))
+                                && !CONFIG.configData.blackListedBuiltInPresets.contains("builtin/" + preset.id.substring(1))) {
                             PRESETS.put(preset.id, preset);
                         }
                         return FileVisitResult.CONTINUE;
@@ -85,7 +85,7 @@ public class ConfigManager {
                     }
                 });
             } else {
-                ArmorStandEditorMod.LOGGER.error("Something went really badly while getting buildin presets. Did someone change modid? :irritater:");
+                ArmorStandEditorMod.LOGGER.error("Something went really badly while getting builtin presets. Did someone change modid? :irritated:");
             }
 
             for (String name : presetsDir.list((file, name) -> name.endsWith(".json"))) {

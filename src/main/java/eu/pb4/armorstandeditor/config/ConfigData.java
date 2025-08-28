@@ -23,7 +23,7 @@ public class ConfigData {
     public float maximalScaleValue = 16;
     @SerializedName("player_preset_limit")
     public int presetLimit = 16;
-    public ArrayList<String> blackListedBuildInPresets = new ArrayList<>();
+    public ArrayList<String> blackListedBuiltInPresets = new ArrayList<>();
     public Set<String> allowedByDefault = Arrays.stream(EditorActions.values()).map(x -> x.permission).collect(Collectors.toSet());
 
     public void update() {

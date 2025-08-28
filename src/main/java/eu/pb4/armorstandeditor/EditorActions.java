@@ -16,6 +16,7 @@ public enum EditorActions {
     TOGGLE_GRAVITY("toggle_no_gravity"),
     TOGGLE_BASE("toggle_base"),
     TOGGLE_VISUAL_FIRE("toggle_visual_fire"),
+    TOGGLE_INVULNERABILITY("toggle_invulnerability"),
 
     SCALE("scale"),
 
