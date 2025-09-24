@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -75,7 +76,7 @@ public class GeneralCommands {
         }
 
         if (spei.ase$getArmorStandEditorData() != null) {
-            ArmorStandPreset preset = new ArmorStandPreset(id, name, player.getGameProfile().getName());
+            ArmorStandPreset preset = new ArmorStandPreset(id, name, player.getGameProfile().name());
             preset.fromData(spei.ase$getArmorStandEditorData());
 
             ConfigManager.savePreset(preset);
@@ -138,7 +139,7 @@ public class GeneralCommands {
 
     private static int giveTool(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ItemStack itemStack = ConfigManager.getConfig().armorStandTool.getDefaultStack();
-        itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt().putBoolean("isArmorStandEditor", true);
+        itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().putBoolean("isArmorStandEditor", true);
         EntitySelector entitySelector = context.getArgument("targets", EntitySelector.class);
 
         for (ServerPlayerEntity player : entitySelector.getPlayers(context.getSource())) {

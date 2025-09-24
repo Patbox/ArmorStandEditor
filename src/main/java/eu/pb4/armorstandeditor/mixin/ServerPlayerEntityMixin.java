@@ -64,11 +64,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
     @Inject(method = "playerTick", at = @At("HEAD"))
     private void ase$showInvisible(CallbackInfo ci) {
         try {
-            if (ConfigManager.getConfig().configData.holdingToolSpawnsParticles) {
+            if (ConfigManager.getConfig().configData.renderTargetParticles) {
                 ase$tickTimer++;
                 if (ase$tickTimer > 10 && this.getMainHandStack().getItem() == ConfigManager.getConfig().armorStandTool) {
                     ase$tickTimer = 0;
-                    List<ArmorStandEntity> armorStands = this.getWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> !entity.isMarker());
+                    var armorStands = this.getEntityWorld().getEntitiesByClass(ArmorStandEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> !entity.isMarker());
 
                     ParticleEffect particleEffect = new DustParticleEffect(ColorHelper.fromFloats(0, 0.8f, 0.2f, 0.2f), 1f);
 
@@ -82,7 +82,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Pl
                                 0.2f, 0.2f, 0.2f, 0.1f, 3));
                     }
 
-                    List<ItemFrameEntity> itemFrames = this.getWorld().getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> true);
+                    List<ItemFrameEntity> itemFrames = this.getEntityWorld().getEntitiesByClass(ItemFrameEntity.class, new Box(this.getBlockPos().add(10, 10, 10).toCenterPos(), this.getBlockPos().add(-10, -10, -10).toCenterPos()), entity -> true);
 
                     ParticleEffect particleEffect2 = new DustParticleEffect(ColorHelper.fromFloats(0, 0.2f, 0.8f, 0.2f), 1f);
 

@@ -33,8 +33,8 @@ public enum EditorActions {
     }
 
     public boolean canUse(PlayerEntity player) {
-        return Permissions.check(player.getCommandSource((ServerWorld) player.getWorld()), "armor_stand_editor.action." + this.permission,
-                ConfigManager.getConfig().configData.allowedByDefault.contains(this.permission) ? 0 : 2
+        return Permissions.check(player.getCommandSource((ServerWorld) player.getEntityWorld()), "armor_stand_editor.action." + this.permission,
+                ConfigManager.getConfig().configData.defaultAllowedActions.contains(this.permission) ? 0 : 2
         );
     }
 }

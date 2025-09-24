@@ -1,6 +1,7 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.EditorActions;
+import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -103,7 +104,8 @@ public class ScaleGui extends BaseWorldGui {
         if (this.player.isSneaking() || this.context == null) {
             return;
         }
-        setScale(v + this.context.armorStand.getScale());
+        var conf = ConfigManager.getConfig().configData;
+        setScale(MathHelper.clamp(v + this.context.armorStand.getScale(), conf.minimumScaleValue, conf.maximalScaleValue));
     }
 
     @Override

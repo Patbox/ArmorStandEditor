@@ -52,6 +52,7 @@
   "gui.armor_stand_editor.action.rotate": "Obróć o %s stopni",
   "gui.armor_stand_editor.action.rotate.set": "Aktualny obrót: %s stopni",
   "gui.armor_stand_editor.property.invisible": "Niewidzialny: %s",
+  "gui.armor_stand_editor.property.invulnerable": "Niewrażliwy: %s",
   "gui.armor_stand_editor.property.no_gravity": "Brak grawitacji: %s",
   "gui.armor_stand_editor.property.arms": "Pokaż ręce: %s",
   "gui.armor_stand_editor.property.hide_base": "Ukryj podstawę: %s",

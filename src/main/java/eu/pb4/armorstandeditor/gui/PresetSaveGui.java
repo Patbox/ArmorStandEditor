@@ -37,7 +37,7 @@ public class PresetSaveGui extends BaseAnvilGui {
         stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("entry.preset_save.save", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
         this.setSlot(1, stack2, (a, b, c, d) -> {
             this.playClickSound();
-            var preset = new ArmorStandPreset(null, this.getInput(), this.player.getGameProfile().getName());
+            var preset = new ArmorStandPreset(null, this.getInput(), this.player.getGameProfile().name());
             preset.fromData(((PlayerExt) this.player).ase$getArmorStandEditorData());
             var data = PlayerData.get(this.player);
             data.presets.add(preset);

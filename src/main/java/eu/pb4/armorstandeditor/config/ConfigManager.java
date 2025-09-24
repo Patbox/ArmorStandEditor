@@ -66,9 +66,9 @@ public class ConfigManager {
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                         ArmorStandPreset preset = GSON.fromJson(new InputStreamReader(Files.newInputStream(file), "UTF-8"), ArmorStandPreset.class);
 
-                        if (!CONFIG.configData.blackListedBuildInPresets.contains(preset.id)
-                                && !CONFIG.configData.blackListedBuildInPresets.contains(preset.id.substring(1))
-                                && !CONFIG.configData.blackListedBuildInPresets.contains("buildin/" + preset.id.substring(1))) {
+                        if (!CONFIG.configData.blockedBuiltinPresets.contains(preset.id)
+                                && !CONFIG.configData.blockedBuiltinPresets.contains(preset.id.substring(1))
+                                && !CONFIG.configData.blockedBuiltinPresets.contains("buildin/" + preset.id.substring(1))) {
                             PRESETS.put(preset.id, preset);
                         }
                         return FileVisitResult.CONTINUE;

@@ -51,7 +51,7 @@ public class ArmorStandEditorMod implements ModInitializer {
         final var checkDisguise = FabricLoader.getInstance().isModLoaded("disguiselib");
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (world.isClient) {
+            if (world.isClient()) {
                 return ActionResult.PASS;
             }
 
@@ -69,7 +69,7 @@ public class ArmorStandEditorMod implements ModInitializer {
         });
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (world.isClient) {
+            if (world.isClient()) {
                 return ActionResult.PASS;
             }
 
@@ -103,10 +103,10 @@ public class ArmorStandEditorMod implements ModInitializer {
                 && EditorActions.OPEN_EDITOR.canUse(player)
                 && !player.isSpectator()
                 && itemStack.getItem() == config.armorStandTool
-                && (!config.configData.requireIsArmorStandEditorTag
-                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).getNbt().getBoolean("isArmorStandEditor", false))
+                && (!config.configData.requireNbtTagForEditor
+                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().getBoolean("isArmorStandEditor", false))
                 && (!(entity instanceof ArmorStandEntity armorStandEntity) || !armorStandEntity.isMarker())
-                && (entity == null || CommonProtection.canInteractEntity(entity.getWorld(), entity, player.getGameProfile(), player));
+                && (entity == null || CommonProtection.canInteractEntity(entity.getEntityWorld(), entity, player.getGameProfile(), player));
     }
 
     public static boolean hasCorrectToolAndPermsItemFrame(ServerPlayerEntity player, ItemStack itemStack, @Nullable Entity entity) {
@@ -115,8 +115,8 @@ public class ArmorStandEditorMod implements ModInitializer {
                 && EditorActions.OPEN_ITEM_FRAME_EDITOR.canUse(player)
                 && !player.isSpectator()
                 && itemStack.getItem() == config.armorStandTool
-                && (!config.configData.requireIsArmorStandEditorTag
-                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).getNbt().getBoolean("isArmorStandEditor", false))
-                && (entity == null ||  CommonProtection.canInteractEntity(entity.getWorld(), entity, player.getGameProfile(), player));
+                && (!config.configData.requireNbtTagForEditor
+                || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().getBoolean("isArmorStandEditor", false))
+                && (entity == null ||  CommonProtection.canInteractEntity(entity.getEntityWorld(), entity, player.getGameProfile(), player));
     }
 }
