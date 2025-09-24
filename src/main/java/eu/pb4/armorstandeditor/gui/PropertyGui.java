@@ -5,6 +5,7 @@ import eu.pb4.armorstandeditor.mixin.EntityAccessor;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -19,6 +20,7 @@ public class PropertyGui extends BaseWorldGui {
     private static final List<Entry> ENTRIES = List.of(
             Entry.of(EditorActions.TOGGLE_VISIBILITY, "invisible", Items.GLASS, ArmorStandEntity::setInvisible, ArmorStandEntity::isInvisible),
             Entry.of(EditorActions.TOGGLE_GRAVITY,"no_gravity", Items.FEATHER, PropertyGui::setNoGravity, ArmorStandEntity::hasNoGravity),
+            Entry.of(EditorActions.TOGGLE_INVULNERABILITY, "invulnerable", Items.SHIELD, Entity::setInvulnerable, Entity::isInvulnerable),
             Entry.ofa(EditorActions.TOGGLE_ARMS, "arms", Items.STICK, ArmorStandEntityAccessor::callSetShowArms, ArmorStandEntity::shouldShowArms),
             Entry.ofa(EditorActions.TOGGLE_BASE, "hide_base", Items.SMOOTH_STONE_SLAB, ArmorStandEntityAccessor::callSetHideBasePlate, a -> !a.shouldShowBasePlate()),
             Entry.ofe(EditorActions.TOGGLE_VISUAL_FIRE, "visual_fire", Items.BLAZE_POWDER, EntityAccessor::setHasVisualFire, EntityAccessor::isHasVisualFire),

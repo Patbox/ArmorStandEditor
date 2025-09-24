@@ -44,7 +44,7 @@ To close it completely, press Q (drop item).
 Additionally, command /armorstandeditor uses `armorstandeditor.commands.<subcommand or main>`.
 Format of editors permissions looks like `armorstandeditor.edit.<type>`, [look at this file](https://github.com/Patbox/ArmorStandEditor/blob/master/src/main/java/eu/pb4/armorstandeditor/EditorActions.java)
 
-For Armor Stand Editing you can give players `armorstandeditor.use` permission and for Item Flames `armorstandeditor.useItemFrame`
+For Armor Stand Editing you can give players `armorstandeditor.use` permission and for Item Frames `armorstandeditor.useItemFrame`
 If you want to allow others to modify entities disguised as Armor Stands, give them `armorstandeditor.useDisguised` permission,
 
 By default, players can edit them as they want.
