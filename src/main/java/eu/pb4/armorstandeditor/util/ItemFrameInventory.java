@@ -1,33 +1,32 @@
 package eu.pb4.armorstandeditor.util;
 
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
-
 import java.util.List;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public class ItemFrameInventory implements Inventory {
-    private final ItemFrameEntity entity;
+public class ItemFrameInventory implements Container {
+    private final ItemFrame entity;
 
-    public ItemFrameInventory(ItemFrameEntity entity) {
+    public ItemFrameInventory(ItemFrame entity) {
         this.entity = entity;
     }
 
     @Override
-    public int getMaxCount(ItemStack stack) {
+    public int getMaxStackSize(ItemStack stack) {
         return 1;
     }
 
     @Override
-    public int getMaxCountPerStack() {
+    public int getMaxStackSize() {
         return 1;
     }
 
     @Override
-    public int size() {
+    public int getContainerSize() {
         return 1;
     }
 
@@ -37,60 +36,60 @@ public class ItemFrameInventory implements Inventory {
     }
 
     public List<ItemStack> getItems() {
-        return DefaultedList.copyOf(ItemStack.EMPTY, this.entity.getHeldItemStack());
+        return NonNullList.of(ItemStack.EMPTY, this.entity.getItem());
     }
 
     @Override
-    public ItemStack getStack(int slot) {
+    public ItemStack getItem(int slot) {
         if (this.entity.isRemoved()) {
             return ItemStack.EMPTY;
         }
-        return entity.getHeldItemStack();
+        return entity.getItem();
     }
 
     @Override
-    public ItemStack removeStack(int slot, int amount) {
+    public ItemStack removeItem(int slot, int amount) {
         if (this.entity.isRemoved()) {
             return ItemStack.EMPTY;
         }
-        ItemStack result = Inventories.splitStack(this.getItems(), slot, amount);
+        ItemStack result = ContainerHelper.removeItem(this.getItems(), slot, amount);
         if (!result.isEmpty()) {
-            markDirty();
+            setChanged();
         }
         return result;
     }
 
     @Override
-    public ItemStack removeStack(int slot) {
+    public ItemStack removeItemNoUpdate(int slot) {
         if (this.entity.isRemoved()) {
             return ItemStack.EMPTY;
         }
-        return Inventories.removeStack(this.getItems(), slot);
+        return ContainerHelper.takeItem(this.getItems(), slot);
     }
 
     @Override
-    public void setStack(int slot, ItemStack stack) {
+    public void setItem(int slot, ItemStack stack) {
         if (this.entity.isRemoved()) {
             return;
         }
-        this.entity.setHeldItemStack(stack);
+        this.entity.setItem(stack);
     }
 
     @Override
-    public void markDirty() {
+    public void setChanged() {
 
     }
 
     @Override
-    public boolean canPlayerUse(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
         if (this.entity.isRemoved()) {
             return;
         }
-        this.entity.setHeldItemStack(ItemStack.EMPTY);
+        this.entity.setItem(ItemStack.EMPTY);
     }
 }

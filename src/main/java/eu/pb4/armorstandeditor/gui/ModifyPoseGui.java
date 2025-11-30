@@ -1,23 +1,22 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.util.TextUtils;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.EulerAngle;
-import net.minecraft.util.math.MathHelper;
-
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import net.minecraft.core.Rotations;
+import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.Items;
 
 public class ModifyPoseGui extends BaseWorldGui {
-    private final BiConsumer<ArmorStandEntity, EulerAngle> setter;
-    private final Function<ArmorStandEntity, EulerAngle> getter;
+    private final BiConsumer<ArmorStand, Rotations> setter;
+    private final Function<ArmorStand, Rotations> getter;
     private RotationType rotationType = RotationType.PITCH;
 
-    public ModifyPoseGui(EditingContext context, int slot, BiConsumer<ArmorStandEntity, EulerAngle> setter, Function<ArmorStandEntity, EulerAngle> getter) {
+    public ModifyPoseGui(EditingContext context, int slot, BiConsumer<ArmorStand, Rotations> setter, Function<ArmorStand, Rotations> getter) {
         super(context, slot);
         this.setter = setter;
         this.getter = getter;
@@ -38,7 +37,7 @@ public class ModifyPoseGui extends BaseWorldGui {
         };
 
         this.setSlot(0, baseElement(wool, "action.rotate.angle." + this.rotationType.name().toLowerCase(Locale.ROOT), false).setCallback((x, y, z, c) -> {
-                    if (this.player.isSneaking()) {
+                    if (this.player.isShiftKeyDown()) {
                         return;
                     }
                     this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
@@ -77,22 +76,22 @@ public class ModifyPoseGui extends BaseWorldGui {
                     this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
 
                     var armorStand = this.context.armorStand;
-                    this.setter.accept(armorStand, new EulerAngle(0,0,0));
+                    this.setter.accept(armorStand, new Rotations(0,0,0));
                 }));
     }
 
     @Override
     public boolean onSelectedSlotChange(int slot) {
-        if (this.player.isSneaking()) {
+        if (this.player.isShiftKeyDown()) {
             var current = this.getSelectedSlot();
 
             var delta = slot - current;
 
-            this.context.rotationDelta = MathHelper.clamp(this.context.rotationDelta + delta, 0, 360);
-            this.player.sendMessage(TextUtils.gui("action.rotate.set", this.context.rotationDelta), true);
+            this.context.rotationDelta = Mth.clamp(this.context.rotationDelta + delta, 0, 360);
+            this.player.displayClientMessage(TextUtils.gui("action.rotate.set", this.context.rotationDelta), true);
 
-            this.playSound(SoundEvents.BLOCK_NOTE_BLOCK_HAT, 0.5f, 1f);
-            this.player.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(this.selectedSlot));
+            this.playSound(SoundEvents.NOTE_BLOCK_HAT, 0.5f, 1f);
+            this.player.connection.send(new ClientboundSetHeldSlotPacket(this.selectedSlot));
             this.buildUi();
 
             return false;
@@ -102,16 +101,16 @@ public class ModifyPoseGui extends BaseWorldGui {
     }
 
     private void rotate(double v) {
-        if (this.player.isSneaking()) {
+        if (this.player.isShiftKeyDown()) {
             return;
         }
 
         var base = this.getter.apply(this.context.armorStand);
 
         var out = switch (this.rotationType) {
-            case PITCH -> new EulerAngle((float) (v + base.pitch()), base.yaw(), base.roll());
-            case YAW -> new EulerAngle(base.pitch(), (float) (v + base.yaw()), base.roll());
-            case ROLL -> new EulerAngle(base.pitch(), base.yaw(), (float) (v + base.roll()));
+            case PITCH -> new Rotations((float) (v + base.x()), base.y(), base.z());
+            case YAW -> new Rotations(base.x(), (float) (v + base.y()), base.z());
+            case ROLL -> new Rotations(base.x(), base.y(), (float) (v + base.z()));
         };
 
         this.setter.accept(this.context.armorStand, out);
@@ -122,7 +121,7 @@ public class ModifyPoseGui extends BaseWorldGui {
         return new EditingContext.SwitchEntry((context1, slot) -> new ModifyPoseGui(context1, slot, this.setter, this.getter), this.getSelectedSlot());
     }
 
-    public static EditingContext.SwitchableUi create(BiConsumer<ArmorStandEntity, EulerAngle> setter, Function<ArmorStandEntity, EulerAngle> getter) {
+    public static EditingContext.SwitchableUi create(BiConsumer<ArmorStand, Rotations> setter, Function<ArmorStand, Rotations> getter) {
         return (ctx, slot) -> new ModifyPoseGui(ctx, slot, setter, getter);
     }
 

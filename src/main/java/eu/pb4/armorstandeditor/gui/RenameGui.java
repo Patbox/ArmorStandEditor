@@ -2,11 +2,11 @@ package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class RenameGui extends BaseAnvilGui {
     public RenameGui(EditingContext context, int selectedSlot) {
@@ -21,8 +21,8 @@ public class RenameGui extends BaseAnvilGui {
         this.setTitle(TextUtils.gui("rename_title"));
         this.setDefaultInputValue(context.armorStand.getCustomName() != null ? context.armorStand.getCustomName().getString() : "");
 
-        ItemStack stack = Items.MAGMA_CREAM.getDefaultStack();
-        stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("clearname").setStyle(Style.EMPTY.withItalic(false)));
+        ItemStack stack = Items.MAGMA_CREAM.getDefaultInstance();
+        stack.set(DataComponents.CUSTOM_NAME, TextUtils.gui("clearname").setStyle(Style.EMPTY.withItalic(false)));
 
         this.setSlot(1, stack, (a, b, c, d) -> {
             context.armorStand.setCustomName(null);
@@ -41,11 +41,11 @@ public class RenameGui extends BaseAnvilGui {
     }
 
     private void updateSlot2() {
-        ItemStack stack2 = Items.SLIME_BALL.getDefaultStack();
-        stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
+        ItemStack stack2 = Items.SLIME_BALL.getDefaultInstance();
+        stack2.set(DataComponents.CUSTOM_NAME, TextUtils.gui("setname", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
         this.setSlot(2, stack2, (a, b, c, d) -> {
             this.playClickSound();
-            context.armorStand.setCustomName(this.getInput().isEmpty() ? null : Text.literal(this.getInput()));
+            context.armorStand.setCustomName(this.getInput().isEmpty() ? null : Component.literal(this.getInput()));
             context.armorStand.setCustomNameVisible(!this.getInput().isEmpty());
             this.openPreviousOrClose();
         });

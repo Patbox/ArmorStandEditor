@@ -1,8 +1,8 @@
 package eu.pb4.armorstandeditor.config;
 
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 
 
 public class Config {
@@ -11,6 +11,6 @@ public class Config {
 
     public Config(ConfigData data) {
         this.configData = data;
-        this.armorStandTool = Registries.ITEM.get(Identifier.tryParse(data.armorStandTool));
+        this.armorStandTool = BuiltInRegistries.ITEM.getValue(Identifier.tryParse(data.armorStandTool));
     }
 }

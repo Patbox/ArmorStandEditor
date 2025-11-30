@@ -6,16 +6,15 @@ import eu.pb4.armorstandeditor.config.PlayerData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Items;
 
 public class PresetSelectorGui extends BaseChestGui {
     private final ArrayList<ArmorStandPreset> presets;
@@ -36,7 +35,7 @@ public class PresetSelectorGui extends BaseChestGui {
     }
 
     public PresetSelectorGui(EditingContext context, Supplier<Collection<ArmorStandPreset>> supplier, Consumer<ArmorStandPreset> remover) {
-        super(context, ScreenHandlerType.GENERIC_9X3, false);
+        super(context, MenuType.GENERIC_9x3, false);
         this.setTitle(TextUtils.gui("presets_title"));
         this.presets = new ArrayList<>(supplier.get());
         this.presetSupplier = supplier;
@@ -63,8 +62,8 @@ public class PresetSelectorGui extends BaseChestGui {
             if (page * 18 + x < this.presets.size()) {
                 final ArmorStandPreset preset = presets.get(page * 18 + x);
                 var b = new GuiElementBuilder(Items.ARMOR_STAND)
-                        .setName(Text.literal(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GREEN)))
-                        .addLoreLine(TextUtils.gui("preset_author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.GRAY)))
+                        .setName(Component.literal(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(ChatFormatting.GREEN)))
+                        .addLoreLine(TextUtils.gui("preset_author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(ChatFormatting.GRAY)))
                         .setCallback((t1, t2, t3) -> {
                             playClickSound();
                             if (remover != null && t2.isRight && t2.shift) {
@@ -76,12 +75,12 @@ public class PresetSelectorGui extends BaseChestGui {
                             }
 
                             ((PlayerExt) this.player).ase$setArmorStandEditorData(preset.asData());
-                            player.sendMessage(TextUtils.text("presets.selected", preset.name), true);
+                            player.displayClientMessage(TextUtils.text("presets.selected", preset.name), true);
                             this.openPreviousOrClose();
                         });
 
                 if (this.remover != null) {
-                    b.addLoreLine(TextUtils.gui("presets.remove").formatted(Formatting.RED));
+                    b.addLoreLine(TextUtils.gui("presets.remove").withStyle(ChatFormatting.RED));
                 }
 
                 this.setSlot(x, b);
@@ -91,7 +90,7 @@ public class PresetSelectorGui extends BaseChestGui {
         this.setSlot(this.size - 5, closeButton());
 
         var previous = new GuiElementBuilder(page != 0 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                .setName(Text.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)));
+                .setName(Component.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)));
         if (this.page != 0) {
             previous.setCallback((index, type, action) -> {
                 page--;
@@ -102,7 +101,7 @@ public class PresetSelectorGui extends BaseChestGui {
         this.setSlot(this.size - 8, previous);
 
         var next = new GuiElementBuilder(page < maxPage - 1 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
-                .setName(Text.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)));
+                .setName(Component.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)));
 
         if (this.page < maxPage - 1) {
             next.setCallback((index, type, action) -> {

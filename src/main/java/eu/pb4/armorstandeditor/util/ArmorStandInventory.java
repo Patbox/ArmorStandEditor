@@ -1,16 +1,15 @@
 package eu.pb4.armorstandeditor.util;
 
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
-
 import java.util.List;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public record ArmorStandInventory(LivingEntity entity) implements Inventory {
+public record ArmorStandInventory(LivingEntity entity) implements Container {
 
     public static EquipmentSlot getEquipmentSlot(int index) {
         return switch (index) {
@@ -24,7 +23,7 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
     }
 
     @Override
-    public int size() {
+    public int getContainerSize() {
         return 6;
     }
 
@@ -34,78 +33,78 @@ public record ArmorStandInventory(LivingEntity entity) implements Inventory {
     }
 
     @Override
-    public int getMaxCountPerStack() {
+    public int getMaxStackSize() {
         return 1;
     }
 
     @Override
-    public int getMaxCount(ItemStack stack) {
+    public int getMaxStackSize(ItemStack stack) {
         return 1;
     }
 
     public List<ItemStack> getItems() {
-        return DefaultedList.copyOf(
+        return NonNullList.of(
                 ItemStack.EMPTY,
-                entity.getEquippedStack(EquipmentSlot.HEAD),
-                entity.getEquippedStack(EquipmentSlot.CHEST),
-                entity.getEquippedStack(EquipmentSlot.LEGS),
-                entity.getEquippedStack(EquipmentSlot.FEET),
-                entity.getEquippedStack(EquipmentSlot.MAINHAND),
-                entity.getEquippedStack(EquipmentSlot.OFFHAND)
+                entity.getItemBySlot(EquipmentSlot.HEAD),
+                entity.getItemBySlot(EquipmentSlot.CHEST),
+                entity.getItemBySlot(EquipmentSlot.LEGS),
+                entity.getItemBySlot(EquipmentSlot.FEET),
+                entity.getItemBySlot(EquipmentSlot.MAINHAND),
+                entity.getItemBySlot(EquipmentSlot.OFFHAND)
         );
     }
 
     @Override
-    public ItemStack getStack(int slot) {
+    public ItemStack getItem(int slot) {
         if (entity.isRemoved()) {
             return ItemStack.EMPTY;
         }
 
-        return entity.getEquippedStack(getEquipmentSlot(slot));
+        return entity.getItemBySlot(getEquipmentSlot(slot));
     }
 
     @Override
-    public ItemStack removeStack(int slot, int amount) {
+    public ItemStack removeItem(int slot, int amount) {
         if (entity.isRemoved()) {
             return ItemStack.EMPTY;
         }
 
-        ItemStack result = Inventories.splitStack(this.getItems(), slot, amount);
+        ItemStack result = ContainerHelper.removeItem(this.getItems(), slot, amount);
         if (!result.isEmpty()) {
-            markDirty();
+            setChanged();
         }
         return result;
     }
 
     @Override
-    public ItemStack removeStack(int slot) {
+    public ItemStack removeItemNoUpdate(int slot) {
         if (entity.isRemoved()) {
             return ItemStack.EMPTY;
         }
 
-        return Inventories.removeStack(this.getItems(), slot);
+        return ContainerHelper.takeItem(this.getItems(), slot);
     }
 
     @Override
-    public void setStack(int slot, ItemStack stack) {
+    public void setItem(int slot, ItemStack stack) {
         if (entity.isRemoved()) {
             return;
         }
-        this.entity.equipStack(getEquipmentSlot(slot), stack);
+        this.entity.setItemSlot(getEquipmentSlot(slot), stack);
     }
 
     @Override
-    public void markDirty() {
+    public void setChanged() {
 
     }
 
     @Override
-    public boolean canPlayerUse(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
 
     }
 }

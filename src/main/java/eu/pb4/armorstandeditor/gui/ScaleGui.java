@@ -4,12 +4,11 @@ import eu.pb4.armorstandeditor.EditorActions;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Items;
 
 public class ScaleGui extends BaseWorldGui {
     public ScaleGui(EditingContext context, int slot) {
@@ -70,13 +69,13 @@ public class ScaleGui extends BaseWorldGui {
     }
 
     private void setScale(double scale) {
-        this.context.armorStand.getAttributeInstance(EntityAttributes.SCALE).setBaseValue(scale);
+        this.context.armorStand.getAttribute(Attributes.SCALE).setBaseValue(scale);
         this.updateMiddle();
     }
 
     @Override
     public boolean onSelectedSlotChange(int slot) {
-        if (this.player.isSneaking()) {
+        if (this.player.isShiftKeyDown()) {
             var current = this.getSelectedSlot();
 
             var delta = slot - current;
@@ -88,10 +87,10 @@ public class ScaleGui extends BaseWorldGui {
                 value = ((int) (this.context.scaleDelta * 10d + delta)) / 10d;
             }
 
-            this.context.scaleDelta = MathHelper.clamp(value, 0, 8);
-            this.player.sendMessage(TextUtils.gui("action.scale.set_change", this.context.scaleDelta), true);
-            this.playSound(SoundEvents.BLOCK_NOTE_BLOCK_HAT, 0.5f, 1f);
-            this.player.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(this.selectedSlot));
+            this.context.scaleDelta = Mth.clamp(value, 0, 8);
+            this.player.displayClientMessage(TextUtils.gui("action.scale.set_change", this.context.scaleDelta), true);
+            this.playSound(SoundEvents.NOTE_BLOCK_HAT, 0.5f, 1f);
+            this.player.connection.send(new ClientboundSetHeldSlotPacket(this.selectedSlot));
             this.buildUi();
 
             return false;
@@ -101,11 +100,11 @@ public class ScaleGui extends BaseWorldGui {
     }
 
     private void changeScale(double v) {
-        if (this.player.isSneaking() || this.context == null) {
+        if (this.player.isShiftKeyDown() || this.context == null) {
             return;
         }
         var conf = ConfigManager.getConfig().configData;
-        setScale(MathHelper.clamp(v + this.context.armorStand.getScale(), conf.minimumScaleValue, conf.maximalScaleValue));
+        setScale(Mth.clamp(v + this.context.armorStand.getScale(), conf.minimumScaleValue, conf.maximalScaleValue));
     }
 
     @Override

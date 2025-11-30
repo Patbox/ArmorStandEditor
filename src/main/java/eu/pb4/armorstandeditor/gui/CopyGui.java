@@ -4,8 +4,8 @@ import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.config.PlayerData;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
 
 public class CopyGui extends BaseWorldGui {
     public CopyGui(EditingContext context, int slot) {
@@ -24,7 +24,7 @@ public class CopyGui extends BaseWorldGui {
                             this.playClickSound();
 
                             spei.ase$setArmorStandEditorData(new ArmorStandData(this.context.armorStand));
-                            player.sendMessage(Text.translatable("text.armor_stand_editor.message.copied"), true);
+                            player.displayClientMessage(Component.translatable("text.armor_stand_editor.message.copied"), true);
                             this.rebuildUi();
                         })
         );
@@ -36,7 +36,7 @@ public class CopyGui extends BaseWorldGui {
                                 this.playClickSound();
 
                                 spei.ase$getArmorStandEditorData().apply(this.context.armorStand, false);
-                                player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
+                                player.displayClientMessage(Component.translatable("text.armor_stand_editor.message.pasted"), true);
                             })
             );
 
@@ -48,7 +48,7 @@ public class CopyGui extends BaseWorldGui {
                                         this.playClickSound();
 
                                         spei.ase$getArmorStandEditorData().apply(this.context.armorStand, true);
-                                        player.sendMessage(Text.translatable("text.armor_stand_editor.message.pasted"), true);
+                                        player.displayClientMessage(Component.translatable("text.armor_stand_editor.message.pasted"), true);
                                     }
                                 })
                 );

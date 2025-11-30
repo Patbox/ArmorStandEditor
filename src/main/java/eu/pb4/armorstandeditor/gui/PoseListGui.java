@@ -1,24 +1,23 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.util.ArmorStandData;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.EulerAngle;
-
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import net.minecraft.core.Rotations;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class PoseListGui extends BaseWorldGui {
     private static final List<Entry> ENTRIES = List.of(
-            Entry.part("head", Items.LEATHER_HELMET, ArmorStandEntity::setHeadRotation, ArmorStandEntity::getHeadRotation),
-            Entry.part("left_arm", Items.STICK, ArmorStandEntity::setLeftArmRotation, ArmorStandEntity::getLeftArmRotation),
-            Entry.part("body", Items.IRON_CHESTPLATE, ArmorStandEntity::setBodyRotation, ArmorStandEntity::getBodyRotation),
-            Entry.part("right_arm", Items.BLAZE_ROD, ArmorStandEntity::setRightArmRotation, ArmorStandEntity::getRightArmRotation),
-            Entry.part("left_leg", Items.LEATHER_BOOTS, ArmorStandEntity::setLeftLegRotation, ArmorStandEntity::getLeftLegRotation),
-            Entry.part("right_leg", Items.GOLDEN_BOOTS, ArmorStandEntity::setRightLegRotation, ArmorStandEntity::getRightLegRotation)
+            Entry.part("head", Items.LEATHER_HELMET, ArmorStand::setHeadPose, ArmorStand::getHeadPose),
+            Entry.part("left_arm", Items.STICK, ArmorStand::setLeftArmPose, ArmorStand::getLeftArmPose),
+            Entry.part("body", Items.IRON_CHESTPLATE, ArmorStand::setBodyPose, ArmorStand::getBodyPose),
+            Entry.part("right_arm", Items.BLAZE_ROD, ArmorStand::setRightArmPose, ArmorStand::getRightArmPose),
+            Entry.part("left_leg", Items.LEATHER_BOOTS, ArmorStand::setLeftLegPose, ArmorStand::getLeftLegPose),
+            Entry.part("right_leg", Items.GOLDEN_BOOTS, ArmorStand::setRightLegPose, ArmorStand::getRightLegPose)
     );
 
 
@@ -41,17 +40,17 @@ public class PoseListGui extends BaseWorldGui {
 
                     var armorStand = this.context.armorStand;
                     ArmorStandData data = new ArmorStandData(armorStand);
-                    armorStand.setHeadRotation(new EulerAngle(data.headRotation.pitch(),360 - data.headRotation.yaw(),360 - data.headRotation.roll()));
-                    armorStand.setBodyRotation(new EulerAngle(data.bodyRotation.pitch(),360 - data.bodyRotation.yaw(),360 - data.bodyRotation.roll()));
-                    armorStand.setRightArmRotation(new EulerAngle(data.leftArmRotation.pitch(),360 - data.leftArmRotation.yaw(),360 - data.leftArmRotation.roll()));
-                    armorStand.setLeftArmRotation(new EulerAngle(data.rightArmRotation.pitch(),360 - data.rightArmRotation.yaw(),360 - data.rightArmRotation.roll()));
-                    armorStand.setRightLegRotation(new EulerAngle(data.leftLegRotation.pitch(),360 - data.leftLegRotation.yaw(),360 - data.leftLegRotation.roll()));
-                    armorStand.setLeftLegRotation(new EulerAngle(data.rightLegRotation.pitch(),360 - data.rightLegRotation.yaw(),360 - data.rightLegRotation.roll()));
+                    armorStand.setHeadPose(new Rotations(data.headRotation.x(),360 - data.headRotation.y(),360 - data.headRotation.z()));
+                    armorStand.setBodyPose(new Rotations(data.bodyRotation.x(),360 - data.bodyRotation.y(),360 - data.bodyRotation.z()));
+                    armorStand.setRightArmPose(new Rotations(data.leftArmRotation.x(),360 - data.leftArmRotation.y(),360 - data.leftArmRotation.z()));
+                    armorStand.setLeftArmPose(new Rotations(data.rightArmRotation.x(),360 - data.rightArmRotation.y(),360 - data.rightArmRotation.z()));
+                    armorStand.setRightLegPose(new Rotations(data.leftLegRotation.x(),360 - data.leftLegRotation.y(),360 - data.leftLegRotation.z()));
+                    armorStand.setLeftLegPose(new Rotations(data.rightLegRotation.x(),360 - data.rightLegRotation.y(),360 - data.rightLegRotation.z()));
 
 
-                    var itemStack = armorStand.getEquippedStack(EquipmentSlot.MAINHAND);
-                    armorStand.equipStack(EquipmentSlot.MAINHAND, armorStand.getEquippedStack(EquipmentSlot.OFFHAND));
-                    armorStand.equipStack(EquipmentSlot.OFFHAND, itemStack);
+                    var itemStack = armorStand.getItemBySlot(EquipmentSlot.MAINHAND);
+                    armorStand.setItemSlot(EquipmentSlot.MAINHAND, armorStand.getItemBySlot(EquipmentSlot.OFFHAND));
+                    armorStand.setItemSlot(EquipmentSlot.OFFHAND, itemStack);
                 }));
 
         this.addSlot(baseElement(Items.LEVER, "action.pose.reset", false)
@@ -59,12 +58,12 @@ public class PoseListGui extends BaseWorldGui {
                     this.playClickSound();
 
                     var armorStand = this.context.armorStand;
-                    armorStand.setHeadRotation(new EulerAngle(0,0,0));
-                    armorStand.setBodyRotation(new EulerAngle(0,0,0));
-                    armorStand.setLeftArmRotation(new EulerAngle(0,0,0));
-                    armorStand.setRightArmRotation(new EulerAngle(0,0,0));
-                    armorStand.setLeftLegRotation(new EulerAngle(0,0,0));
-                    armorStand.setRightLegRotation(new EulerAngle(0,0,0));
+                    armorStand.setHeadPose(new Rotations(0,0,0));
+                    armorStand.setBodyPose(new Rotations(0,0,0));
+                    armorStand.setLeftArmPose(new Rotations(0,0,0));
+                    armorStand.setRightArmPose(new Rotations(0,0,0));
+                    armorStand.setLeftLegPose(new Rotations(0,0,0));
+                    armorStand.setRightLegPose(new Rotations(0,0,0));
                 }));
     }
 
@@ -75,7 +74,7 @@ public class PoseListGui extends BaseWorldGui {
 
 
     private record Entry(String name, Item icon, EditingContext.SwitchableUi opener) {
-        protected static Entry part(String name, Item icon, BiConsumer<ArmorStandEntity, EulerAngle> setter, Function<ArmorStandEntity, EulerAngle> getter) {
+        protected static Entry part(String name, Item icon, BiConsumer<ArmorStand, Rotations> setter, Function<ArmorStand, Rotations> getter) {
             return new Entry("part." + name, icon, ModifyPoseGui.create(setter, getter));
         }
     }

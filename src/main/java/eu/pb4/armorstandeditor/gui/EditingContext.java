@@ -1,14 +1,13 @@
 package eu.pb4.armorstandeditor.gui;
 
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.decoration.ArmorStand;
 
 public final class EditingContext {
-    public final ServerPlayerEntity player;
-    public final ArmorStandEntity armorStand;
+    public final ServerPlayer player;
+    public final ArmorStand armorStand;
     public final List<SwitchEntry> interfaceList = new ArrayList<>();
     public double moveBlockDelta = 1;
     public double scaleDelta = 0.2;
@@ -16,7 +15,7 @@ public final class EditingContext {
     public int rotationDelta = 30;
 
 
-    public EditingContext(ServerPlayerEntity player, ArmorStandEntity armorStand) {
+    public EditingContext(ServerPlayer player, ArmorStand armorStand) {
         this.player = player;
         this.armorStand = armorStand;
     }
@@ -26,7 +25,7 @@ public final class EditingContext {
     }
 
     public boolean checkClosed() {
-        return this.armorStand != null && (this.armorStand.isRemoved() || this.armorStand.getPos().squaredDistanceTo(player.getPos()) > 48 * 48);
+        return this.armorStand != null && (this.armorStand.isRemoved() || this.armorStand.position().distanceToSqr(player.position()) > 48 * 48);
     }
 
     @FunctionalInterface

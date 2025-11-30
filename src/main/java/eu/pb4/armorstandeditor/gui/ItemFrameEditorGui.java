@@ -5,22 +5,25 @@ import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Style;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ItemFrameEditorGui extends SimpleGui {
-    private final ItemFrameEntity entity;
+    private final ItemFrame entity;
 
-    public ItemFrameEditorGui(ServerPlayerEntity player, ItemFrameEntity frameEntity) {
-        super(ScreenHandlerType.GENERIC_9X1, player, false);
+    public ItemFrameEditorGui(ServerPlayer player, ItemFrame frameEntity) {
+        super(MenuType.GENERIC_9x1, player, false);
         this.entity = frameEntity;
 
         var inventory = new ItemFrameInventory(entity);
@@ -42,9 +45,9 @@ public class ItemFrameEditorGui extends SimpleGui {
 
                     ItemStack stack = new ItemStack(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                    stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-fixed", String.valueOf(ifa.getFixed()))
+                    stack.set(DataComponents.CUSTOM_NAME, TextUtils.gui("name.if-fixed", String.valueOf(ifa.getFixed()))
                             .setStyle(Style.EMPTY.withItalic(false)));
-                    this.player.playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), SoundCategory.MASTER, 0.5f, 1f);
+                    playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1f);
 
                     ((GuiElement) this.getSlot(index)).setItemStack(stack);
                 }));
@@ -57,9 +60,9 @@ public class ItemFrameEditorGui extends SimpleGui {
                     entity.setInvisible(!entity.isInvisible());
                     ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                    stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-invisible", String.valueOf(entity.isInvisible()))
+                    stack.set(DataComponents.CUSTOM_NAME, TextUtils.gui("name.if-invisible", String.valueOf(entity.isInvisible()))
                             .setStyle(Style.EMPTY.withItalic(false)));
-                    this.player.playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), SoundCategory.MASTER, 0.5f, 1f);
+                    playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1f);
 
                     ((GuiElement) this.getSlot(index)).setItemStack(stack);
                 }));
@@ -79,9 +82,9 @@ public class ItemFrameEditorGui extends SimpleGui {
 
                         ItemStack stack = new ItemStack(Items.ARROW);
 
-                        stack.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("name.if-rotate", rotation)
+                        stack.set(DataComponents.CUSTOM_NAME, TextUtils.gui("name.if-rotate", rotation)
                                 .setStyle(Style.EMPTY.withItalic(false)));
-                        this.player.playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), SoundCategory.MASTER, 0.5f, 1f);
+                        playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(),0.5f, 1f);
 
                         ((GuiElement) this.getSlot(index)).setItemStack(stack);
                     }
@@ -94,7 +97,7 @@ public class ItemFrameEditorGui extends SimpleGui {
         this.setSlot(8, new GuiElementBuilder(Items.BARRIER)
                 .setName(TextUtils.gui("close").setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback(((index, type, action) -> {
-                    this.player.playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), SoundCategory.MASTER, 0.5f, 1f);
+                    playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(),0.5f, 1f);
                     this.close();
                 }))
         );
@@ -104,9 +107,13 @@ public class ItemFrameEditorGui extends SimpleGui {
 
     @Override
     public void onTick() {
-        if (entity.isRemoved() || entity.getPos().squaredDistanceTo(player.getPos()) > 24 * 24) {
+        if (entity.isRemoved() || entity.position().distanceToSqr(player.position()) > 24 * 24) {
             this.close();
         }
         super.onTick();
+    }
+
+    private void playSoundToPlayer(SoundEvent event, float volume, float pitch) {
+        player.connection.send(new ClientboundSoundEntityPacket(BuiltInRegistries.SOUND_EVENT.createIntrusiveHolder(event), SoundSource.UI, this.player, volume, pitch, this.player.getRandom().nextLong()));
     }
 }

@@ -2,8 +2,9 @@ package eu.pb4.armorstandeditor;
 
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.PermissionLevel;
+import net.minecraft.world.entity.player.Player;
 
 public enum EditorActions {
     OPEN_EDITOR("open_editor"),
@@ -32,9 +33,8 @@ public enum EditorActions {
         this.permission = permission;
     }
 
-    public boolean canUse(PlayerEntity player) {
-        return Permissions.check(player.getCommandSource((ServerWorld) player.getEntityWorld()), "armor_stand_editor.action." + this.permission,
-                ConfigManager.getConfig().configData.defaultAllowedActions.contains(this.permission) ? 0 : 2
-        );
+    public boolean canUse(Player player) {
+        var defaultLevel = ConfigManager.getConfig().configData.defaultAllowedActions.contains(this.permission) ? PermissionLevel.ALL : PermissionLevel.GAMEMASTERS;
+        return Permissions.check(player, "armor_stand_editor.action." + this.permission, defaultLevel);
     }
 }

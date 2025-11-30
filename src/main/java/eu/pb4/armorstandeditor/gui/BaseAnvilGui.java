@@ -7,19 +7,16 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.MutableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Rarity;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 
 public abstract class BaseAnvilGui extends AnvilInputGui {
     protected EditingContext context;
@@ -82,7 +79,7 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
     }
 
     @Override
-    public boolean onClick(int index, ClickType type, SlotActionType action, GuiElementInterface element) {
+    public boolean onClick(int index, ClickType type, net.minecraft.world.inventory.ClickType action, GuiElementInterface element) {
         if (type == ClickType.DROP || type == ClickType.CTRL_DROP) {
             this.close();
             return true;
@@ -109,7 +106,7 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
 
     protected GuiElementBuilder baseElement(Item item, String name, boolean selected) {
         var builder = new GuiElementBuilder(item)
-                .setName(TextUtils.gui(name).formatted(Formatting.WHITE))
+                .setName(TextUtils.gui(name).withStyle(ChatFormatting.WHITE))
                 .hideDefaultTooltip();
 
         if (selected) {
@@ -119,9 +116,9 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
         return builder;
     }
 
-    protected GuiElementBuilder baseElement(Item item, MutableText text, boolean selected) {
+    protected GuiElementBuilder baseElement(Item item, MutableComponent text, boolean selected) {
         var builder = new GuiElementBuilder(item)
-                .setName(text.formatted(Formatting.WHITE))
+                .setName(text.withStyle(ChatFormatting.WHITE))
                 .hideDefaultTooltip();
 
         if (selected) {
@@ -134,7 +131,7 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
     protected GuiElementBuilder switchElement(Item item, String name, EditingContext.SwitchableUi ui) {
         return new GuiElementBuilder()
                 .model(item)
-                .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
+                .setName(TextUtils.gui("entry." + name).withStyle(ChatFormatting.WHITE))
                 .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));
     }
@@ -166,7 +163,7 @@ public abstract class BaseAnvilGui extends AnvilInputGui {
         }
     }
 
-    protected void playSound(RegistryEntry<SoundEvent> sound, float volume, float pitch) {
-        this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
+    protected void playSound(Holder<SoundEvent> sound, float volume, float pitch) {
+        this.player.connection.send(new ClientboundSoundPacket(sound, SoundSource.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
     }
 }

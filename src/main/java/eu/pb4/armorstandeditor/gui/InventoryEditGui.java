@@ -5,25 +5,25 @@ import eu.pb4.armorstandeditor.util.ArmorStandInventory;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class InventoryEditGui extends BaseChestGui {
     public InventoryEditGui(EditingContext context, int slot) {
-        super(context, ScreenHandlerType.GENERIC_9X2, false);
+        super(context, MenuType.GENERIC_9x2, false);
         this.rebuildUi();
         this.open();
     }
 
-    public static boolean isSlotUnlocked(ArmorStandEntity armorStandEntity, EquipmentSlot slot) {
-        return (((ArmorStandEntityAccessor) armorStandEntity).getDisabledSlots() & 1 << slot.getOffsetIndex(0)) == 0;
+    public static boolean isSlotUnlocked(ArmorStand armorStandEntity, EquipmentSlot slot) {
+        return (((ArmorStandEntityAccessor) armorStandEntity).getDisabledSlots() & 1 << slot.getFilterBit(0)) == 0;
     }
 
     @Override
@@ -39,13 +39,13 @@ public class InventoryEditGui extends BaseChestGui {
         this.setTitle(TextUtils.gui("inventory_title"));
 
         ArmorStandInventory inventory = new ArmorStandInventory(this.context.armorStand);
-        for (int x = 0; x < inventory.size(); x++) {
+        for (int x = 0; x < inventory.getContainerSize(); x++) {
             this.setSlotRedirect(x, new Slot(inventory, x, 0, 0));
-            ArmorStandEntity ae = context.armorStand;
+            ArmorStand ae = context.armorStand;
             ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) ae;
             boolean isUnlocked = isSlotUnlocked(ae, ArmorStandInventory.getEquipmentSlot(x));
             this.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
-                    .setName(Text.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                    .setName(Component.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                             .setStyle(Style.EMPTY.withItalic(false)))
                     .setCallback((index, type, action) -> {
                         EquipmentSlot slot = ArmorStandInventory.getEquipmentSlot(index - 9);
@@ -55,13 +55,13 @@ public class InventoryEditGui extends BaseChestGui {
                         boolean isUnlockedTmp = isSlotUnlocked(ae, slot);
 
                         if (isUnlockedTmp) {
-                            disabledSlots |= 1 << slot.getOffsetIndex(0);
-                            disabledSlots |= 1 << slot.getOffsetIndex(8);
-                            disabledSlots |= 1 << slot.getOffsetIndex(16);
+                            disabledSlots |= 1 << slot.getFilterBit(0);
+                            disabledSlots |= 1 << slot.getFilterBit(8);
+                            disabledSlots |= 1 << slot.getFilterBit(16);
                         } else {
-                            disabledSlots &= ~(1 << slot.getOffsetIndex(0));
-                            disabledSlots &= ~(1 << slot.getOffsetIndex(8));
-                            disabledSlots &= ~(1 << slot.getOffsetIndex(16));
+                            disabledSlots &= ~(1 << slot.getFilterBit(0));
+                            disabledSlots &= ~(1 << slot.getFilterBit(8));
+                            disabledSlots &= ~(1 << slot.getFilterBit(16));
                         }
 
                         asea.setDisabledSlots(disabledSlots);
@@ -72,7 +72,7 @@ public class InventoryEditGui extends BaseChestGui {
 
                         ItemStack stack = new ItemStack(isUnlocked2 ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
 
-                        stack.set(DataComponentTypes.CUSTOM_NAME, Text.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
+                        stack.set(DataComponents.CUSTOM_NAME, Component.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                 .setStyle(Style.EMPTY.withItalic(false)));
 
                         ((GuiElement) this.getSlot(index)).setItemStack(stack);

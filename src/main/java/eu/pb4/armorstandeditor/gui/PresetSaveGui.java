@@ -4,11 +4,10 @@ import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.PlayerData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
 import eu.pb4.armorstandeditor.util.TextUtils;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class PresetSaveGui extends BaseAnvilGui {
     public PresetSaveGui(EditingContext context, int selectedSlot) {
@@ -33,8 +32,8 @@ public class PresetSaveGui extends BaseAnvilGui {
     }
 
     private void updateSlot() {
-        ItemStack stack2 = Items.SLIME_BALL.getDefaultStack();
-        stack2.set(DataComponentTypes.CUSTOM_NAME, TextUtils.gui("entry.preset_save.save", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
+        ItemStack stack2 = Items.SLIME_BALL.getDefaultInstance();
+        stack2.set(DataComponents.CUSTOM_NAME, TextUtils.gui("entry.preset_save.save", this.getInput()).setStyle(Style.EMPTY.withItalic(false)));
         this.setSlot(1, stack2, (a, b, c, d) -> {
             this.playClickSound();
             var preset = new ArmorStandPreset(null, this.getInput(), this.player.getGameProfile().name());

@@ -1,12 +1,12 @@
 package eu.pb4.armorstandeditor.util;
 
 import eu.pb4.armorstandeditor.mixin.ArmorStandEntityAccessor;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.EulerAngle;
+import net.minecraft.core.Rotations;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.ItemStack;
 
 public class ArmorStandData {
     public float yaw = -1;
@@ -15,14 +15,14 @@ public class ArmorStandData {
     public boolean small = false;
     public boolean showArms = false;
     public boolean invisible = false;
-    public EulerAngle headRotation = new EulerAngle(0,0,0);
-    public EulerAngle bodyRotation = new EulerAngle(0,0,0);
-    public EulerAngle leftArmRotation = new EulerAngle(0,0,0);
-    public EulerAngle rightArmRotation = new EulerAngle(0,0,0);
-    public EulerAngle leftLegRotation = new EulerAngle(0,0,0);
-    public EulerAngle rightLegRotation = new EulerAngle(0,0,0);
+    public Rotations headRotation = new Rotations(0,0,0);
+    public Rotations bodyRotation = new Rotations(0,0,0);
+    public Rotations leftArmRotation = new Rotations(0,0,0);
+    public Rotations rightArmRotation = new Rotations(0,0,0);
+    public Rotations leftLegRotation = new Rotations(0,0,0);
+    public Rotations rightLegRotation = new Rotations(0,0,0);
     public boolean customNameVisible = false;
-    public Text customName = null;
+    public Component customName = null;
 
     public boolean hasInventory = false;
     public ItemStack headItem = ItemStack.EMPTY;
@@ -36,24 +36,24 @@ public class ArmorStandData {
 
     public ArmorStandData() {}
 
-    public ArmorStandData(ArmorStandEntity armorStand) {
+    public ArmorStandData(ArmorStand armorStand) {
         this.copyFrom(armorStand);
     }
 
-    public void copyFrom(ArmorStandEntity armorStand) {
+    public void copyFrom(ArmorStand armorStand) {
         ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) armorStand;
-        this.yaw = armorStand.getYaw();
-        this.noGravity = armorStand.hasNoGravity();
-        this.hidePlate = !armorStand.shouldShowBasePlate();
+        this.yaw = armorStand.getYRot();
+        this.noGravity = armorStand.isNoGravity();
+        this.hidePlate = !armorStand.showBasePlate();
         this.small = armorStand.isSmall();
-        this.showArms = armorStand.shouldShowArms();
+        this.showArms = armorStand.showArms();
         this.invisible = armorStand.isInvisible();
-        this.headRotation = armorStand.getHeadRotation();
-        this.bodyRotation = armorStand.getBodyRotation();
-        this.leftArmRotation = armorStand.getLeftArmRotation();
-        this.rightArmRotation = armorStand.getRightArmRotation();
-        this.leftLegRotation = armorStand.getLeftLegRotation();
-        this.rightLegRotation = armorStand.getRightLegRotation();
+        this.headRotation = armorStand.getHeadPose();
+        this.bodyRotation = armorStand.getBodyPose();
+        this.leftArmRotation = armorStand.getLeftArmPose();
+        this.rightArmRotation = armorStand.getRightArmPose();
+        this.leftLegRotation = armorStand.getLeftLegPose();
+        this.rightLegRotation = armorStand.getRightLegPose();
 
         this.scale = armorStand.getScale();
 
@@ -63,52 +63,52 @@ public class ArmorStandData {
         }
 
         this.hasInventory = true;
-        this.headItem = armorStand.getEquippedStack(EquipmentSlot.HEAD).copy();
-        this.chestItem = armorStand.getEquippedStack(EquipmentSlot.CHEST).copy();
-        this.legsItem = armorStand.getEquippedStack(EquipmentSlot.LEGS).copy();
-        this.feetItem = armorStand.getEquippedStack(EquipmentSlot.FEET).copy();
-        this.mainHandItem = armorStand.getEquippedStack(EquipmentSlot.MAINHAND).copy();
-        this.offhandItem = armorStand.getEquippedStack(EquipmentSlot.OFFHAND).copy();
+        this.headItem = armorStand.getItemBySlot(EquipmentSlot.HEAD).copy();
+        this.chestItem = armorStand.getItemBySlot(EquipmentSlot.CHEST).copy();
+        this.legsItem = armorStand.getItemBySlot(EquipmentSlot.LEGS).copy();
+        this.feetItem = armorStand.getItemBySlot(EquipmentSlot.FEET).copy();
+        this.mainHandItem = armorStand.getItemBySlot(EquipmentSlot.MAINHAND).copy();
+        this.offhandItem = armorStand.getItemBySlot(EquipmentSlot.OFFHAND).copy();
 
 
         this.disabledSlots = asea.getDisabledSlots();
     }
 
-    public void apply(ArmorStandEntity armorStand, boolean modifyInventory) {
+    public void apply(ArmorStand armorStand, boolean modifyInventory) {
         ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) armorStand;
         if (this.yaw != -1) {
-            armorStand.setYaw(this.yaw);
+            armorStand.setYRot(this.yaw);
             double posX = armorStand.getX();
             double posY = armorStand.getY();
             double posZ = armorStand.getZ();
-            armorStand.updatePositionAndAngles(posX, posY, posZ, this.yaw, 0);
+            armorStand.absSnapTo(posX, posY, posZ, this.yaw, 0);
         }
         armorStand.setNoGravity(this.noGravity);
-        armorStand.noClip = this.noGravity;
-        armorStand.setHideBasePlate(this.hidePlate);
+        armorStand.noPhysics = this.noGravity;
+        armorStand.setNoBasePlate(this.hidePlate);
         asea.callSetSmall(this.small);
         asea.callSetShowArms(this.showArms);
         armorStand.setInvisible(this.invisible);
-        armorStand.setHeadRotation(this.headRotation);
-        armorStand.setBodyRotation(this.bodyRotation);
-        armorStand.setLeftArmRotation(this.leftArmRotation);
-        armorStand.setRightArmRotation(this.rightArmRotation);
-        armorStand.setLeftLegRotation(this.leftLegRotation);
-        armorStand.setRightLegRotation(this.rightLegRotation);
+        armorStand.setHeadPose(this.headRotation);
+        armorStand.setBodyPose(this.bodyRotation);
+        armorStand.setLeftArmPose(this.leftArmRotation);
+        armorStand.setRightArmPose(this.rightArmRotation);
+        armorStand.setLeftLegPose(this.leftLegRotation);
+        armorStand.setRightLegPose(this.rightLegRotation);
 
         armorStand.setCustomNameVisible(this.customNameVisible);
         armorStand.setCustomName(this.customName);
         asea.setDisabledSlots(this.disabledSlots);
 
-        armorStand.getAttributeInstance(EntityAttributes.SCALE).setBaseValue(scale);
+        armorStand.getAttribute(Attributes.SCALE).setBaseValue(scale);
 
         if (modifyInventory && this.hasInventory) {
-            armorStand.equipStack(EquipmentSlot.HEAD, this.headItem);
-            armorStand.equipStack(EquipmentSlot.CHEST, this.chestItem);
-            armorStand.equipStack(EquipmentSlot.LEGS, this.legsItem);
-            armorStand.equipStack(EquipmentSlot.FEET, this.feetItem);
-            armorStand.equipStack(EquipmentSlot.MAINHAND, this.mainHandItem);
-            armorStand.equipStack(EquipmentSlot.OFFHAND, this.offhandItem);
+            armorStand.setItemSlot(EquipmentSlot.HEAD, this.headItem);
+            armorStand.setItemSlot(EquipmentSlot.CHEST, this.chestItem);
+            armorStand.setItemSlot(EquipmentSlot.LEGS, this.legsItem);
+            armorStand.setItemSlot(EquipmentSlot.FEET, this.feetItem);
+            armorStand.setItemSlot(EquipmentSlot.MAINHAND, this.mainHandItem);
+            armorStand.setItemSlot(EquipmentSlot.OFFHAND, this.offhandItem);
         }
     }
 }

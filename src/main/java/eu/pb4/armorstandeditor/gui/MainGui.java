@@ -1,7 +1,7 @@
 package eu.pb4.armorstandeditor.gui;
 
 import eu.pb4.armorstandeditor.EditorActions;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Items;
 
 public class MainGui extends BaseWorldGui {
     public MainGui(EditingContext context, int slot) {

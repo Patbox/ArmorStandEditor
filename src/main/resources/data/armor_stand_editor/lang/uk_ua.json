@@ -52,6 +52,7 @@
   "gui.armor_stand_editor.action.rotate": "Повернути на %s градусів",
   "gui.armor_stand_editor.action.rotate.set": "Поточне: %s градусів",
   "gui.armor_stand_editor.property.invisible": "Невидимий: %s",
+  "gui.armor_stand_editor.property.invulnerable": "Невразливий: %s",
   "gui.armor_stand_editor.property.no_gravity": "Без гравітації: %s",
   "gui.armor_stand_editor.property.arms": "Показувати руки: %s",
   "gui.armor_stand_editor.property.hide_base": "Приховати основу: %s",

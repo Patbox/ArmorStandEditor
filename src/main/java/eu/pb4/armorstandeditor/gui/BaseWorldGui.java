@@ -6,20 +6,19 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.HotbarGui;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.MutableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class BaseWorldGui extends HotbarGui {
     protected EditingContext context;
@@ -29,7 +28,7 @@ public abstract class BaseWorldGui extends HotbarGui {
         super(context.player);
         this.setSelectedSlot(selectedSlot);
         this.context = context;
-        this.currentBlockClickTick = context.player.age;
+        this.currentBlockClickTick = context.player.tickCount;
     }
 
     @Override
@@ -47,7 +46,7 @@ public abstract class BaseWorldGui extends HotbarGui {
     @Override
     public boolean onClickBlock(BlockHitResult hitResult) {
         this.checkClosed();
-        if (this.player.age - this.currentBlockClickTick >= 5) {
+        if (this.player.tickCount - this.currentBlockClickTick >= 5) {
             return super.onClickBlock(hitResult);
         }
         return false;
@@ -56,14 +55,14 @@ public abstract class BaseWorldGui extends HotbarGui {
     @Override
     public void onClickItem() {
         this.checkClosed();
-        if (this.player.age - this.currentBlockClickTick >= 5) {
+        if (this.player.tickCount - this.currentBlockClickTick >= 5) {
             super.onClickItem();
         }
     }
 
     @Override
     public boolean onHandSwing() {
-        if (this.player.age - this.currentBlockClickTick >= 5) {
+        if (this.player.tickCount - this.currentBlockClickTick >= 5) {
             return super.onHandSwing();
         }
         return false;
@@ -89,15 +88,15 @@ public abstract class BaseWorldGui extends HotbarGui {
                 })
         );
 
-        this.setSlot(37, this.player.getEquippedStack(EquipmentSlot.HEAD).copy());
-        this.setSlot(38, this.player.getEquippedStack(EquipmentSlot.CHEST).copy());
-        this.setSlot(39, this.player.getEquippedStack(EquipmentSlot.LEGS).copy());
-        this.setSlot(40, this.player.getEquippedStack(EquipmentSlot.FEET).copy());
+        this.setSlot(37, this.player.getItemBySlot(EquipmentSlot.HEAD).copy());
+        this.setSlot(38, this.player.getItemBySlot(EquipmentSlot.CHEST).copy());
+        this.setSlot(39, this.player.getItemBySlot(EquipmentSlot.LEGS).copy());
+        this.setSlot(40, this.player.getItemBySlot(EquipmentSlot.FEET).copy());
     }
 
     @Override
     public void setSelectedSlot(int value) {
-        this.selectedSlot = MathHelper.clamp(value, 0, 8);
+        this.selectedSlot = Mth.clamp(value, 0, 8);
     }
 
     protected void playClickSound() {
@@ -105,7 +104,7 @@ public abstract class BaseWorldGui extends HotbarGui {
     }
 
     @Override
-    public boolean onClick(int index, ClickType type, SlotActionType action, GuiElementInterface element) {
+    public boolean onClick(int index, ClickType type, net.minecraft.world.inventory.ClickType action, GuiElementInterface element) {
         if (type == ClickType.DROP || type == ClickType.CTRL_DROP) {
             this.close();
             return true;
@@ -133,7 +132,7 @@ public abstract class BaseWorldGui extends HotbarGui {
     protected GuiElementBuilder baseElement(Item item, String name, boolean selected) {
         var builder = new GuiElementBuilder()
                 .model(item)
-                .setName(TextUtils.gui(name).formatted(Formatting.WHITE))
+                .setName(TextUtils.gui(name).withStyle(ChatFormatting.WHITE))
                 .hideDefaultTooltip();
 
         if (selected) {
@@ -143,10 +142,10 @@ public abstract class BaseWorldGui extends HotbarGui {
         return builder;
     }
 
-    protected GuiElementBuilder baseElement(Item item, MutableText text, boolean selected) {
+    protected GuiElementBuilder baseElement(Item item, MutableComponent text, boolean selected) {
         var builder = new GuiElementBuilder()
                 .model(item)
-                .setName(text.formatted(Formatting.WHITE))
+                .setName(text.withStyle(ChatFormatting.WHITE))
                 .hideDefaultTooltip();
 
         if (selected) {
@@ -159,7 +158,7 @@ public abstract class BaseWorldGui extends HotbarGui {
     protected GuiElementBuilder switchElement(Item item, String name, EditingContext.SwitchableUi ui) {
         return new GuiElementBuilder()
                 .model(item)
-                .setName(TextUtils.gui("entry." + name).formatted(Formatting.WHITE))
+                .setName(TextUtils.gui("entry." + name).withStyle(ChatFormatting.WHITE))
                 .hideDefaultTooltip()
                 .setCallback(switchCallback(ui));
     }
@@ -187,7 +186,7 @@ public abstract class BaseWorldGui extends HotbarGui {
         }
     }
 
-    protected void playSound(RegistryEntry<SoundEvent> sound, float volume, float pitch) {
-        this.player.networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
+    protected void playSound(Holder<SoundEvent> sound, float volume, float pitch) {
+        this.player.connection.send(new ClientboundSoundPacket(sound, SoundSource.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
     }
 }

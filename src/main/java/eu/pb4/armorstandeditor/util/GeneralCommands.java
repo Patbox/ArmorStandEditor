@@ -8,21 +8,21 @@ import eu.pb4.armorstandeditor.config.ArmorStandPreset;
 import eu.pb4.armorstandeditor.config.ConfigManager;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.EntitySelector;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.selector.EntitySelector;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import java.util.Iterator;
 
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.literal;
 
 public class GeneralCommands {
     public static void register() {
@@ -36,19 +36,19 @@ public class GeneralCommands {
                                     .executes(GeneralCommands::reloadConfig)
                             )
                             .then(literal("give")
-                                    .then(CommandManager.argument("targets", EntityArgumentType.players())
+                                    .then(Commands.argument("targets", EntityArgument.players())
                                             .requires(Permissions.require("armor_stand_editor.commands.give", 2))
                                             .executes(GeneralCommands::giveTool)
                             ))
                             .then(literal("save-preset")
-                                    .then(CommandManager.argument("id", StringArgumentType.word())
-                                            .then(CommandManager.argument("name", StringArgumentType.greedyString())
+                                    .then(Commands.argument("id", StringArgumentType.word())
+                                            .then(Commands.argument("name", StringArgumentType.greedyString())
                                                     .requires(Permissions.require("armor_stand_editor.commands.save_preset", 3))
                                                     .executes(GeneralCommands::savePreset)
                                             )
                                     ))
                             .then(literal("delete-preset")
-                                    .then(CommandManager.argument("id", StringArgumentType.word())
+                                    .then(Commands.argument("id", StringArgumentType.word())
                                             .requires(Permissions.require("armor_stand_editor.commands.delete_preset", 3))
                                             .executes(GeneralCommands::deletePreset)
                                     ))
@@ -62,8 +62,8 @@ public class GeneralCommands {
 
 
 
-    private static int savePreset(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
+    private static int savePreset(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
 
         var spei = (PlayerExt) player;
 
@@ -71,7 +71,7 @@ public class GeneralCommands {
         String name = context.getArgument("name", String.class);
 
         if (ConfigManager.INVALID_CHAR.matcher(id).matches()) {
-            context.getSource().sendFeedback(() -> TextUtils.command("invalid-id", id).formatted(Formatting.RED), false);
+            context.getSource().sendSuccess(() -> TextUtils.command("invalid-id", id).withStyle(ChatFormatting.RED), false);
             return 0;
         }
 
@@ -81,89 +81,91 @@ public class GeneralCommands {
 
             ConfigManager.savePreset(preset);
 
-            context.getSource().sendFeedback(() -> TextUtils.command("save-preset.success", name, id), false);
+            context.getSource().sendSuccess(() -> TextUtils.command("save-preset.success", name, id), false);
         } else {
-            context.getSource().sendFeedback(() -> TextUtils.command("save-preset.fail", name, id).formatted(Formatting.RED), false);
+            context.getSource().sendSuccess(() -> TextUtils.command("save-preset.fail", name, id).withStyle(ChatFormatting.RED), false);
         }
 
         return 0;
     }
 
-    private static int deletePreset(CommandContext<ServerCommandSource> context) {
+    private static int deletePreset(CommandContext<CommandSourceStack> context) {
         String id = context.getArgument("id", String.class);
 
         if (ConfigManager.INVALID_CHAR.matcher(id).matches()) {
-            context.getSource().sendFeedback(() -> TextUtils.command("invalid-id", id).formatted(Formatting.RED), false);
+            context.getSource().sendSuccess(() -> TextUtils.command("invalid-id", id).withStyle(ChatFormatting.RED), false);
             return 0;
         }
 
         if (ConfigManager.deletePreset(id)) {
-            context.getSource().sendFeedback(() -> TextUtils.command("delete-preset.success", id), false);
+            context.getSource().sendSuccess(() -> TextUtils.command("delete-preset.success", id), false);
         } else {
-            context.getSource().sendFeedback(() -> TextUtils.command("delete-preset.fail", id).formatted(Formatting.RED), false);
+            context.getSource().sendSuccess(() -> TextUtils.command("delete-preset.fail", id).withStyle(ChatFormatting.RED), false);
         }
 
         return 0;
     }
 
-    private static int listPresets(CommandContext<ServerCommandSource> context) {
-        MutableText text = Text.literal("").formatted(Formatting.DARK_GRAY);
+    private static int listPresets(CommandContext<CommandSourceStack> context) {
+        MutableComponent text = Component.literal("").withStyle(ChatFormatting.DARK_GRAY);
 
         Iterator<ArmorStandPreset> iterator = ConfigManager.PRESETS.values().iterator();
 
         while (iterator.hasNext()) {
             ArmorStandPreset preset = iterator.next();
             if (preset.id.startsWith("$")) {
-                text.append(Text.literal(preset.name)
-                        .formatted(Formatting.YELLOW)
-                        .append(Text.literal(" (").formatted(Formatting.GRAY)
-                                .append(Text.literal("buildin/" + preset.id.substring(1)).formatted(Formatting.RED))
-                                .append(Text.literal(")").formatted(Formatting.GRAY))));
+                text.append(Component.literal(preset.name)
+                        .withStyle(ChatFormatting.YELLOW)
+                        .append(Component.literal(" (").withStyle(ChatFormatting.GRAY)
+                                .append(Component.literal("buildin/" + preset.id.substring(1)).withStyle(ChatFormatting.RED))
+                                .append(Component.literal(")").withStyle(ChatFormatting.GRAY))));
             } else {
-                text.append(Text.literal(preset.name)
-                        .formatted(Formatting.WHITE)
-                        .append(Text.literal(" (").formatted(Formatting.GRAY)
-                                .append(Text.literal(preset.id).formatted(Formatting.BLUE))
-                                .append(Text.literal(")").formatted(Formatting.GRAY))));
+                text.append(Component.literal(preset.name)
+                        .withStyle(ChatFormatting.WHITE)
+                        .append(Component.literal(" (").withStyle(ChatFormatting.GRAY)
+                                .append(Component.literal(preset.id).withStyle(ChatFormatting.BLUE))
+                                .append(Component.literal(")").withStyle(ChatFormatting.GRAY))));
             }
 
             if (iterator.hasNext()) {
-                text.append(Text.literal(", "));
+                text.append(Component.literal(", "));
             }
         }
 
-        context.getSource().sendFeedback(() -> text, false);
+        context.getSource().sendSuccess(() -> text, false);
 
         return 0;
     }
 
-    private static int giveTool(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        ItemStack itemStack = ConfigManager.getConfig().armorStandTool.getDefaultStack();
-        itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().putBoolean("isArmorStandEditor", true);
+    private static int giveTool(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ItemStack itemStack = ConfigManager.getConfig().armorStandTool.getDefaultInstance();
+        var nbt = new CompoundTag();
+        nbt.putBoolean("isArmorStandEditor", true);
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
         EntitySelector entitySelector = context.getArgument("targets", EntitySelector.class);
 
-        for (ServerPlayerEntity player : entitySelector.getPlayers(context.getSource())) {
-            player.getInventory().offerOrDrop(itemStack);
-            context.getSource().sendFeedback(() -> TextUtils.command("give", player.getDisplayName()), true);
+        for (ServerPlayer player : entitySelector.findPlayers(context.getSource())) {
+            player.getInventory().placeItemBackInInventory(itemStack);
+            context.getSource().sendSuccess(() -> TextUtils.command("give", player.getDisplayName()), true);
         }
 
 
         return 1;
     }
 
-    private static int reloadConfig(CommandContext<ServerCommandSource> context) {
+    private static int reloadConfig(CommandContext<CommandSourceStack> context) {
         if (ConfigManager.loadConfig()) {
-            context.getSource().sendFeedback(() -> Text.literal("Reloaded config!"), false);
+            context.getSource().sendSuccess(() -> Component.literal("Reloaded config!"), false);
         } else {
-            context.getSource().sendError(Text.literal("Error accrued while reloading config!").formatted(Formatting.RED));
+            context.getSource().sendFailure(Component.literal("Error accrued while reloading config!").withStyle(ChatFormatting.RED));
         }
         return 1;
     }
 
-    private static int about(CommandContext<ServerCommandSource> context) {
+    private static int about(CommandContext<CommandSourceStack> context) {
         //context.getSource().sendFeedback(Text.literal("Armor Stand Editor - ").formatted(Formatting.GOLD).append(Text.literal(ArmorStandEditorMod.VERSION).formatted(Formatting.WHITE)), false);
-        for (var t : context.getSource().isExecutedByPlayer() ? GenericModInfo.getAboutFull() : GenericModInfo.getAboutConsole()) {
-            context.getSource().sendFeedback(() -> t, false);
+        for (var t : context.getSource().isPlayer() ? GenericModInfo.getAboutFull() : GenericModInfo.getAboutConsole()) {
+            context.getSource().sendSuccess(() -> t, false);
         }
 
         return 1;
