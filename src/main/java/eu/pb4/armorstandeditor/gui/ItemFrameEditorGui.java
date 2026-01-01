@@ -114,6 +114,6 @@ public class ItemFrameEditorGui extends SimpleGui {
     }
 
     private void playSoundToPlayer(SoundEvent event, float volume, float pitch) {
-        player.connection.send(new ClientboundSoundEntityPacket(BuiltInRegistries.SOUND_EVENT.createIntrusiveHolder(event), SoundSource.UI, this.player, volume, pitch, this.player.getRandom().nextLong()));
+        player.connection.send(new ClientboundSoundEntityPacket(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(event), SoundSource.UI, this.player, volume, pitch, this.player.getRandom().nextLong()));
     }
 }

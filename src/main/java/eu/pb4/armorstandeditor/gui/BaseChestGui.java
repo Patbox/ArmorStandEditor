@@ -157,6 +157,6 @@ public abstract class BaseChestGui extends SimpleGui {
     }
 
     protected void playSound(Holder<SoundEvent> sound, float volume, float pitch) {
-        this.player.connection.send(new ClientboundSoundPacket(sound, SoundSource.MASTER, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
+        this.player.connection.send(new ClientboundSoundPacket(sound, SoundSource.UI, this.player.getX(), this.player.getY(), this.player.getZ(), volume, pitch, 0));
     }
 }
