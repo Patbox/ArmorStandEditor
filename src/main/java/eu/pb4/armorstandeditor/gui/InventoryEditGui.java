@@ -5,6 +5,7 @@ import eu.pb4.armorstandeditor.util.ArmorStandInventory;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import eu.pb4.sgui.api.elements.SimpleGuiElement;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -40,14 +41,14 @@ public class InventoryEditGui extends BaseChestGui {
 
         ArmorStandInventory inventory = new ArmorStandInventory(this.context.armorStand);
         for (int x = 0; x < inventory.getContainerSize(); x++) {
-            this.setSlotRedirect(x, new Slot(inventory, x, 0, 0));
+            this.setSlot(x, new Slot(inventory, x, 0, 0));
             ArmorStand ae = context.armorStand;
             ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) ae;
             boolean isUnlocked = isSlotUnlocked(ae, ArmorStandInventory.getEquipmentSlot(x));
             this.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
                     .setName(Component.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                             .setStyle(Style.EMPTY.withItalic(false)))
-                    .setCallback((index, type, action) -> {
+                    .setCallback((index, type, action, _) -> {
                         EquipmentSlot slot = ArmorStandInventory.getEquipmentSlot(index - 9);
 
                         int disabledSlots = asea.getDisabledSlots();
@@ -75,7 +76,7 @@ public class InventoryEditGui extends BaseChestGui {
                         stack.set(DataComponents.CUSTOM_NAME, Component.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                 .setStyle(Style.EMPTY.withItalic(false)));
 
-                        ((GuiElement) this.getSlot(index)).setItemStack(stack);
+                        ((SimpleGuiElement) this.getGuiElement(index)).setItemStack(stack);
                     })
             );
         }

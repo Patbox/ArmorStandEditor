@@ -133,7 +133,7 @@ public class MoveGui extends BaseWorldGui {
 
             if (current == 3) {
                 this.context.moveRotationDelta = Mth.clamp(this.context.moveRotationDelta + delta, 0, 360);
-                this.player.displayClientMessage(TextUtils.gui("action.move.rotate.set", this.context.moveRotationDelta), true);
+                this.player.sendSystemMessage(TextUtils.gui("action.move.rotate.set", this.context.moveRotationDelta), true);
             } else {
                 double value;
                 if ((this.context.moveBlockDelta == 0.1 && delta < 0) || this.context.moveBlockDelta < 0.1) {
@@ -143,7 +143,7 @@ public class MoveGui extends BaseWorldGui {
                 }
 
                 this.context.moveBlockDelta = Mth.clamp(value, 0, 5);
-                this.player.displayClientMessage(TextUtils.gui("action.move.set", this.context.moveBlockDelta), true);
+                this.player.sendSystemMessage(TextUtils.gui("action.move.set", this.context.moveBlockDelta), true);
 
             }
 
@@ -175,7 +175,7 @@ public class MoveGui extends BaseWorldGui {
                     pos.z + this.playerLookingDirection.getStepZ() * v
             );
         }
-        if (!CommonProtection.canInteractEntity(this.context.player.level(), this.context.armorStand, this.context.player.getGameProfile(), this.context.player)) {
+        if (!CommonProtection.canInteractEntity(this.context.player.level(), this.context.armorStand, this.context.player.nameAndId(), this.context.player)) {
             this.context.armorStand.setPos(pos);
         }
     }

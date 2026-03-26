@@ -6,7 +6,7 @@ import eu.pb4.armorstandeditor.config.ConfigManager;
 import eu.pb4.armorstandeditor.gui.BaseWorldGui;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
-import eu.pb4.sgui.api.GuiHelpers;
+import eu.pb4.sgui.api.SguiUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -48,7 +48,7 @@ public abstract class ServerPlayerEntityMixin extends Player implements PlayerEx
 
     @Inject(method = "hurtServer", at = @At("TAIL"))
     private void ase$closeOnDamage(ServerLevel world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (GuiHelpers.getCurrentGui((ServerPlayer) (Object) this) instanceof BaseWorldGui baseGui) {
+        if (SguiUtils.getCurrentGui((ServerPlayer) (Object) this) instanceof BaseWorldGui baseGui) {
             baseGui.close();
         }
     }

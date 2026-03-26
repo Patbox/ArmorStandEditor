@@ -53,7 +53,7 @@ public class ScaleGui extends BaseWorldGui {
         );
 
         this.setSlot(7, baseElement(Items.LEVER, "action.scale.reset", false)
-                .setCallback((x, y, z) -> {
+                .setCallback(() -> {
                     this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
                     this.setScale(1);
                 }));
@@ -61,7 +61,7 @@ public class ScaleGui extends BaseWorldGui {
 
     private void updateMiddle() {
         this.setSlot(3, baseElement(Items.OAK_SIGN, TextUtils.gui("action.scale.value_or_set", String.format("%.02f", this.context.armorStand.getScale())), false)
-                .setCallback((x, y, z) -> {
+                .setCallback(() -> {
                     this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
                     this.switchUi(EditingContext.SwitchEntry.ofChest(ScaleSetGui::new), true);
                 })
@@ -88,7 +88,7 @@ public class ScaleGui extends BaseWorldGui {
             }
 
             this.context.scaleDelta = Mth.clamp(value, 0, 8);
-            this.player.displayClientMessage(TextUtils.gui("action.scale.set_change", this.context.scaleDelta), true);
+            this.player.sendSystemMessage(TextUtils.gui("action.scale.set_change", this.context.scaleDelta), true);
             this.playSound(SoundEvents.NOTE_BLOCK_HAT, 0.5f, 1f);
             this.player.connection.send(new ClientboundSetHeldSlotPacket(this.selectedSlot));
             this.buildUi();

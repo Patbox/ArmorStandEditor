@@ -31,8 +31,8 @@
 
   "depends": {
     "fabricloader": ">=0.15.10",
-    "fabric": "*",
-    "minecraft": ">=1.21.6-",
+    "fabric-api": "*",
+    "minecraft": ">=26.1-",
     "sgui": ">=1.10.0"
   }
 }

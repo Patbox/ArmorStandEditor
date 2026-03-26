@@ -35,7 +35,7 @@ public class PoseListGui extends BaseWorldGui {
         }
 
         this.addSlot(baseElement(Items.GLISTERING_MELON_SLICE, "action.pose.flip", false)
-                .setCallback((x, y, z) -> {
+                .setCallback(() -> {
                     this.playClickSound();
 
                     var armorStand = this.context.armorStand;
@@ -54,7 +54,7 @@ public class PoseListGui extends BaseWorldGui {
                 }));
 
         this.addSlot(baseElement(Items.LEVER, "action.pose.reset", false)
-                .setCallback((x, y, z) -> {
+                .setCallback(() -> {
                     this.playClickSound();
 
                     var armorStand = this.context.armorStand;

@@ -4,7 +4,7 @@ import eu.pb4.armorstandeditor.EditorActions;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.gui.HotbarGui;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
@@ -104,7 +105,7 @@ public abstract class BaseWorldGui extends HotbarGui {
     }
 
     @Override
-    public boolean onClick(int index, ClickType type, net.minecraft.world.inventory.ClickType action, GuiElementInterface element) {
+    public boolean onClick(int index, ClickType type, ContainerInput action, GuiElement element)  {
         if (type == ClickType.DROP || type == ClickType.CTRL_DROP) {
             this.close();
             return true;
@@ -163,7 +164,7 @@ public abstract class BaseWorldGui extends HotbarGui {
                 .setCallback(switchCallback(ui));
     }
 
-    protected GuiElementInterface.ClickCallback switchCallback(EditingContext.SwitchableUi ui) {
+    protected GuiElement.ClickCallback switchCallback(EditingContext.SwitchableUi ui) {
         return (x, y, z, c) -> {
             this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
             this.switchUi(new EditingContext.SwitchEntry(ui, 0), true);
@@ -180,7 +181,7 @@ public abstract class BaseWorldGui extends HotbarGui {
     }
 
     @Override
-    public void onClose() {
+    public void onManualClose() {
         if (this.context != null) {
             this.context.close();
         }

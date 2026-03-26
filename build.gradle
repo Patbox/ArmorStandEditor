@@ -1,14 +1,13 @@
 plugins {
-	id 'fabric-loom' version '1.13.+'
+	id 'net.fabricmc.fabric-loom' version '1.15.+'
 	id 'maven-publish'
 	id "com.modrinth.minotaur" version "2.+"
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
-
-archivesBaseName = project.archives_base_name
+base {
+	archivesName = project.archives_base_name
+}
 version = project.mod_version + '+' + project.minecraft_version
 group = project.maven_group
 
@@ -28,21 +27,19 @@ repositories {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include("me.lucko:fabric-permissions-api:0.6.0-patbox")
-	modImplementation include("eu.pb4:sgui:1.12.0+1.21.11")
-	modImplementation include("eu.pb4:player-data-api:0.9.1+1.21.11")
-	modImplementation include("eu.pb4:common-protection-api:1.0.0")
-
-	modImplementation include("xyz.nucleoid:server-translations-api:2.5.2+1.21.9-pre3")
+	implementation include('xyz.nucleoid:server-translations-api:3.0.1+26.1')
+	implementation include("eu.pb4:sgui:2.0.0-beta.2+26.1")
+	implementation include("eu.pb4:common-protection-api:2.0.0")
+	implementation include("eu.pb4:player-data-api:0.10.0+26.1")
+	implementation "me.lucko:fabric-permissions-api:0.7.0"
 
 	//modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
-	modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')
+	//modCompileOnly('xyz.nucleoid:disguiselib-fabric:1.2.2')
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
@@ -63,7 +60,7 @@ tasks.withType(JavaCompile).configureEach {
 	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	it.options.release = 21
+	it.options.release = 25
 }
 
 java {
@@ -75,7 +72,7 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${project.archives_base_name}"}
 	}
 }
 
@@ -84,11 +81,11 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
+			artifact(jar) {
+				builtBy jar
 			}
 			artifact(sourcesJar) {
-				builtBy remapSourcesJar
+				builtBy sourcesJar
 			}
 		}
 	}
@@ -113,11 +110,10 @@ curseforge {
 			changelogType = "markdown"
 			addGameVersion((project.minecraft_version.contains("-") ? ((String) project.minecraft_version.split("-")[0] + "-snapshot") : project.minecraft_version))
 			addGameVersion "Fabric"
-			addGameVersion "Quilt"
-			mainArtifact(remapJar)
+			mainArtifact(jar.archiveFile)
 
 			afterEvaluate {
-				uploadTask.dependsOn("remapJar")
+				uploadTask.dependsOn("jar")
 			}
 		}
 
@@ -125,7 +121,7 @@ curseforge {
 			forgeGradleIntegration = false
 		}
 
-		remapJar {
+		jar {
 			finalizedBy project.tasks.curseforge
 		}
 	}
@@ -139,12 +135,12 @@ if (System.getenv("MODRINTH")) {
 		versionType = "release"
 		changelog = System.getenv("CHANGELOG")
 		// On fabric, use 'remapJar' instead of 'jar'
-		uploadFile = remapJar
+		uploadFile = jar
 		gameVersions = [((String) project.minecraft_version)]
-		loaders = ["fabric", "quilt"]
+		loaders = ["fabric"]
 	}
 
-	remapJar {
+	jar {
 		finalizedBy project.tasks.modrinth
 	}
 }

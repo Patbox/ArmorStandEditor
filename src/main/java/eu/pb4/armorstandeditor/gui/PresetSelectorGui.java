@@ -64,7 +64,7 @@ public class PresetSelectorGui extends BaseChestGui {
                 var b = new GuiElementBuilder(Items.ARMOR_STAND)
                         .setName(Component.literal(preset.name).setStyle(Style.EMPTY.withItalic(false).withColor(ChatFormatting.GREEN)))
                         .addLoreLine(TextUtils.gui("preset_author", preset.author).setStyle(Style.EMPTY.withItalic(false).withColor(ChatFormatting.GRAY)))
-                        .setCallback((t1, t2, t3) -> {
+                        .setCallback((t1, t2, t3, _) -> {
                             playClickSound();
                             if (remover != null && t2.isRight && t2.shift) {
                                 remover.accept(preset);
@@ -75,7 +75,7 @@ public class PresetSelectorGui extends BaseChestGui {
                             }
 
                             ((PlayerExt) this.player).ase$setArmorStandEditorData(preset.asData());
-                            player.displayClientMessage(TextUtils.text("presets.selected", preset.name), true);
+                            player.sendSystemMessage(TextUtils.text("presets.selected", preset.name), true);
                             this.openPreviousOrClose();
                         });
 
@@ -92,7 +92,7 @@ public class PresetSelectorGui extends BaseChestGui {
         var previous = new GuiElementBuilder(page != 0 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
                 .setName(Component.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)));
         if (this.page != 0) {
-            previous.setCallback((index, type, action) -> {
+            previous.setCallback(() -> {
                 page--;
                 playClickSound();
                 updateDisplay();
@@ -104,7 +104,7 @@ public class PresetSelectorGui extends BaseChestGui {
                 .setName(Component.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)));
 
         if (this.page < maxPage - 1) {
-            next.setCallback((index, type, action) -> {
+            next.setCallback(() -> {
                 page++;
                 playClickSound();
                 updateDisplay();

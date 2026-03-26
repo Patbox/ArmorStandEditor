@@ -72,7 +72,7 @@ public class ModifyPoseGui extends BaseWorldGui {
         );
 
         this.setSlot(7, baseElement(Items.LEVER, "action.pose.reset", false)
-                .setCallback((x, y, z) -> {
+                .setCallback(() -> {
                     this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
 
                     var armorStand = this.context.armorStand;
@@ -88,7 +88,7 @@ public class ModifyPoseGui extends BaseWorldGui {
             var delta = slot - current;
 
             this.context.rotationDelta = Mth.clamp(this.context.rotationDelta + delta, 0, 360);
-            this.player.displayClientMessage(TextUtils.gui("action.rotate.set", this.context.rotationDelta), true);
+            this.player.sendSystemMessage(TextUtils.gui("action.rotate.set", this.context.rotationDelta), true);
 
             this.playSound(SoundEvents.NOTE_BLOCK_HAT, 0.5f, 1f);
             this.player.connection.send(new ClientboundSetHeldSlotPacket(this.selectedSlot));

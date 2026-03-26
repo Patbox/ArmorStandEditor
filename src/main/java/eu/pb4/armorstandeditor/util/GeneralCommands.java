@@ -17,7 +17,9 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import java.util.Iterator;
@@ -29,31 +31,31 @@ public class GeneralCommands {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(
                     literal("armorstandeditor")
-                            .requires(Permissions.require("armor_stand_editor.commands.main", true))
+                            .requires(FabricPermissionBridge.require(Identifier.fromNamespaceAndPath("armor_stand_editor", "command/main"), true))
                             .executes(GeneralCommands::about)
                             .then(literal("reload")
-                                    .requires(Permissions.require("armor_stand_editor.commands.reload", 4))
+                                    .requires(FabricPermissionBridge.require(Identifier.fromNamespaceAndPath("armor_stand_editor", "command/reload"), PermissionLevel.OWNERS))
                                     .executes(GeneralCommands::reloadConfig)
                             )
                             .then(literal("give")
                                     .then(Commands.argument("targets", EntityArgument.players())
-                                            .requires(Permissions.require("armor_stand_editor.commands.give", 2))
+                                            .requires(FabricPermissionBridge.require(Identifier.fromNamespaceAndPath("armor_stand_editor", "command/give"), PermissionLevel.GAMEMASTERS))
                                             .executes(GeneralCommands::giveTool)
                             ))
                             .then(literal("save-preset")
                                     .then(Commands.argument("id", StringArgumentType.word())
                                             .then(Commands.argument("name", StringArgumentType.greedyString())
-                                                    .requires(Permissions.require("armor_stand_editor.commands.save_preset", 3))
+                                                    .requires(FabricPermissionBridge.require(Identifier.fromNamespaceAndPath("armor_stand_editor", "command/save_preset"), PermissionLevel.GAMEMASTERS))
                                                     .executes(GeneralCommands::savePreset)
                                             )
                                     ))
                             .then(literal("delete-preset")
                                     .then(Commands.argument("id", StringArgumentType.word())
-                                            .requires(Permissions.require("armor_stand_editor.commands.delete_preset", 3))
+                                            .requires(FabricPermissionBridge.require(Identifier.fromNamespaceAndPath("armor_stand_editor", "command/delete_preset"), PermissionLevel.GAMEMASTERS))
                                             .executes(GeneralCommands::deletePreset)
                                     ))
                             .then(literal("list-preset")
-                                            .requires(Permissions.require("armor_stand_editor.commands.list_presets", 3))
+                                            .requires(FabricPermissionBridge.require(Identifier.fromNamespaceAndPath("armor_stand_editor", "command/list_presets"), PermissionLevel.GAMEMASTERS))
                                             .executes(GeneralCommands::listPresets)
                                     )
             );

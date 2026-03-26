@@ -3,9 +3,8 @@ package eu.pb4.armorstandeditor.gui;
 import eu.pb4.armorstandeditor.EditorActions;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.ClickType;
+import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
-import eu.pb4.sgui.api.gui.HotbarGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -14,6 +13,7 @@ import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -70,7 +70,7 @@ public abstract class BaseChestGui extends SimpleGui {
     }
 
     @Override
-    public boolean onClick(int index, ClickType type, net.minecraft.world.inventory.ClickType action, GuiElementInterface element) {
+    public boolean onClick(int index, ClickType type, ContainerInput action, GuiElement element)  {
         if (type == ClickType.DROP || type == ClickType.CTRL_DROP) {
             this.close();
             return true;
@@ -129,7 +129,7 @@ public abstract class BaseChestGui extends SimpleGui {
                 .setCallback(switchCallback(ui));
     }
 
-    protected GuiElementInterface.ClickCallback switchCallback(EditingContext.SwitchableUi ui) {
+    protected GuiElement.ClickCallback switchCallback(EditingContext.SwitchableUi ui) {
         return (x, y, z, c) -> {
             this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
             this.switchUi(new EditingContext.SwitchEntry(ui, 0), true);
@@ -150,7 +150,7 @@ public abstract class BaseChestGui extends SimpleGui {
     }
 
     @Override
-    public void onClose() {
+    public void onManualClose() {
         if (this.context != null) {
             this.context.close();
         }

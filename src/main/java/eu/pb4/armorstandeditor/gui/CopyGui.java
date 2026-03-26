@@ -24,7 +24,7 @@ public class CopyGui extends BaseWorldGui {
                             this.playClickSound();
 
                             spei.ase$setArmorStandEditorData(new ArmorStandData(this.context.armorStand));
-                            player.displayClientMessage(Component.translatable("text.armor_stand_editor.message.copied"), true);
+                            player.sendSystemMessage(Component.translatable("text.armor_stand_editor.message.copied"), true);
                             this.rebuildUi();
                         })
         );
@@ -36,7 +36,7 @@ public class CopyGui extends BaseWorldGui {
                                 this.playClickSound();
 
                                 spei.ase$getArmorStandEditorData().apply(this.context.armorStand, false);
-                                player.displayClientMessage(Component.translatable("text.armor_stand_editor.message.pasted"), true);
+                                player.sendSystemMessage(Component.translatable("text.armor_stand_editor.message.pasted"), true);
                             })
             );
 
@@ -48,7 +48,7 @@ public class CopyGui extends BaseWorldGui {
                                         this.playClickSound();
 
                                         spei.ase$getArmorStandEditorData().apply(this.context.armorStand, true);
-                                        player.displayClientMessage(Component.translatable("text.armor_stand_editor.message.pasted"), true);
+                                        player.sendSystemMessage(Component.translatable("text.armor_stand_editor.message.pasted"), true);
                                     }
                                 })
                 );

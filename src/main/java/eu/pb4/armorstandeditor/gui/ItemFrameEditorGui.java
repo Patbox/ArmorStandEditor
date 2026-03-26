@@ -4,6 +4,7 @@ import eu.pb4.armorstandeditor.util.ItemFrameInventory;
 import eu.pb4.armorstandeditor.util.TextUtils;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import eu.pb4.sgui.api.elements.SimpleGuiElement;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -33,13 +34,13 @@ public class ItemFrameEditorGui extends SimpleGui {
 
         this.setTitle(TextUtils.gui("item_frame_title"));
 
-        this.setSlotRedirect(0, new Slot(inventory, 0, 0, 0));
+        this.setSlot(0, new Slot(inventory, 0, 0, 0));
         this.setSlot(1, empty);
 
         this.setSlot(2, new GuiElementBuilder(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
                 .setName(TextUtils.gui("name.if-fixed", String.valueOf(ifa.getFixed()))
                         .setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback((index, type, action) -> {
+                .setCallback((index, type, action, _) -> {
 
                     ifa.setFixed(!ifa.getFixed());
 
@@ -49,13 +50,13 @@ public class ItemFrameEditorGui extends SimpleGui {
                             .setStyle(Style.EMPTY.withItalic(false)));
                     playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1f);
 
-                    ((GuiElement) this.getSlot(index)).setItemStack(stack);
+                    ((SimpleGuiElement) this.getGuiElement(index)).setItemStack(stack);
                 }));
 
         this.setSlot(3, new GuiElementBuilder(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
                 .setName(TextUtils.gui("name.if-invisible", String.valueOf(entity.isInvisible()))
                         .setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback((index, type, action) -> {
+                .setCallback((index, type, action, _) -> {
 
                     entity.setInvisible(!entity.isInvisible());
                     ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
@@ -64,13 +65,13 @@ public class ItemFrameEditorGui extends SimpleGui {
                             .setStyle(Style.EMPTY.withItalic(false)));
                     playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1f);
 
-                    ((GuiElement) this.getSlot(index)).setItemStack(stack);
+                    ((SimpleGuiElement) this.getGuiElement(index)).setItemStack(stack);
                 }));
 
         this.setSlot(4, new GuiElementBuilder(Items.ARROW)
                 .setName(TextUtils.gui("name.if-rotate", entity.getRotation())
                         .setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback((index, type, action) -> {
+                .setCallback((index, type, action, _) -> {
                     if (type.isLeft || type.isRight) {
                         int rotation = entity.getRotation() + (type.isLeft ? -1 : 1);
 
@@ -86,7 +87,7 @@ public class ItemFrameEditorGui extends SimpleGui {
                                 .setStyle(Style.EMPTY.withItalic(false)));
                         playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(),0.5f, 1f);
 
-                        ((GuiElement) this.getSlot(index)).setItemStack(stack);
+                        ((SimpleGuiElement) this.getGuiElement(index)).setItemStack(stack);
                     }
                 }));
 
@@ -96,7 +97,7 @@ public class ItemFrameEditorGui extends SimpleGui {
 
         this.setSlot(8, new GuiElementBuilder(Items.BARRIER)
                 .setName(TextUtils.gui("close").setStyle(Style.EMPTY.withItalic(false)))
-                .setCallback(((index, type, action) -> {
+                .setCallback((() -> {
                     playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(),0.5f, 1f);
                     this.close();
                 }))

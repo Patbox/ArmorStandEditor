@@ -1,8 +1,8 @@
 package eu.pb4.armorstandeditor;
 
 import eu.pb4.armorstandeditor.config.ConfigManager;
-import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.minecraft.server.level.ServerLevel;
+import eu.pb4.armorstandeditor.util.FabricPermissionBridge;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.entity.player.Player;
 
@@ -28,13 +28,15 @@ public enum EditorActions {
     RENAME("rename");
 
     public final String permission;
+    private final Identifier permissionId;
 
     EditorActions(String permission) {
         this.permission = permission;
+        this.permissionId = Identifier.fromNamespaceAndPath("armor_stand_editor", "action/" + permission);
     }
 
     public boolean canUse(Player player) {
         var defaultLevel = ConfigManager.getConfig().configData.defaultAllowedActions.contains(this.permission) ? PermissionLevel.ALL : PermissionLevel.GAMEMASTERS;
-        return Permissions.check(player, "armor_stand_editor.action." + this.permission, defaultLevel);
+        return FabricPermissionBridge.checkPermission(player, this.permissionId, defaultLevel);
     }
 }
