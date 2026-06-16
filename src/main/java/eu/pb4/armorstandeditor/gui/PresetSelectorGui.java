@@ -48,7 +48,7 @@ public class PresetSelectorGui extends BaseChestGui {
     @Override
     protected void buildUi() {
         for (int x = 0; x < 9; x++) {
-            this.setSlot(x + 18, new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).hideTooltip());
+            this.setSlot(x + 18, new GuiElementBuilder(Items.STAINED_GLASS_PANE.gray()).hideTooltip());
         }
         updateDisplay();
     }
@@ -89,7 +89,7 @@ public class PresetSelectorGui extends BaseChestGui {
 
         this.setSlot(this.size - 5, closeButton());
 
-        var previous = new GuiElementBuilder(page != 0 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
+        var previous = new GuiElementBuilder(page != 0 ? Items.ARROW : Items.STAINED_GLASS_PANE.lightGray())
                 .setName(Component.translatable("spectatorMenu.previous_page").setStyle(Style.EMPTY.withItalic(false)));
         if (this.page != 0) {
             previous.setCallback(() -> {
@@ -100,7 +100,7 @@ public class PresetSelectorGui extends BaseChestGui {
         }
         this.setSlot(this.size - 8, previous);
 
-        var next = new GuiElementBuilder(page < maxPage - 1 ? Items.ARROW : Items.LIGHT_GRAY_STAINED_GLASS_PANE)
+        var next = new GuiElementBuilder(page < maxPage - 1 ? Items.ARROW : Items.STAINED_GLASS_PANE.lightGray())
                 .setName(Component.translatable("spectatorMenu.next_page").setStyle(Style.EMPTY.withItalic(false)));
 
         if (this.page < maxPage - 1) {

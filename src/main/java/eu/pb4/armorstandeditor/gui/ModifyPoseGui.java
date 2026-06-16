@@ -31,9 +31,9 @@ public class ModifyPoseGui extends BaseWorldGui {
         }
 
         var wool = switch (this.rotationType) {
-            case PITCH -> Items.RED_WOOL;
-            case YAW -> Items.GREEN_WOOL;
-            case ROLL -> Items.BLUE_WOOL;
+            case PITCH -> Items.WOOL.red();
+            case YAW -> Items.WOOL.green();
+            case ROLL -> Items.WOOL.blue();
         };
 
         this.setSlot(0, baseElement(wool, "action.rotate.angle." + this.rotationType.name().toLowerCase(Locale.ROOT), false).setCallback((x, y, z, c) -> {

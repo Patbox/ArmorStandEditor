@@ -30,21 +30,21 @@ public class ItemFrameEditorGui extends SimpleGui {
         var inventory = new ItemFrameInventory(entity);
         var ifa = (eu.pb4.armorstandeditor.mixin.ItemFrameEntityAccessor) entity;
 
-        var empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).hideTooltip().build();
+        var empty = new GuiElementBuilder(Items.STAINED_GLASS_PANE.gray()).hideTooltip().build();
 
         this.setTitle(TextUtils.gui("item_frame_title"));
 
         this.setSlot(0, new Slot(inventory, 0, 0, 0));
         this.setSlot(1, empty);
 
-        this.setSlot(2, new GuiElementBuilder(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
+        this.setSlot(2, new GuiElementBuilder(ifa.getFixed() ? Items.STAINED_GLASS_PANE.green() : Items.STAINED_GLASS_PANE.red())
                 .setName(TextUtils.gui("name.if-fixed", String.valueOf(ifa.getFixed()))
                         .setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback((index, type, action, _) -> {
 
                     ifa.setFixed(!ifa.getFixed());
 
-                    ItemStack stack = new ItemStack(ifa.getFixed() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
+                    ItemStack stack = new ItemStack(ifa.getFixed() ? Items.STAINED_GLASS_PANE.green() : Items.STAINED_GLASS_PANE.red());
 
                     stack.set(DataComponents.CUSTOM_NAME, TextUtils.gui("name.if-fixed", String.valueOf(ifa.getFixed()))
                             .setStyle(Style.EMPTY.withItalic(false)));
@@ -53,13 +53,13 @@ public class ItemFrameEditorGui extends SimpleGui {
                     ((SimpleGuiElement) this.getGuiElement(index)).setItemStack(stack);
                 }));
 
-        this.setSlot(3, new GuiElementBuilder(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
+        this.setSlot(3, new GuiElementBuilder(entity.isInvisible() ? Items.STAINED_GLASS_PANE.green() : Items.STAINED_GLASS_PANE.red())
                 .setName(TextUtils.gui("name.if-invisible", String.valueOf(entity.isInvisible()))
                         .setStyle(Style.EMPTY.withItalic(false)))
                 .setCallback((index, type, action, _) -> {
 
                     entity.setInvisible(!entity.isInvisible());
-                    ItemStack stack = new ItemStack(entity.isInvisible() ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
+                    ItemStack stack = new ItemStack(entity.isInvisible() ? Items.STAINED_GLASS_PANE.green() : Items.STAINED_GLASS_PANE.red());
 
                     stack.set(DataComponents.CUSTOM_NAME, TextUtils.gui("name.if-invisible", String.valueOf(entity.isInvisible()))
                             .setStyle(Style.EMPTY.withItalic(false)));

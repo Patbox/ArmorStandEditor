@@ -45,7 +45,7 @@ public class InventoryEditGui extends BaseChestGui {
             ArmorStand ae = context.armorStand;
             ArmorStandEntityAccessor asea = (ArmorStandEntityAccessor) ae;
             boolean isUnlocked = isSlotUnlocked(ae, ArmorStandInventory.getEquipmentSlot(x));
-            this.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
+            this.setSlot(x + 9, new GuiElementBuilder(isUnlocked ? Items.STAINED_GLASS_PANE.green() : Items.STAINED_GLASS_PANE.red())
                     .setName(Component.translatable(isUnlocked ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                             .setStyle(Style.EMPTY.withItalic(false)))
                     .setCallback((index, type, action, _) -> {
@@ -71,7 +71,7 @@ public class InventoryEditGui extends BaseChestGui {
 
                         boolean isUnlocked2 = isSlotUnlocked(ae, slot);
 
-                        ItemStack stack = new ItemStack(isUnlocked2 ? Items.GREEN_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE);
+                        ItemStack stack = new ItemStack(isUnlocked2 ? Items.STAINED_GLASS_PANE.green() : Items.STAINED_GLASS_PANE.red());
 
                         stack.set(DataComponents.CUSTOM_NAME, Component.translatable(isUnlocked2 ? "narrator.button.difficulty_lock.unlocked" : "narrator.button.difficulty_lock.locked")
                                 .setStyle(Style.EMPTY.withItalic(false)));
@@ -81,7 +81,7 @@ public class InventoryEditGui extends BaseChestGui {
             );
         }
 
-        GuiElement empty = new GuiElementBuilder(Items.GRAY_STAINED_GLASS_PANE).hideTooltip().build();
+        GuiElement empty = new GuiElementBuilder(Items.STAINED_GLASS_PANE.gray()).hideTooltip().build();
 
         this.setSlot(6, empty);
         this.setSlot(7, empty);

@@ -7,6 +7,7 @@ import eu.pb4.armorstandeditor.gui.BaseWorldGui;
 import eu.pb4.armorstandeditor.util.ArmorStandData;
 import eu.pb4.armorstandeditor.util.PlayerExt;
 import eu.pb4.sgui.api.SguiUtils;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -68,7 +69,8 @@ public abstract class ServerPlayerEntityMixin extends Player implements PlayerEx
                 ase$tickTimer++;
                 if (ase$tickTimer > 10 && this.getMainHandItem().getItem() == ConfigManager.getConfig().armorStandTool) {
                     ase$tickTimer = 0;
-                    var armorStands = this.level().getEntitiesOfClass(ArmorStand.class, new AABB(this.blockPosition().offset(10, 10, 10).getCenter(), this.blockPosition().offset(-10, -10, -10).getCenter()), entity -> !entity.isMarker());
+                    var box = new AABB(Vec3.atCenterOf(this.blockPosition().offset(10, 10, 10)), Vec3.atCenterOf(this.blockPosition().offset(-10, -10, -10)));
+                    var armorStands = this.level().getEntitiesOfClass(ArmorStand.class, box, entity -> !entity.isMarker());
 
                     ParticleOptions particleEffect = new DustParticleOptions(ARGB.colorFromFloat(0, 0.8f, 0.2f, 0.2f), 1f);
 
@@ -82,7 +84,7 @@ public abstract class ServerPlayerEntityMixin extends Player implements PlayerEx
                                 0.2f, 0.2f, 0.2f, 0.1f, 3));
                     }
 
-                    List<ItemFrame> itemFrames = this.level().getEntitiesOfClass(ItemFrame.class, new AABB(this.blockPosition().offset(10, 10, 10).getCenter(), this.blockPosition().offset(-10, -10, -10).getCenter()), entity -> true);
+                    List<ItemFrame> itemFrames = this.level().getEntitiesOfClass(ItemFrame.class, box,entity -> true);
 
                     ParticleOptions particleEffect2 = new DustParticleOptions(ARGB.colorFromFloat(0, 0.2f, 0.8f, 0.2f), 1f);
 

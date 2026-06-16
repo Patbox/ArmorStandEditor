@@ -40,10 +40,10 @@ public class MoveGui extends BaseWorldGui {
     @Override
     protected void buildUi() {
         var wool = switch (this.currentAxis) {
-            case LOOK -> Items.WHITE_WOOL;
-            case X -> Items.RED_WOOL;
-            case Y -> Items.GREEN_WOOL;
-            case Z -> Items.BLUE_WOOL;
+            case LOOK -> Items.WOOL.white();
+            case X -> Items.WOOL.red();
+            case Y -> Items.WOOL.green();
+            case Z -> Items.WOOL.blue();
         };
 
         var moveBase = ((int) (this.context.moveBlockDelta * 100)) / 100d;
