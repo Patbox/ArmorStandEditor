@@ -20,7 +20,7 @@ public class PropertyGui extends BaseWorldGui {
     private static final List<Entry> ENTRIES = List.of(
             Entry.of(EditorActions.TOGGLE_VISIBILITY, "invisible", Items.GLASS, ArmorStand::setInvisible, ArmorStand::isInvisible),
             Entry.of(EditorActions.TOGGLE_GRAVITY,"no_gravity", Items.FEATHER, PropertyGui::setNoGravity, ArmorStand::isNoGravity),
-            Entry.of(EditorActions.TOGGLE_INVULNERABILITY, "invulnerable", Items.SHIELD, Entity::setInvulnerable, Entity::isInvulnerable),
+            Entry.of(EditorActions.TOGGLE_INVULNERABILITY, "invulnerable", Items.SHIELD, Entity::setPermanentlyInvulnerable, Entity::isPermanentlyInvulnerable),
             Entry.ofa(EditorActions.TOGGLE_ARMS, "arms", Items.STICK, ArmorStandEntityAccessor::callSetShowArms, ArmorStand::showArms),
             Entry.ofa(EditorActions.TOGGLE_BASE, "hide_base", Items.SMOOTH_STONE_SLAB, ArmorStandEntityAccessor::callSetNoBasePlate, a -> !a.showBasePlate()),
             Entry.ofe(EditorActions.TOGGLE_VISUAL_FIRE, "visual_fire", Items.BLAZE_POWDER, EntityAccessor::setHasVisualFire, EntityAccessor::isHasVisualFire),

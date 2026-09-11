@@ -20,6 +20,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.permissions.PermissionLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import java.util.Iterator;
@@ -147,7 +148,7 @@ public class GeneralCommands {
         EntitySelector entitySelector = context.getArgument("targets", EntitySelector.class);
 
         for (ServerPlayer player : entitySelector.findPlayers(context.getSource())) {
-            player.getInventory().placeItemBackInInventory(itemStack);
+            player.getInventory().placeItemBackInInventory(itemStack, Prediction.SERVER_ONLY);
             context.getSource().sendSuccess(() -> TextUtils.command("give", player.getDisplayName()), true);
         }
 

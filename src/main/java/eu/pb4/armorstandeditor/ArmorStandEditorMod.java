@@ -89,7 +89,7 @@ public class ArmorStandEditorMod implements ModInitializer {
 
                 if (entity instanceof ArmorStand armorStandEntity) {
                     new MainGui(new EditingContext(serverPlayer, armorStandEntity), 0);
-                    player.sendSystemMessage(TextUtils.text("open_info", Component.keybind("key.drop")));
+                    player.sendOverlayMessage(TextUtils.text("open_info", Component.keybind("key.drop")));
                     return InteractionResult.SUCCESS;
                 }
             }
